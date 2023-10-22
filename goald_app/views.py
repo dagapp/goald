@@ -1,23 +1,46 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.http import HttpResponse
-from .models import *
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+
+from .models import User
 
 def index(request):
-	danila  = User(name='danila', second_name='agapitov', password='12345678')
-	ivan    = User(name='ivan', second_name='ladygin', password='kristinochka_moya_koroleva')
-	mikhail = User(name='mikhail', second_name='shimenkov', password='cpp for life')
-	timur   = User(name='timur', second_name='davletshin', password='where is arduino?...')
+	return HttpResponse("Hello bober!")
 
-	danila.save()
-	ivan.save()
-	mikhail.save()
-	timur.save()
 
-	result = ''
-	user_list = User.objects.all()
-	for user in user_list:
-		result += f'{user.name} {user.second_name} {user.password}<br>'
+def login(request):
+	return render(request, "login.html")
 
-	return HttpResponse(result)
+
+def register(request):
+	return render(request, "register.html")
+
+
+def auth(request):
+	if not request.POST:
+		return redirect("login", request)
+
+	if User.objects.filter(name=request.POST["login"], password=request.POST["password"]).exists():
+		return redirect("users")
+
+	messages.error(request, "Incorrect login or password!")
+	return redirect("login")
+
+
+def create(request):
+	if not request.POST:
+		return redirect("register")
+
+	if request.POST["password"] != request.POST["password_repeat"]:
+		messages.error(request, "Passwords dont match!")
+		return redirect("register")
+
+	User.objects.create(name=request.POST["login"], password=request.POST["password"])
+
+	return redirect("login")
+
+
+def users(request):
+	return render(request, "users.html", {"users" : User.objects.all()})

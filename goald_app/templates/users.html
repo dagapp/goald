@@ -1,0 +1,11 @@
+{% include "header.html" %}
+<style> body { background-color: white; }</style>
+<table>
+	{% for user in users %}
+		<tr>
+			<td>{{ user.name }}</td>
+			<td>{{ user.password }}</td>
+		<tr>
+	{% endfor %}
+</table>
+{% include "footer.html" %}
