@@ -4,9 +4,12 @@ from django.db import models
 
 
 class User(models.Model):
-    name = models.CharField(default="", null=False, max_length=50)
-    second_name = models.CharField(default="", max_length=50)
-    password = models.CharField(blank=False, null=False, max_length=50)
+    login    = models.CharField(default="", blank=False, null=False, max_length=50 )
+    password = models.BinaryField(          blank=False, null=False, max_length=100)
+    salt     = models.BinaryField(          blank=True,  null=False, max_length=50 )
+
+    name        = models.CharField(default="", blank=True, null=True, max_length=50)
+    second_name = models.CharField(default="", blank=True, null=True, max_length=50)
 
     #group_id = models.ForeignKey('Group', on_delete=models.CASCADE)
 

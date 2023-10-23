@@ -11,6 +11,9 @@ urlpatterns = [
     path("auth", views.auth, name="auth"),
     path("create", views.create, name="create"),
 
+    path("change", views.change, name="change"),
+    path("delete", views.delete, name="delete"),
+
     path("users", views.users, name="users"),
 
     path("home", views.home, name="home"),
