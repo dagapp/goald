@@ -4,7 +4,7 @@
       <script>alert("{{ message }}");</script>
   {% endfor %}
 {% endif %}
-<form action="create" method="POST">{% csrf_token %}
+<form action="{{ form_action }}" method=post>{% csrf_token %}
   <div class="container">
     <h1>Register</h1>
     <p>Please fill in this form to create an account.</p>

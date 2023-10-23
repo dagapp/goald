@@ -11,11 +11,11 @@ def index(request):
 
 
 def login(request):
-	return render(request, "login.html")
+	return render(request, "login.html", { "form_action" : "auth" })
 
 
 def register(request):
-	return render(request, "register.html")
+	return render(request, "register.html", { "form_action" : "create" })
 
 
 def auth(request):
