@@ -52,7 +52,7 @@ class User(UserModel):
 	@staticmethod
 	def change(login: str, password: str) -> ManagerResult:
 		user = User.objects.get(login=login)
-		user.password = password
+		user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
 		user.save()
 
 		return ManagerResult(True, "User's password changed successfully!")
