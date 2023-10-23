@@ -14,9 +14,9 @@ class Group(models.Model):
     password = models.CharField(blank=True, null=True, max_length=50)
     is_public = models.BooleanField(null=False, default=True)
 
-    leader_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+    leader_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE, related_name='leader')
     goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
-    members = models.ManyToManyField('User', null=False, on_delete=models.CASCADE)
+    members = models.ManyToManyField('User', related_name='members')
     supergroup_id = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
 
 
@@ -63,13 +63,13 @@ class Message(models.Model):
     sender_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
 
 class PrivateChat(models.Model):
-    user_id1 = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
-    user_id2 = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+    user_id1 = models.ForeignKey('User', null=False, on_delete=models.CASCADE, related_name='user1')
+    user_id2 = models.ForeignKey('User', null=False, on_delete=models.CASCADE, related_name='user2')
 
-    messages = models.ManyToManyField('Message', null=False, on_delete=models.CASCADE)
+    messages = models.ManyToManyField('Message')
 
 class GroupChat(models.Model):
     name = models.CharField(blank=False, null=False, max_length=50)
 
     group_id = models.OneToOneField('Group', null=False, on_delete=models.CASCADE)
-    messages = models.ManyToManyField('Message', null=False, on_delete=models.CASCADE)
+    messages = models.ManyToManyField('Message')
