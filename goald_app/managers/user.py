@@ -1,8 +1,7 @@
-from .manager import ManagerResult
-
-from ..models import UserModel
-
 from bcrypt import gensalt, hashpw
+
+from .manager import ManagerResult
+from ..models import UserModel
 
 
 LENGTH_SALT = 29

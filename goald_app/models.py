@@ -3,11 +3,11 @@ from django.db import models
 # Create your models here.
 
 class UserModel(models.Model):
-    login    = models.CharField(  blank=False, null=False, max_length=50 )
-    password = models.BinaryField(blank=False, null=False, max_length=100)
+    login    = models.CharField  (null=False, max_length=50 )
+    password = models.BinaryField(null=False, max_length=100)
 
-    name        = models.CharField(blank=True, null=True, max_length=50)
-    second_name = models.CharField(blank=True, null=True, max_length=50)
+    name        = models.CharField(null=True, max_length=50)
+    second_name = models.CharField(null=True, max_length=50)
 
     #group_id = models.ForeignKey('Group', on_delete=models.CASCADE)
 
