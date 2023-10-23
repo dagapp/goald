@@ -4,7 +4,7 @@ from django.db import models
 
 class UserModel(models.Model):
     login    = models.CharField  (null=False, max_length=50 )
-    password = models.BinaryField(null=False, max_length=100)
+    password = models.BinaryField(null=False)
 
     name        = models.CharField(null=True, max_length=50)
     second_name = models.CharField(null=True, max_length=50)

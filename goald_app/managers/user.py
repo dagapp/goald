@@ -3,22 +3,17 @@ from bcrypt import gensalt, hashpw
 from .manager import ManagerResult
 from ..models import UserModel
 
-
 LENGTH_SALT = 29
+LENGTH_HASH = 60
+
 
 class User(UserModel):
 	@staticmethod
-	def exists(login: str, password: str = None) -> ManagerResult:
-		if password:
-			if User.objects.filter(login=login, password=password).exists():
+	def exists(login: str) -> ManagerResult:
+		if User.objects.filter(login=login).exists():
 				return ManagerResult(True, "User exists")
-			else:
-				return ManagerResult(False, "User doesn't exist!")
-		else:
-			if User.objects.filter(login=login).exists():
-				return ManagerResult(True, "User exists")
-			else:
-				return ManagerResult(False, "User doesn't exists!")
+
+		return ManagerResult(False, "User doesnt exist!")
 
 	@staticmethod
 	def auth(login: str, password: str) -> ManagerResult:
@@ -54,10 +49,11 @@ class User(UserModel):
 		user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
 		user.save()
 
-		return ManagerResult(True, "User's password changed successfully!")
+		return ManagerResult(True, "Users password changed successfully!")
 
 	@staticmethod
 	def delete(login: str) -> ManagerResult:
+		print("deleting")
 		User.objects.filter(login=login).delete()
 
 		return ManagerResult(True, "User deleted successfully!")

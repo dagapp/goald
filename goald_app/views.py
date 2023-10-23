@@ -1,8 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.shortcuts import redirect
 from django.contrib import messages
+from django.shortcuts import render, redirect
 
 from .managers.user import User
 
@@ -103,6 +102,9 @@ def delete(request):
 
 	# Call User.delete to find and delete a user
 	User.delete(request.session['authorized_as'])
+
+	# Deleting session
+	request.session.pop('authorized_as')
 
 	return redirect("login")
 
