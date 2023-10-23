@@ -23,7 +23,10 @@ def auth(request):
 		return redirect("login", request)
 
 	if User.objects.filter(name=request.POST["login"], password=request.POST["password"]).exists():
+		request.session['is_authorized'] = True
 		return redirect("users")
+
+	request.session['is_authorized'] = False
 
 	messages.error(request, "Incorrect login or password!")
 	return redirect("login")
@@ -37,10 +40,21 @@ def create(request):
 		messages.error(request, "Passwords dont match!")
 		return redirect("register")
 
+	if User.objects.filter(name=request.POST["login"]).exists():
+		messages.error(request, "User already exists!")
+		return redirect("register")
+
 	User.objects.create(name=request.POST["login"], password=request.POST["password"])
 
 	return redirect("login")
 
 
 def users(request):
+	if not 'is_authorized' in request.session or not request.session['is_authorized']:
+		return redirect("login")
+
 	return render(request, "users.html", {"users" : User.objects.all()})
+
+
+def home(request):
+	return render()
