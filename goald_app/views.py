@@ -4,9 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from .models import User
-
-from bcrypt import gensalt, hashpw
+from .managers.user import User
 
 
 def index(request):
@@ -22,30 +20,32 @@ def register(request):
 
 
 def auth(request):
+	# Check if request is POST and if it has login and password fields
 	if not request.POST:
 		return redirect("login", request)
 
 	if not "login" in request.POST or not "password" in request.POST:
 		return redirect("login", request)
 
-	user = None
-	try:
-		user = User.objects.get(name=request.POST["login"])
-	except User.DoesNotExist:
-		messages.error(request, "Incorrect login or password!")
+	# Call User.auth to authenticate a user
+	login    = request.POST["login"]
+	password = request.POST["password"]
+
+	result = User.auth(login, password)
+	if not result.succeed:
+		messages.error(request, result.message)
 		return redirect("login")
 
-	salted_hash = hashpw(bytes(request.POST["password"], "utf-8"), user.salt)
-
-	if salted_hash != user.password:
-		messages.error(request, "Incorrect login or password!")
-		return redirect("login")
-
+	# Set a session for further user authorizing
 	request.session['authorized_as'] = request.POST["login"]
+
 	return redirect("users")
 
 
 def create(request):
+	# Check if request is POST,
+	# if it has login, password and password_repeat fields,
+	# if password equals to password_repeat
 	if not request.POST:
 		return redirect("register")
 
@@ -56,49 +56,59 @@ def create(request):
 		messages.error(request, "Passwords dont match!")
 		return redirect("register")
 
-	if User.objects.filter(name=request.POST["login"]).exists():
-		messages.error(request, "User already exists!")
+	# Call User.create to create a user
+	result = User.create(request.POST["login"], request.POST["password"])
+	if not result.succeed:
+		messages.error(request, result.message)
 		return redirect("register")
-
-	salt = gensalt()
-	salted_hash = hashpw(bytes(request.POST["password"], "utf-8"), salt)
-
-	User.objects.create(name=request.POST["login"], password=salted_hash, salt=salt)
 
 	return redirect("login")
 
 
 def change(request):
+	# Check if request has needed session_id cookie,
+	# if user actually exists,
+	# if request is POST
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
-	if not User.objects.filter(name=request.session['authorized_as']).exists():
-		messages.error(request, "You are not authorized!")
+	result = User.exists(request.session['authorized_as'])
+	if not result.succeed:
+		messages.error(request, result.message)
 		return redirect("login")
 
 	if not request.POST:	
 		return redirect("home")
 
-	user = User.objects.get(name=request.session['authorized_as'])
-	user.password = request.POST['password']
-	user.save()
+	# Call User.change to change user's password
+	result = User.change(request.POST["login"], request.POST["password"])
+	if not result.succeed:
+		messages.error(request, result.message)
+		return redirect("home")
 
 	return redirect("home")
 
 
 def delete(request):
+	# Check if request has needed session_id cookie,
+	# if user actually exists
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
-	if not User.objects.filter(name=request.session['authorized_as']).exists():
-		messages.error(request, "You are not authorized!")
+	# Call User.exists to know if user exists
+	result = User.exists(request.session['authorized_as'])
+	if not result.succeed:
+		messages.error(request, result.message)
 		return redirect("login")
 
-	User.objects.filter(name=request.session['authorized_as']).delete()
+	# Call User.delete to find and delete a user
+	User.delete(request.session['authorized_as'])
 
 	return redirect("login")
 
+
 def users(request):
+	# Check if request has needed session_id cookie
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
