@@ -8,8 +8,6 @@ class User(models.Model):
     second_name = models.CharField(default="", max_length=50)
     password = models.CharField(blank=False, null=False, max_length=50)
 
-    group_id = models.ForeignKey('Group', on_delete=models.CASCADE)
-
 
 class Group(models.Model):
     name = models.CharField(default="", null=False, max_length=20)
@@ -18,7 +16,7 @@ class Group(models.Model):
 
     leader_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
     goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
-
+    members = models.ManyToManyField('User', null=False, on_delete=models.CASCADE)
     supergroup_id = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
 
 
@@ -43,3 +41,35 @@ class Duty(models.Model):
 
 	user_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
 	goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
+     
+class Event(models.Model):
+    type = models.IntegerField(null=False)
+    text = models.CharField(blank=True, null=False, max_length=500)
+    timestamp = models.DateTimeField()
+
+    group_id = models.ForeignKey('Group', null=False, on_delete=models.CASCADE)
+    goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
+
+class Report(models.Model):
+    text = models.CharField(blank=False, null=False, max_length=500)
+    proof = models.BinaryField()
+
+    goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
+
+class Message(models.Model):
+    text = models.CharField(blank=True, null=False, max_length=500)
+    timestamp = models.DateTimeField() 
+
+    sender_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+
+class PrivateChat(models.Model):
+    user_id1 = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+    user_id2 = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+
+    messages = models.ManyToManyField('Message', null=False, on_delete=models.CASCADE)
+
+class GroupChat(models.Model):
+    name = models.CharField(blank=False, null=False, max_length=50)
+
+    group_id = models.OneToOneField('Group', null=False, on_delete=models.CASCADE)
+    messages = models.ManyToManyField('Message', null=False, on_delete=models.CASCADE)
