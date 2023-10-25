@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from .managers.user import User
+from .managers.user import UserManager
 
 
 def index(request):
@@ -26,11 +26,11 @@ def auth(request):
 	if not "login" in request.POST or not "password" in request.POST:
 		return redirect("login", request)
 
-	# Call User.auth to authenticate a user
+	# Call UserManager.auth to authenticate a user
 	login    = request.POST["login"]
 	password = request.POST["password"]
 
-	result = User.auth(login, password)
+	result = UserManager.auth(login, password)
 	if not result.succeed:
 		messages.error(request, result.message)
 		return redirect("login")
@@ -55,8 +55,8 @@ def create(request):
 		messages.error(request, "Passwords dont match!")
 		return redirect("register")
 
-	# Call User.create to create a user
-	result = User.create(request.POST["login"], request.POST["password"])
+	# Call UserManager.create to create a user
+	result = UserManager.create(request.POST["login"], request.POST["password"])
 	if not result.succeed:
 		messages.error(request, result.message)
 		return redirect("register")
@@ -71,7 +71,7 @@ def change(request):
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
-	result = User.exists(request.session['authorized_as'])
+	result = UserManager.exists(request.session['authorized_as'])
 	if not result.succeed:
 		messages.error(request, result.message)
 		return redirect("login")
@@ -79,8 +79,8 @@ def change(request):
 	if not request.POST:	
 		return redirect("home")
 
-	# Call User.change to change user's password
-	result = User.change(request.POST["login"], request.POST["password"])
+	# Call UserManager.change to change user's password
+	result = UserManager.change(request.POST["login"], request.POST["password"])
 	if not result.succeed:
 		messages.error(request, result.message)
 		return redirect("home")
@@ -94,14 +94,14 @@ def delete(request):
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
-	# Call User.exists to know if user exists
-	result = User.exists(request.session['authorized_as'])
+	# Call UserManager.exists to know if user exists
+	result = UserManager.exists(request.session['authorized_as'])
 	if not result.succeed:
 		messages.error(request, result.message)
 		return redirect("login")
 
-	# Call User.delete to find and delete a user
-	User.delete(request.session['authorized_as'])
+	# Call UserManager.delete to find and delete a user
+	UserManager.delete(request.session['authorized_as'])
 
 	# Deleting session
 	request.session.pop('authorized_as')
@@ -114,7 +114,7 @@ def users(request):
 	if not 'authorized_as' in request.session or not request.session['authorized_as']:
 		return redirect("login")
 
-	return render(request, "users.html", {"users" : User.objects.all()})
+	return render(request, "users.html", {"users" : UserManager.objects_all()})
 
 
 def home(request):

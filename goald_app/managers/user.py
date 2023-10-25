@@ -1,19 +1,22 @@
 from bcrypt import gensalt, hashpw
 
 from .manager import ManagerResult
-from ..models import UserModel
+from ..models import User
 
 LENGTH_SALT = 29
 LENGTH_HASH = 60
 
-
-class User(UserModel):
+class UserManager():
 	@staticmethod
 	def exists(login: str) -> ManagerResult:
 		if User.objects.filter(login=login).exists():
 				return ManagerResult(True, "User exists")
 
 		return ManagerResult(False, "User doesnt exist!")
+	
+	@staticmethod
+	def objects_all() -> list:
+		return User.objects.all()
 
 	@staticmethod
 	def auth(login: str, password: str) -> ManagerResult:
