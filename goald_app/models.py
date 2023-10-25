@@ -125,6 +125,6 @@ class Report(models.Model):
 
     proof = models.ImageField(null=False)
 
-    text = models.CharField(null=True, max_length=500, default="")
+    text = models.CharField(null=True, max_length=1024)
 
     goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)

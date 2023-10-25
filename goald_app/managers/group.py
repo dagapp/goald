@@ -19,7 +19,7 @@ class GroupManager:
     @staticmethod
     def get_all() -> ManagerResult:
         '''
-        Get all groups from table
+        Get all groups from the table
         '''
         return ManagerResult(True, "", Group.objects.all())
 
