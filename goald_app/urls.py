@@ -18,6 +18,8 @@ urlpatterns = [
     path("duties", views.duties, name="duties"),
 
     path("home", views.home, name="home"),
+
+    path("goal", views.goal, name="goal")
 ]
 
 

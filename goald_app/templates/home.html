@@ -4,19 +4,5 @@
       <script>alert("{{ message }}");</script>
   {% endfor %}
 {% endif %}
-<form action="auth" method="POST">{% csrf_token %}
-  <div class="container">
-    <h1>Login</h1>
-    <p>Please fill in this form to log in to an account.</p>
-    <hr>
-
-    <label for="login"><b>Login</b></label>
-    <input type="text" placeholder="Enter Login" name="login" id="login" required>
-
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
-
-    <button type="submit" class="submitbtn">Login</button>
-  </div>
-</form>
+You are at home
 {% include "footer.html" %}

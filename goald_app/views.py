@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from .managers.user import UserManager
 from .managers.duty import DutyManager
+from .managers.goal import GoalManager
 
 
 def index(request):
@@ -37,7 +38,7 @@ def auth(request):
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session['authorized_as'] = request.POST["login"]
+    request.session["id"] = UserManager.objects_get(login).result.id
 
     return redirect("users")
 
@@ -69,19 +70,23 @@ def change(request):
     # Check if request has needed session_id cookie,
     # if user actually exists,
     # if request is POST
-    if not 'authorized_as' in request.session or not request.session['authorized_as']:
+    # if it has password field
+    if not 'id' in request.session or not request.session['id']:
         return redirect("login")
 
-    result = UserManager.exists(request.session['authorized_as'])
+    result = UserManager.exists(request.session['id'])
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("login")
 
-    if not request.POST:
+    if not request.POST:    
+        return redirect("home")
+    
+    if not "password" in request.POST:
         return redirect("home")
 
     # Call UserManager.change to change user's password
-    result = UserManager.change(request.POST["login"], request.POST["password"])
+    result = UserManager.change(request.session["id"], request.POST["password"])
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")
@@ -92,35 +97,56 @@ def change(request):
 def delete(request):
     # Check if request has needed session_id cookie,
     # if user actually exists
-    if not 'authorized_as' in request.session or not request.session['authorized_as']:
+    if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
     # Call UserManager.exists to know if user exists
-    result = UserManager.exists(request.session['authorized_as'])
+    result = UserManager.exists(request.session["id"])
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("login")
 
     # Call UserManager.delete to find and delete a user
-    UserManager.delete(request.session['authorized_as'])
+    UserManager.delete(request.session["id"])
 
     # Deleting session
-    request.session.pop('authorized_as')
+    request.session.pop("id")
 
     return redirect("login")
 
 
 def users(request):
     # Check if request has needed session_id cookie
-    if not 'authorized_as' in request.session or not request.session['authorized_as']:
+    if not 'id' in request.session or not request.session['id']:
         return redirect("login")
 
-    return render(request, "users.html", {"users" : UserManager.objects_all()})
+    return render(request, "users.html", {"users" : UserManager.objects_all().result})
 
 
 def home(request):
-    return render()
+    return render(request, "home.html")
 
+def goal(request):
+    # Check if request is GET,
+    # if it has id field
+    # if request has needed session_id cookie
+    if not request.GET:
+        return redirect("home")
+    
+    if not 'goal_id' in request.GET:
+        return redirect("home")
+    
+    if not 'id' in request.session or not request.session["id"]:
+        return redirect("home")
+    
+    GoalManager.auth(request.session["id"])
+
+    result = GoalManager.objects_get(id=request.GET["goal_id"])
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("home")
+
+    return render(request, "goal.html", {"goal" : result.result})
 
 def duties(request):
     # Check if request has needed session_id cookie
