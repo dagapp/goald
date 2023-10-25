@@ -15,6 +15,7 @@ urlpatterns = [
     path("delete", views.delete, name="delete"),
 
     path("users", views.users, name="users"),
+    path("duties", views.duties, name="duties"),
 
     path("home", views.home, name="home"),
 ]
