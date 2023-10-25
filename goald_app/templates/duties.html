@@ -8,8 +8,8 @@
         <td><b>current value</b></td> 
         <td><b>deadline</b></td> 
         <td><b>alert period</b></td> 
-	</tr>
-	{% for duty in duties %}
+    </tr>
+    {% for duty in duties %}
     <tr>
         <td>{{ duty.user_id}}</td>
         <td>{{ duty.goal_id}}</td>
@@ -18,6 +18,6 @@
         <td>{{ duty.deadline}}</td>
         <td>{{ duty.alert_period}}</td>
     </tr>
-	{% endfor %}
+    {% endfor %}
 </table>
 {% include "footer.html" %}

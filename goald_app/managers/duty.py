@@ -19,4 +19,4 @@ class DutyManager():
     def delete(user_id: int, goal_id: int) -> ManagerResult:
         Duty.objects.filter(user_id=user_id, goal_id=goal_id).delete()
 
-        return ManagerResult(True, "User deleted successfully!")
+        return ManagerResult(True, "Duty deleted successfully!")

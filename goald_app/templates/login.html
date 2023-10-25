@@ -1,27 +1,27 @@
 {% include "header.html" %}
 {% if messages %}
-  {% for message in messages %}
-      <script>alert("{{ message }}");</script>
-  {% endfor %}
+    {% for message in messages %}
+        <script>alert("{{ message }}");</script>
+    {% endfor %}
 {% endif %}
 <form action="{{ form_action }}" method=post>{% csrf_token %}
-  <div class="container">
-    <h1>Log in</h1>
-    <p>Please fill in this form to log in to an account.</p>
-    <hr>
+    <div class="container">
+        <h1>Log in</h1>
+        <p>Please fill in this form to log in to an account.</p>
+        <hr>
 
-    <label for="login"><b>Login</b></label>
-    <input type="text" placeholder="Enter Login" name="login" id="login" required>
+        <label for="login"><b>Login</b></label>
+        <input type="text" placeholder="Enter Login" name="login" id="login" required>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
-    <hr>
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" id="password" required>
+        <hr>
 
-    <button type="submit" class="submitbtn">Login</button>
-  </div>
-  
-  <div class="container signin">
-    <p>Don't have an account? <a href="register">Register</a>.</p>
-  </div>
+        <button type="submit" class="submitbtn">Login</button>
+    </div>
+
+    <div class="container signin">
+        <p>Don't have an account? <a href="register">Register</a>.</p>
+    </div>
 </form>
 {% include "footer.html" %}
