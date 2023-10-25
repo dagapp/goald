@@ -18,7 +18,7 @@ class Group(models.Model):
     password = models.BinaryField(null=True)
     image    = models.ImageField (null=True)
 
-    members = models.ManyToManyField('User', related_name='members')
+    users = models.ManyToManyField('User', related_name='groups')
 
     leader_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
     goal_id   = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
