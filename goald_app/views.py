@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from .managers.user import UserManager
-from .managers.duty import DutyManager
-from .managers.goal import GoalManager
+from .managers.manager import AuthManager
+from .managers.user    import UserManager
+from .managers.duty    import DutyManager
+from .managers.goal    import GoalManager
 
 
 def index(request):
@@ -18,29 +19,6 @@ def login(request):
 
 def register(request):
     return render(request, "register.html", { "form_action" : "create" })
-
-
-def auth(request):
-    # Check if request is POST and if it has login and password fields
-    if not request.POST:
-        return redirect("login", request)
-
-    if not "login" in request.POST or not "password" in request.POST:
-        return redirect("login", request)
-
-    # Call UserManager.auth to authenticate a user
-    login    = request.POST["login"]
-    password = request.POST["password"]
-
-    result = UserManager.auth(login, password)
-    if not result.succeed:
-        messages.error(request, result.message)
-        return redirect("login")
-
-    # Set a session for further user authorizing
-    request.session["id"] = UserManager.objects_get(login).result.id
-
-    return redirect("users")
 
 
 def create(request):
@@ -66,15 +44,48 @@ def create(request):
     return redirect("login")
 
 
+def auth(request):
+    # Check if request is POST and if it has login and password fields
+    if not request.POST:
+        return redirect("login", request)
+
+    if not "login" in request.POST or not "password" in request.POST:
+        return redirect("login", request)
+
+    # Call UserManager.auth to authenticate a user
+    login    = request.POST["login"]
+    password = request.POST["password"]
+
+    result = UserManager.auth(login, password)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("login")
+
+    # Set a session for further user authorizing
+    request.session["id"] = UserManager.objects_get(login).result.id
+
+    return redirect("users")
+
+
+def deauth(request):
+    if not "id" in request.session or not request.session["id"]:
+        return redirect("login")
+
+    # Deleting session
+    request.session.pop("id")
+
+    return redirect("login")
+
+
 def change(request):
     # Check if request has needed session_id cookie,
     # if user actually exists,
     # if request is POST
     # if it has password field
-    if not 'id' in request.session or not request.session['id']:
+    if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    result = UserManager.exists(request.session['id'])
+    result = UserManager.exists(request.session["id"])
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("login")
@@ -85,7 +96,7 @@ def change(request):
     if not "password" in request.POST:
         return redirect("home")
 
-    # Call UserManager.change to change user's password
+    # Call UserManager.change to change user"s password
     result = UserManager.change(request.session["id"], request.POST["password"])
     if not result.succeed:
         messages.error(request, result.message)
@@ -117,7 +128,7 @@ def delete(request):
 
 def users(request):
     # Check if request has needed session_id cookie
-    if not 'id' in request.session or not request.session['id']:
+    if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
     return render(request, "users.html", {"users" : UserManager.objects_all().result})
@@ -127,32 +138,38 @@ def home(request):
     return render(request, "home.html")
 
 
-def goal(request):
-    # Check if request is GET,
+def goals(request):
+    # Check if request has needed session_id cookie,
+    # if request is GET,
     # if it has id field
-    # if request has needed session_id cookie
-    if not request.GET:
+    if not "id" in request.session or not request.session["id"]:
         return redirect("home")
     
-    if not 'goal_id' in request.GET:
-        return redirect("home")
-    
-    if not 'id' in request.session or not request.session["id"]:
-        return redirect("home")
-    
-    GoalManager.auth(request.session["id"])
+    AuthManager.auth(request.session["id"])
 
-    result = GoalManager.objects_get(id=request.GET["goal_id"])
-    if not result.succeed:
-        messages.error(request, result.message)
-        return redirect("home")
+    if request.GET:
+        if not "goal_id" in request.GET:
+            return redirect("home")
 
-    return render(request, "goal.html", {"goal" : result.result})
+        result = GoalManager.objects_get(id=request.GET["goal_id"])
+        if not result.succeed:
+            messages.error(request, result.message)
+            return redirect("home")
+
+        return render(request, "goals.html", {"goals" : result.result})
+    
+    else:
+        result = GoalManager.objects_all()
+        if not result.succeed:
+            messages.error(request, result.message)
+            return redirect("home")
+        
+        return render(request, "goals.html", {"goals" : result.result})
 
 
 def duties(request):
     # Check if request has needed session_id cookie
-    if not 'id' in request.session or not request.session['id']:
+    if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
     return render(request, "duties.html", {"duties" : DutyManager.objects_all()})

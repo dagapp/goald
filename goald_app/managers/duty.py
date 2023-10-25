@@ -1,7 +1,6 @@
 from .manager import ManagerResult
 from ..models import Duty
 
-
 class DutyManager():
     @staticmethod
     def objects_all() -> list:

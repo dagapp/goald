@@ -13,4 +13,4 @@ class AuthManager:
 
     @staticmethod
     def auth(user_id: int):
-        user_id = user_id
+        AuthManager.user_id = user_id

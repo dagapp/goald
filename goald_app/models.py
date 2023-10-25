@@ -21,7 +21,6 @@ class Group(models.Model):
     users = models.ManyToManyField('User', related_name='groups')
 
     leader_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
-    goal_id   = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
 
     supergroup_id = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
 

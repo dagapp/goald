@@ -1,5 +1,6 @@
 {% include "header.html" %}
 <table border=1>
+    {% for goal in goals %}
     <tr>
         <td>{{ goal.id           }}</td>
         <td>{{ goal.name         }}</td>
@@ -9,5 +10,6 @@
         <td>{{ goal.report_id    }}</td>
         <td>{{ goal.supergoal_id }}</td>
     </tr>
+    {% endfor %}
 </table>
 {% include "footer.html" %}

@@ -6,7 +6,6 @@ from ..models import User
 LENGTH_SALT = 29
 LENGTH_HASH = 60
 
-
 class UserManager():
     @staticmethod
     def objects_all() -> ManagerResult:
@@ -41,6 +40,10 @@ class UserManager():
             return ManagerResult(False, "Incorrect login or password!")
 
         return ManagerResult(True, "User authenticated successfully!")
+    
+    @staticmethod
+    def deauth(id: int) -> ManagerResult:
+        return ManagerResult(True, "User successfully deauthenticated!")
 
     @staticmethod
     def create(login: str, password: str) -> ManagerResult:
@@ -50,7 +53,6 @@ class UserManager():
         salt = gensalt()
         salted_hash = hashpw(bytes(password, "utf-8"), salt)
 
-        User.objects.create(login=login, password=salted_hash)
         User.objects.create(login=login, password=salted_hash)
 
         return ManagerResult(True, "User created successfully!")
