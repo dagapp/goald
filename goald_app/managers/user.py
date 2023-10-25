@@ -54,7 +54,6 @@ class UserManager():
         User.objects.create(login=login, password=salted_hash)
 
         return ManagerResult(True, "User created successfully!")
-        return ManagerResult(True, "User created successfully!")
 
     @staticmethod
     def change(id: int, password: str) -> ManagerResult:
@@ -63,11 +62,9 @@ class UserManager():
         user.save()
 
         return ManagerResult(True, "Users password changed successfully!")
-        return ManagerResult(True, "Users password changed successfully!")
 
     @staticmethod
     def delete(id: int) -> ManagerResult:
-        print("deleting")
         User.objects.filter(id=id).delete()
 
         return ManagerResult(True, "User deleted successfully!")
