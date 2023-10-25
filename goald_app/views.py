@@ -126,6 +126,7 @@ def users(request):
 def home(request):
     return render(request, "home.html")
 
+
 def goal(request):
     # Check if request is GET,
     # if it has id field
@@ -148,9 +149,10 @@ def goal(request):
 
     return render(request, "goal.html", {"goal" : result.result})
 
+
 def duties(request):
     # Check if request has needed session_id cookie
-    if not 'authorized_as' in request.session or not request.session['authorized_as']:
+    if not 'id' in request.session or not request.session['id']:
         return redirect("login")
 
     return render(request, "duties.html", {"duties" : DutyManager.objects_all()})
