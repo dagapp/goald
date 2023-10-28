@@ -3,6 +3,7 @@ File for defining modles in Django notation
 '''
 
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 
@@ -27,7 +28,7 @@ class Group(models.Model):
 
     name     = models.CharField  (null=True, max_length=50)
     password = models.BinaryField(null=True)
-    image    = models.ImageField (null=True, upload_to='static/images/groupProfiles',)
+    image    = models.ImageField (verbose_name='Аватар', upload_to='static/images/groupProfiles', default='\static\images\wNHQWT4wufY.jpg', blank=True, validators=[FileExtensionValidator(allowed_extensions=('png', 'jpg', 'jpeg'))])
 
     users = models.ManyToManyField('User', related_name='groups')
 

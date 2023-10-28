@@ -167,14 +167,14 @@ def users(request):
     if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
-    return render(request, "users.html", {"users" : UserManager.objects_all().result})
+    return render(request, "users.html", { "users" : UserManager.objects_all().result })
 
 
 def home(request):
     '''
     home page of app
     '''
-    return render(request, "home.html")
+    return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
 
 def goals(request):

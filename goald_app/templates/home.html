@@ -4,5 +4,32 @@
         <script>alert("{{ message }}");</script>
     {% endfor %}
 {% endif %}
-You are at home
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Группы</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="group-list">
+        <h2>Группы</h2>
+        <ul>
+            {% for group in groups%}
+            <li>
+                <div class="group-avatar">
+                    {% if group.image %}
+                    <img src="{{ group.image }}" height=100 width=100><br><br>
+                    {% else %}
+                    <img src="{{ 'static\images\groupProfiles\wNHQWT4wufY.jpg' }}" height=100 width=100><br><br>
+                    {% endif %}
+                </div>
+                {{ group.tag }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
 {% include "footer.html" %}
