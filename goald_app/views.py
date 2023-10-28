@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from .managers.manager import AuthManager
 from .managers.user    import UserManager
+from .managers.group   import GroupManager
 from .managers.duty    import DutyManager
 from .managers.goal    import GoalManager
 
@@ -131,11 +132,11 @@ def users(request):
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    return render(request, "users.html", {"users" : UserManager.objects_all().result})
+    return render(request, "users.html", { "users" : UserManager.objects_all().result })
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
 
 def goals(request):
