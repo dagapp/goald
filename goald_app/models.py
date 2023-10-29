@@ -16,7 +16,7 @@ class Group(models.Model):
 
     name     = models.CharField  (null=True, max_length=50)
     password = models.BinaryField(null=True)
-    image    = models.ImageField (null=True)
+    image    = models.ImageField (null=True, upload_to='static/images/groupProfiles',)
 
     users = models.ManyToManyField('User', related_name='groups')
 

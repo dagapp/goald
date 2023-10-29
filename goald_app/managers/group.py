@@ -7,8 +7,12 @@ class GroupManager():
         return ManagerResult(True, "", Group.objects.all())
     
     @staticmethod
-    def objects_get(name: str) -> ManagerResult:
+    def objects_get(group_id) -> ManagerResult:
         try:
-            return ManagerResult(True, "User found", Group.objects.get(name=name))
+            return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
         except Group.DoesNotExist:
-             return ManagerResult(False, "User doesnt exist!")
+             return ManagerResult(False, "Group doesnt exist!")
+        
+    @staticmethod
+    def create(tag, is_public, name, leader_id) -> ManagerResult:
+        Group.objects.create(tag=tag, is_public=is_public, name=name, leader_id=leader_id)

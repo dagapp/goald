@@ -18,6 +18,9 @@ urlpatterns = [
     path("duties", views.duties, name="duties"),
     path("goals",  views.goals,  name="goals"),
 
+    path('groups/<int:group_id>/', views.group_detail, name='group_detail'),
+    path('upload_group_image/<int:group_id>/', views.upload_group_image, name='upload_group_image'),
+
     path("home", views.home, name="home"),
 ]
 
