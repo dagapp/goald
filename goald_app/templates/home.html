@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Группы</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 
 <body>
@@ -29,7 +29,48 @@
             </li>
             {% endfor %}
         </ul>
+        <button id="openModal">Создать группу</button>
+        <button>Вступить в группу</button>
+    </div>
+
+    <div id="modal" class="modal">
+        <span class="close-button">&times;</span>
+        <form action="createGroup" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Имя группы:</label>
+            <input type="text" name="group_name" required><br><br>
+
+            <label>Аватарка:</label>
+            <input type="file" name="group_avatar" accept="static/images/groupProfiles/*"><br><br>
+
+            <label>Режим приватности:</label>
+            <select name="privacy_mode">
+                <option value="public">Публичный</option>
+                <option value="private">Приватный</option>
+            </select><br><br>
+
+            <input type="submit" value="Создать группу">
+        </form>
     </div>
 </body>
+
+<script>
+    let modal = document.getElementById("modal");
+    let btn = document.getElementById("openModal");
+    let span = document.getElementsByClassName("close-button")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 {% include "footer.html" %}
