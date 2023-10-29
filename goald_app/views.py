@@ -197,7 +197,7 @@ def createGroup(request):
     if selected_privacy_mode == "Публичный":
         is_public = True
 
-    result = GroupManager.create(tag=request.POST["group_name"], image=image_path, is_public=is_public)
+    result = GroupManager.create(leader_id=request.session["id"], tag=request.POST["group_name"], image=image_path, is_public=is_public)
     if not result.succeed:
         messages.error(request, result.message)
 
