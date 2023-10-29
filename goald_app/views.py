@@ -6,12 +6,15 @@ File for defining handlers in Django notation
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import os
 
 from goald_app.managers.manager import AuthManager
 from goald_app.managers.user    import UserManager
 from goald_app.managers.duty    import DutyManager
 from goald_app.managers.goal    import GoalManager
-
+from goald_app.managers.group   import GroupManager
 
 def index(request):
     '''
@@ -214,3 +217,40 @@ def duties(request):
         return redirect("login")
 
     return render(request, "duties.html", {"duties" : DutyManager.objects_all()})
+
+def group_detail(request, group_id):
+    # Check if request has needed session_id cookie
+    if not "id" in request.session or not request.session["id"]:
+        return redirect("login")
+
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("home")
+
+    return render(request, "group_detail.html", {"group" : result.result})
+
+
+def upload_group_image(request, group_id):
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("groups/{group_id}/")
+
+    if request.method == "POST" and request.FILES.get("image"):
+        image = request.FILES["image"]
+        image = request.FILES['group_avatar']
+
+        storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
+        fs = FileSystemStorage(location=storage_location)
+        fs.save(image.name, image)
+
+        image_path= 'static/images/groupProfiles/' + image.name
+
+        group = result.result
+        group.image = image_path
+        group.save()
+
+        return render(request, "group_detail.html", {"group": group})
+
+    return render(request, "group_detail.html", {"error": "Ошибка загрузки изображения"})
