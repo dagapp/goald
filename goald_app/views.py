@@ -5,6 +5,8 @@ File for defining handlers in Django notation
 # Create your views here.
 from django.http import HttpResponse
 from django.contrib import messages
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -176,6 +178,30 @@ def home(request):
     '''
     return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
+def createGroup(request):
+    if not request.POST:
+        return redirect("home")
+
+    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
+        return redirect("home")
+
+    image = request.FILES['group_avatar']
+    
+    storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
+    fs = FileSystemStorage(location= storage_location)
+    filename = fs.save(image.name, image)
+    uploaded_file_path = fs.path(filename)
+    image_path= 'static/images/groupProfiles/' + image.name
+    selected_privacy_mode = request.POST.get('privacy_mode', None)
+    is_public = False
+    if selected_privacy_mode == "Публичный":
+        is_public = True
+
+    result = GroupManager.create(tag=request.POST["group_name"], image=image_path, is_public=is_public)
+    if not result.succeed:
+        messages.error(request, result.message)
+
+    return redirect("home")
 
 def goals(request):
     '''

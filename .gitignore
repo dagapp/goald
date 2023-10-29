@@ -2,4 +2,5 @@
 **/*.sqlite3
 goald_app/migrations/*
 !goald_app/migrations/__init__.py
+goald_app/static/images/*
 .vscode
