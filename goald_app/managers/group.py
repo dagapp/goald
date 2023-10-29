@@ -25,10 +25,10 @@ class GroupManager():
         return ManagerResult(False, "Group doesnt exist!")
     
     @staticmethod
-    def create(tag: str, image: str, is_public: bool) -> ManagerResult:
+    def create(leader_id: int, tag: str, image: str, is_public: bool) -> ManagerResult:
         if Group.objects.filter(tag=tag).exists():
             return ManagerResult(False, "Group already exists!")
         
-        Group.objects.create(leader_id = User.objects.get(login="zalupa"),tag=tag, image=image, is_public=is_public)
+        Group.objects.create(leader_id = User.objects.get(id=leader_id),tag=tag, image=image, is_public=is_public)
 
         return ManagerResult(True, "Group created successfully!")
