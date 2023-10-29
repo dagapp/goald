@@ -153,8 +153,8 @@ def createGroup(request):
     storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
     fs = FileSystemStorage(location= storage_location)
     filename = fs.save(image.name, image)
-    uploaded_file_path = fs.path(filename)
     image_path= 'static/images/groupProfiles/' + image.name
+
     selected_privacy_mode = request.POST.get('privacy_mode', None)
     is_public = False
     if selected_privacy_mode == "Публичный":
