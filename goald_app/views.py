@@ -1,13 +1,14 @@
 # Create your views here.
 from django.http import HttpResponse
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render, redirect
 import os
 
 from .managers.manager import AuthManager
 from .managers.user    import UserManager
+from .managers.group   import GroupManager
 from .managers.duty    import DutyManager
 from .managers.goal    import GoalManager
 from .managers.group   import GroupManager
@@ -134,12 +135,36 @@ def users(request):
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    return render(request, "users.html", {"users" : UserManager.objects_all().result})
+    return render(request, "users.html", { "users" : UserManager.objects_all().result })
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
+def createGroup(request):
+    if not request.POST:
+        return redirect("home")
+
+    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
+        return redirect("home")
+
+    image = request.FILES['group_avatar']
+    
+    storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
+    fs = FileSystemStorage(location= storage_location)
+    filename = fs.save(image.name, image)
+    image_path= 'static/images/groupProfiles/' + image.name
+
+    selected_privacy_mode = request.POST.get('privacy_mode', None)
+    is_public = False
+    if selected_privacy_mode == "Публичный":
+        is_public = True
+
+    result = GroupManager.create(leader_id=request.session["id"], tag=request.POST["group_name"], image=image_path, is_public=is_public)
+    if not result.succeed:
+        messages.error(request, result.message)
+
+    return redirect("home")
 
 def goals(request):
     # Check if request has needed session_id cookie,

@@ -1,5 +1,9 @@
 from .manager import ManagerResult
 from ..models import Group
+from ..models import User
+from bcrypt import gensalt, hashpw
+
+#from django.views.generic.detail import DetailView
 
 class GroupManager():
     @staticmethod
@@ -11,8 +15,20 @@ class GroupManager():
         try:
             return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
         except Group.DoesNotExist:
-             return ManagerResult(False, "Group doesnt exist!")
+             return ManagerResult(False, "User doesnt exist!")
         
     @staticmethod
-    def create(tag, is_public, name, leader_id) -> ManagerResult:
-        Group.objects.create(tag=tag, is_public=is_public, name=name, leader_id=leader_id)
+    def exists(id: int) -> ManagerResult:
+        if Group.objects.filter(id=id).exists():
+                return ManagerResult(True, "Group exists")
+
+        return ManagerResult(False, "Group doesnt exist!")
+    
+    @staticmethod
+    def create(leader_id : int, tag: str, image: str, is_public: bool) -> ManagerResult:
+        if Group.objects.filter(tag=tag).exists():
+            return ManagerResult(False, "Group already exists!")
+        
+        Group.objects.create(leader_id = User.objects.get(id = leader_id),tag=tag, image=image, is_public=is_public)
+
+        return ManagerResult(True, "Group created successfully!")
