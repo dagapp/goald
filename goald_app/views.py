@@ -258,7 +258,7 @@ def group_detail(request, group_id):
 
 
 def upload_group_image(request, group_id):
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
@@ -282,7 +282,7 @@ def upload_group_image(request, group_id):
     return render(request, "group_detail.html", {"error": "Ошибка загрузки изображения"})
 
 def user_adding(request, group_id):
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
@@ -313,4 +313,4 @@ def goal_create(request, group_id):
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
     
-    return render(request, "group_detail.html", {"group": GroupManager.objects_get(group_id=group_id).result})
+    return render(request, "group_detail.html", {"group": GroupManager.objects_get(id=group_id).result})
