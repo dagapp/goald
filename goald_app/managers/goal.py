@@ -45,3 +45,21 @@ class GoalManager():
             pass
 
         return ManagerResult(False, "No goal found!")
+    
+    @staticmethod
+    def exists(id: int) -> ManagerResult:
+        if Goal.objects.filter(id=id).exists():
+            return ManagerResult(True, "Group exists")
+
+        return ManagerResult(False, "Group doesnt exist!")
+
+    @staticmethod
+    def create(name: str, group_id: int) -> ManagerResult:        
+        if not Group.objects.filter(id=group_id).exists():
+            return ManagerResult(False, "Group with id={group_id} doesnt exist!")
+        
+        if Goal.objects.filter(name=name, group_id=group_id).exists():
+            return ManagerResult(False, "Goal already exists!")
+        
+        Goal.objects.create(name=name, is_active=True, group_id=Group.objects.get(id=group_id))
+        return ManagerResult(True, "Goal created successfully!")

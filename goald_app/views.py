@@ -197,7 +197,7 @@ def createGroup(request):
     if selected_privacy_mode == "Публичный":
         is_public = True
 
-    result = GroupManager.create(leader_id=request.session["id"], tag=request.POST["group_name"], image=image_path, is_public=is_public)
+    result = GroupManager.create(leader_id=request.session["id"], name=request.POST["group_name"], image=image_path, is_public=is_public)
     if not result.succeed:
         messages.error(request, result.message)
 
@@ -261,7 +261,7 @@ def upload_group_image(request, group_id):
     result = GroupManager.objects_get(group_id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
-        return redirect("groups/{group_id}/")
+        return redirect(request.META.get('HTTP_REFERER'))
 
     if request.method == "POST" and request.FILES.get("image"):
         image = request.FILES["image"]
@@ -280,3 +280,37 @@ def upload_group_image(request, group_id):
         return render(request, "group_detail.html", {"group": group})
 
     return render(request, "group_detail.html", {"error": "Ошибка загрузки изображения"})
+
+def user_adding(request, group_id):
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    if request.method == "POST" :
+        group = result.result
+        username = request.POST['username']
+
+        getUser = UserManager.objects_get(login=username)
+        if not getUser.succeed:
+            messages.error(request, getUser.message)
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        group.users.add(getUser.result)
+        group.save()
+
+        return render(request, "group_detail.html", {"group": group})
+    
+def goal_create(request, group_id):
+    if not request.POST:
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    if not "name" in request.POST:
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    result = GoalManager.create(name=request.POST['name'], group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect(request.META.get('HTTP_REFERER'))
+    
+    return render(request, "group_detail.html", {"group": GroupManager.objects_get(group_id=group_id).result})
