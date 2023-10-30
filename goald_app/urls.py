@@ -22,6 +22,8 @@ urlpatterns = [
 
     path('groups/<int:group_id>/', views.group_detail, name='group_detail'),
     path('upload_group_image/<int:group_id>/', views.upload_group_image, name='upload_group_image'),
+    path('groups/<int:group_id>/user_adding/', views.user_adding, name='user_adding'),
+    path('groups/<int:group_id>/goal_create/', views.goal_create, name='goal_create'),
 
     path("home", views.home, name="home"),
 ]

@@ -15,7 +15,7 @@ class GroupManager():
         try:
             return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
         except Group.DoesNotExist:
-             return ManagerResult(False, "User doesnt exist!")
+             return ManagerResult(False, "Group doesnt exist!")
         
     @staticmethod
     def exists(id: int) -> ManagerResult:

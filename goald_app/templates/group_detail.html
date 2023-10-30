@@ -1,0 +1,111 @@
+{% include "header.html" %}
+{% if messages %}
+    {% for message in messages %}
+        <script>alert("{{ message }}");</script>
+    {% endfor %}
+{% endif %}
+
+{% include "footer.html" %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% load static %}">
+    <link rel="stylesheet" href="{% static 'css/group_detail.css' %}">
+    <script src="{% static 'js/modal.js' %}"></script>
+    <title>{{ group.name }}</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="group-details">
+
+            <form method="post" enctype="multipart/form-data" action="{% url 'upload_group_image' group_id=group.id %}">
+                {% csrf_token %}
+                <div class="group-image" id="group-image-container">
+                    <label for="image-input" class="add-image-button">
+                    {% if group.image %}
+                        <img src="{{ group.image.url }}" alt="Group Image" id="group-image">
+                    {% endif %}
+                    </label>
+                </div>
+                <input type="file" name="image" accept="image/*" id="image-input" style="display: none;">
+                <input type="submit" value="Загрузить изображение" style="display: none;">
+            </form>
+            
+            <script>
+                const addImageButton = document.querySelector('.add-image-button');
+                const imageInput = document.getElementById('group-image');
+                
+                addImageButton.addEventListener('click', () => {
+                    imageInput.click();
+                });
+            </script>
+            
+            <div class="group-info">
+                <div class="group-tag">{{ group.tag }}</div>
+                <div class="group-name">{{ group.name }}</div>
+                <div class="group-description">
+                    <textarea placeholder="Описание группы">{{ group.description }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="participants">
+            <h2>Участники группы</h2>
+            <ul>
+                {% for user in group.users.all %}
+                <li>{{ user.login }}</li>
+                {% endfor %}
+            </ul>
+            <div class="add-participant-button" id="openModalUser">Добавить участника</div>
+
+            <div id="modalUser" class="modalUser">
+                <span class="close-buttonUser">&times;</span>
+                <form action="{% url 'user_adding' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <label>Имя пользователя</label>
+                    <input type="text" name="username" required><br><br>        
+                    <input type="submit" value="Добавить участника">
+                </form>
+            </div>
+
+            <script>
+                setupModal("modalUser", "openModalUser", "close-buttonUser");
+            </script>
+        </div>
+
+        <div class="goals">
+            <h2>Цели группы</h2>
+            <ul>
+                {% for goal in group.goal_set.all %}
+                <li>{{ goal.name }}</li>
+                {% endfor %}
+            </ul>
+            <div class="add-goal-button" id="openModalGoal">Добавить цель</div>
+
+            <div id="modalGoal" class="modalGoal">
+                <span class="close-buttonGoal">&times;</span>
+                <form action="{% url 'goal_create' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <label>Название цели</label>
+                    <input type="text" name="name" required><br><br>        
+                    <input type="submit" value="Добавить цель">
+                </form>
+            </div>
+
+            <script>
+                setupModal("modalGoal", "openModalGoal", "close-buttonGoal");
+            </script>
+
+        </div>
+
+        <div class="events">
+            <h2>События группы</h2>
+            <ul>
+                {% for event in group.event_set.all %}
+                <li>{{ event.text }} - {{ event.timestamp }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+</body>
