@@ -3,7 +3,8 @@ from ..models import Group
 from ..models import User
 from bcrypt import gensalt, hashpw
 
-#from django.views.generic.detail import DetailView
+import string 
+import random
 
 class GroupManager():
     @staticmethod
@@ -11,9 +12,9 @@ class GroupManager():
         return ManagerResult(True, "", Group.objects.all())
     
     @staticmethod
-    def objects_get(group_id) -> ManagerResult:
+    def objects_get(id: int) -> ManagerResult:
         try:
-            return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
+            return ManagerResult(True, "Group found", Group.objects.get(id=id))
         except Group.DoesNotExist:
              return ManagerResult(False, "Group doesnt exist!")
         
@@ -23,12 +24,15 @@ class GroupManager():
                 return ManagerResult(True, "Group exists")
 
         return ManagerResult(False, "Group doesnt exist!")
-    
+
     @staticmethod
-    def create(leader_id : int, tag: str, image: str, is_public: bool) -> ManagerResult:
-        if Group.objects.filter(tag=tag).exists():
+    def create(leader_id: int, name: str, image: str, is_public: bool) -> ManagerResult:
+        if Group.objects.filter(name=name).exists():
             return ManagerResult(False, "Group already exists!")
         
-        Group.objects.create(leader_id = User.objects.get(id = leader_id),tag=tag, image=image, is_public=is_public)
+        tag = "@" + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
+
+        Group.objects.create(leader_id=User.objects.get(id = leader_id), name=name, tag=tag, image=image, is_public=is_public)
 
         return ManagerResult(True, "Group created successfully!")
+    
