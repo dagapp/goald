@@ -1,8 +1,16 @@
+'''
+File for defining modles in Django notation
+'''
+
 from django.db import models
 
 # Create your models here.
 
+
 class User(models.Model):
+    '''
+    class to represent a User model
+    '''
     login    = models.CharField  (null=False, max_length=50)
     password = models.BinaryField(null=False)
 
@@ -11,6 +19,9 @@ class User(models.Model):
 
 
 class Group(models.Model):
+    '''
+    class to represent a Group model
+    '''
     tag       = models.CharField   (null=False, max_length=50)
     is_public = models.BooleanField(null=False)
 
@@ -26,6 +37,9 @@ class Group(models.Model):
 
 
 class Goal(models.Model):
+    '''
+    class to represent a Goal model
+    '''
     name      = models.CharField   (null=False, max_length=50)
     is_active = models.BooleanField(null=False, default=True)
 
@@ -39,6 +53,9 @@ class Goal(models.Model):
 
 
 class Duty(models.Model):
+    '''
+    class to represent a Duty model
+    '''
     final_value   = models.IntegerField(null=False)
     current_value = models.IntegerField(null=False)
 
@@ -50,6 +67,9 @@ class Duty(models.Model):
 
 
 class Event(models.Model):
+    '''
+    class to represent a Event model
+    '''
     type      = models.IntegerField (null=False)
     text      = models.CharField    (null=False, max_length=500)
     timestamp = models.DateTimeField(null=False)
@@ -59,30 +79,11 @@ class Event(models.Model):
 
 
 class Report(models.Model):
+    '''
+    class to represent a Report model
+    '''
     proof = models.ImageField(null=False)
 
     text = models.CharField(null=True, max_length=500)
 
     goal_id = models.ForeignKey('Goal', null=False, on_delete=models.CASCADE)
-
-'''
-class Message(models.Model):
-    text      = models.CharField    (null=False, max_length=500)
-    timestamp = models.DateTimeField(null=False) 
-
-    sender_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
-
-
-class PrivateChat(models.Model):
-    messages = models.ManyToManyField('Message')
-
-    user1_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
-    user2_id = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
-
-
-class GroupChat(models.Model):
-    name = models.CharField(blank=False, null=False, max_length=50)
-
-    group_id = models.OneToOneField('Group', null=False, on_delete=models.CASCADE)
-    messages = models.ManyToManyField('Message', null=False, on_delete=models.CASCADE)
-'''
