@@ -1,16 +1,30 @@
-from dataclasses import dataclass
+'''
+Module defining auxiliary AuthManager and ManagerResult
+'''
 
-# Dataclass for managers' return values
+from dataclasses import dataclass
+from django.db.models.manager import Manager
+
+
 @dataclass
 class ManagerResult:
+    '''
+    Dataclass for managers' return values
+    '''
     succeed: bool
     message: str
-    result:  object = None
+    result:  Manager = None
 
-# Parent class for managers that require user auth
+
 class AuthManager:
+    '''
+    Parent class for managers that require user auth
+    '''
     user_id: int = None
 
     @staticmethod
     def auth(user_id: int):
+        '''
+        Auth a user with given id
+        '''
         AuthManager.user_id = user_id
