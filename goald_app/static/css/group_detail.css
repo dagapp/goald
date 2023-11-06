@@ -92,7 +92,7 @@ ul {
 }
 
 button, 
-.modalUser, 
+.modalUser input[type="submit"], 
 .modalGoal input[type="submit"] {
     padding: 9px 45px;  
     font-size: 16px;  
@@ -115,8 +115,8 @@ button,
     background-color: #fefefe;
     padding: 10px;
     margin-bottom: 10px;
-    width: 40%; 
-    height: 50%; 
+    width: 25%; 
+    height: 30%; 
     z-index: 10000;
     position: fixed;
     top: 50%;
