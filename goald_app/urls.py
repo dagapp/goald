@@ -1,6 +1,10 @@
+'''
+File for defining url paths and corresponding handlers in Django notation
+'''
+
 from django.urls import path
 
-from . import views
+from goald_app import views
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -18,7 +22,7 @@ urlpatterns = [
     path("duties", views.duties, name="duties"),
     path("goals",  views.goals,  name="goals"),
 
-    path("createGroup", views.createGroup, name="createGroup"),
+    path("create_group", views.create_group, name="create_group"),
 
     path('groups/<int:group_id>/', views.group_detail, name='group_detail'),
     path('upload_group_image/<int:group_id>/', views.upload_group_image, name='upload_group_image'),
@@ -27,5 +31,3 @@ urlpatterns = [
 
     path("home", views.home, name="home"),
 ]
-
-

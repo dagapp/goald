@@ -1,38 +1,57 @@
+'''
+File for defining handlers in Django notation
+'''
+
 # Create your views here.
 from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 import os
 
-from .managers.manager import AuthManager
-from .managers.user    import UserManager
-from .managers.group   import GroupManager
-from .managers.duty    import DutyManager
-from .managers.goal    import GoalManager
-from .managers.group   import GroupManager
+from goald_app.managers.manager import AuthManager
+from goald_app.managers.user    import UserManager
+from goald_app.managers.duty    import DutyManager
+from goald_app.managers.goal    import GoalManager
+from goald_app.managers.group   import GroupManager
 
 def index(request):
+    '''
+    main page of app
+    '''
     return HttpResponse("Hello bober!")
 
 
 def login(request):
+    '''
+    handler to login a user
+    '''
     return render(request, "login.html", { "form_action" : "auth" })
 
 
 def register(request):
+    '''
+    handler to register a user
+    '''
     return render(request, "register.html", { "form_action" : "create" })
 
 
 def create(request):
+    '''
+    handler to create a user
+    '''
     # Check if request is POST,
     # if it has login, password and password_repeat fields,
     # if password equals to password_repeat
     if not request.POST:
         return redirect("register")
 
-    if not "login" in request.POST or not "password" in request.POST or not "password_repeat" in request.POST:
+    if "login" not in request.POST or \
+       "password" not in request.POST or \
+       "password_repeat" not in request.POST:
         return redirect("register")
 
     if request.POST["password"] != request.POST["password_repeat"]:
@@ -49,30 +68,36 @@ def create(request):
 
 
 def auth(request):
+    '''
+    handler to auth the user
+    '''
     # Check if request is POST and if it has login and password fields
     if not request.POST:
         return redirect("login", request)
 
-    if not "login" in request.POST or not "password" in request.POST:
+    if "login" not in request.POST or "password" not in request.POST:
         return redirect("login", request)
 
     # Call UserManager.auth to authenticate a user
-    login    = request.POST["login"]
-    password = request.POST["password"]
+    user_login    = request.POST["login"]
+    user_password = request.POST["password"]
 
-    result = UserManager.auth(login, password)
+    result = UserManager.auth(user_login, user_password)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = UserManager.objects_get(login).result.id
+    request.session["id"] = UserManager.objects_get(user_login).result.id
 
     return redirect("users")
 
 
 def deauth(request):
-    if not "id" in request.session or not request.session["id"]:
+    '''
+    handler to deauth the user
+    '''
+    if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
     # Deleting session
@@ -82,11 +107,14 @@ def deauth(request):
 
 
 def change(request):
+    '''
+    handler to change the password
+    '''
     # Check if request has needed session_id cookie,
     # if user actually exists,
     # if request is POST
     # if it has password field
-    if not "id" in request.session or not request.session["id"]:
+    if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
     result = UserManager.exists(request.session["id"])
@@ -94,10 +122,10 @@ def change(request):
         messages.error(request, result.message)
         return redirect("login")
 
-    if not request.POST:    
+    if not request.POST:
         return redirect("home")
-    
-    if not "password" in request.POST:
+
+    if "password" not in request.POST:
         return redirect("home")
 
     # Call UserManager.change to change user"s password
@@ -110,9 +138,12 @@ def change(request):
 
 
 def delete(request):
+    '''
+    handler to delete the user
+    '''
     # Check if request has needed session_id cookie,
     # if user actually exists
-    if not "id" in request.session or not request.session["id"]:
+    if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
     # Call UserManager.exists to know if user exists
@@ -131,17 +162,23 @@ def delete(request):
 
 
 def users(request):
+    '''
+    handler to get all users from database
+    '''
     # Check if request has needed session_id cookie
-    if not "id" in request.session or not request.session["id"]:
+    if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
     return render(request, "users.html", { "users" : UserManager.objects_all().result })
 
 
 def home(request):
+    '''
+    home page of app
+    '''
     return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
-def createGroup(request):
+def create_group(request):
     if not request.POST:
         return redirect("home")
 
@@ -167,37 +204,42 @@ def createGroup(request):
     return redirect("home")
 
 def goals(request):
+    '''
+    handler to get goals of a user
+    '''
     # Check if request has needed session_id cookie,
     # if request is GET,
     # if it has id field
-    if not "id" in request.session or not request.session["id"]:
+    if "id" not in request.session or not request.session["id"]:
         return redirect("home")
-    
+
     AuthManager.auth(request.session["id"])
 
     if request.GET:
-        if not "goal_id" in request.GET:
+        if "goal_id" not in request.GET:
             return redirect("home")
 
-        result = GoalManager.objects_get(id=request.GET["goal_id"])
+        result = GoalManager.objects_get(goal_id=request.GET["goal_id"])
         if not result.succeed:
             messages.error(request, result.message)
             return redirect("home")
 
         return render(request, "goals.html", {"goals" : result.result})
-    
-    else:
-        result = GoalManager.objects_all()
-        if not result.succeed:
-            messages.error(request, result.message)
-            return redirect("home")
-        
-        return render(request, "goals.html", {"goals" : result.result})
+
+    result = GoalManager.objects_all()
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("home")
+
+    return render(request, "goals.html", {"goals" : result.result})
 
 
 def duties(request):
+    '''
+    handler to get all duties
+    '''
     # Check if request has needed session_id cookie
-    if not "id" in request.session or not request.session["id"]:
+    if "id" not in request.session or not request.session["id"]:
         return redirect("login")
 
     return render(request, "duties.html", {"duties" : DutyManager.objects_all()})
@@ -207,7 +249,7 @@ def group_detail(request, group_id):
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")
@@ -216,7 +258,7 @@ def group_detail(request, group_id):
 
 
 def upload_group_image(request, group_id):
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
@@ -240,7 +282,7 @@ def upload_group_image(request, group_id):
     return render(request, "group_detail.html", {"error": "Ошибка загрузки изображения"})
 
 def user_adding(request, group_id):
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
@@ -271,4 +313,4 @@ def goal_create(request, group_id):
         messages.error(request, result.message)
         return redirect(request.META.get('HTTP_REFERER'))
     
-    return render(request, "group_detail.html", {"group": GroupManager.objects_get(group_id=group_id).result})
+    return render(request, "group_detail.html", {"group": GroupManager.objects_get(id=group_id).result})
