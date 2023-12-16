@@ -2,40 +2,51 @@
 File for defining handlers in Django notation
 '''
 
-# Create your views here.
+import os
+
 from django.http import HttpResponse
 from django.contrib import messages
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 
-from goald_app.managers.user    import UserManager
-from goald_app.managers.duty    import DutyManager
-from goald_app.managers.goal    import GoalManager
+from goald_app.managers.user import UserManager
+from goald_app.managers.duty import DutyManager
+from goald_app.managers.goal import GoalManager
+from goald_app.managers.group import GroupManager
 
 
 def index(request):
     '''
-    main page of app
+    Main page of the app
     '''
     return HttpResponse("Hello bober!")
 
 
+def home(request):
+    '''
+    Home page of the app
+    '''
+    return render(request, "home.html", {"groups": GroupManager.objects_all().result})
+
+
 def login(request):
     '''
-    handler to login a user
+    Handler to login a user
     '''
-    return render(request, "login.html", { "form_action" : "auth" })
+    return render(request, "login.html", {"form_action": "user/auth"})
 
 
 def register(request):
     '''
-    handler to register a user
+    Handler to register a user
     '''
-    return render(request, "register.html", { "form_action" : "create" })
+    return render(request, "register.html", {"form_action": "user/create"})
 
 
-def create(request):
+def user_create(request):
     '''
-    handler to create a user
+    Handler to create a user
     '''
     # Check if request is POST,
     # if it has login, password and password_repeat fields,
@@ -43,9 +54,11 @@ def create(request):
     if not request.POST:
         return redirect("register")
 
-    if "login" not in request.POST or \
-       "password" not in request.POST or \
-       "password_repeat" not in request.POST:
+    if (
+        "login" not in request.POST
+        or "password" not in request.POST
+        or "password_repeat" not in request.POST
+    ):
         return redirect("register")
 
     if request.POST["password"] != request.POST["password_repeat"]:
@@ -61,9 +74,9 @@ def create(request):
     return redirect("login")
 
 
-def auth(request):
+def user_auth(request):
     '''
-    handler to auth the user
+    Handler to auth the user
     '''
     # Check if request is POST and if it has login and password fields
     if not request.POST:
@@ -73,7 +86,7 @@ def auth(request):
         return redirect("login", request)
 
     # Call UserManager.auth to authenticate a user
-    user_login    = request.POST["login"]
+    user_login = request.POST["login"]
     user_password = request.POST["password"]
 
     result = UserManager.auth(user_login, user_password)
@@ -84,12 +97,12 @@ def auth(request):
     # Set a session for further user authorizing
     request.session["id"] = UserManager.objects_get(user_login).result.id
 
-    return redirect("users")
+    return redirect("test/users")
 
 
-def deauth(request):
+def user_deauth(request):
     '''
-    handler to deauth the user
+    Handler to deauth the user
     '''
     # Deleting session
     request.session.pop("id")
@@ -97,9 +110,9 @@ def deauth(request):
     return redirect("login")
 
 
-def change(request):
+def user_change(request):
     '''
-    handler to change the password
+    Handler to change the password
     '''
     # Check
     # if user actually exists,
@@ -126,9 +139,9 @@ def change(request):
     return redirect("home")
 
 
-def delete(request):
+def user_delete(request):
     '''
-    handler to delete the user
+    Handler to delete the user
     '''
     # Check
     # if user actually exists
@@ -148,23 +161,16 @@ def delete(request):
     return redirect("login")
 
 
-def users(request):
+def test_users(request):
     '''
-    handler to get all users from database
+    Handler to get all users from database
     '''
     return render(request, "users.html", {"users" : UserManager.objects_all().result})
 
 
-def home(request):
+def test_goals(request):
     '''
-    home page of app
-    '''
-    return render(request, "home.html")
-
-
-def goals(request):
-    '''
-    handler to get goals of a user
+    Handler to get goals of a user
     '''
     # Check
     # if request is GET,
@@ -181,18 +187,149 @@ def goals(request):
             messages.error(request, result.message)
             return redirect("home")
 
-        return render(request, "goals.html", {"goals" : result.result})
+        return render(request, "goals.html", {"goals": result.result})
 
     result = GoalManager.objects_all(user_id=user_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")
 
-    return render(request, "goals.html", {"goals" : result.result})
+    return render(request, "goals.html", {"goals": result.result})
 
 
-def duties(request):
+def test_duties(request):
     '''
-    handler to get all duties
+    Handler to get all duties
     '''
-    return render(request, "duties.html", {"duties" : DutyManager.objects_all()})
+    return render(request, "duties.html", {"duties": DutyManager.objects_all()})
+
+
+def group_create(request):
+    '''
+    Handler to create group
+    '''
+    if not request.POST:
+        return redirect("home")
+
+    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
+        return redirect("home")
+
+    image_path = "static/images/groupProfiles/wNHQWT4wufY.jpg"
+    if request.POST.get("group_avatar", None) != "":
+        image = request.FILES["group_avatar"]
+
+        storage_location = os.path.join(
+            settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
+        )
+        fs = FileSystemStorage(location=storage_location)
+        fs.save(image.name, image)
+        image_path = "static/images/groupProfiles/" + image.name
+
+    selected_privacy_mode = request.POST.get("privacy_mode", None)
+    is_public = False
+    if selected_privacy_mode == "public":
+        is_public = True
+
+    result = GroupManager.create(
+        leader_id=request.session["id"],
+        name=request.POST["group_name"],
+        image=image_path,
+        is_public=is_public,
+    )
+    if not result.succeed:
+        messages.error(request, result.message)
+
+    return redirect("home")
+
+
+def group(request, group_id):
+    '''
+    Handler of a group page
+    '''
+    # Check if request has needed session_id cookie
+    if not "id" in request.session or not request.session["id"]:
+        return redirect("login")
+
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect("home")
+
+    return render(request, "group_detail.html", {"group": result.result})
+
+
+def group_image_update(request, group_id):
+    '''
+    Handler to update a group image
+    '''
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    if request.method == "POST" and request.FILES.get("image"):
+        image = request.FILES["image"]
+        image = request.FILES["group_avatar"]
+
+        storage_location = os.path.join(
+            settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
+        )
+        fs = FileSystemStorage(location=storage_location)
+        fs.save(image.name, image)
+        image_path = "static/images/groupProfiles/" + image.name
+
+        result_group = result.result
+        result_group.image = image_path
+        result_group.save()
+
+        return render(request, "group_detail.html", {"group": result_group})
+
+    return render(request, "group_detail.html", {"error": "Unable to upload an image"})
+
+
+def group_user_add(request, group_id):
+    '''
+    Handler to add a user to a group
+    '''
+    result = GroupManager.objects_get(group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    if request.method == "POST":
+        result_group = result.result
+        username = request.POST["username"]
+
+        get_user = UserManager.objects_get(login=username)
+        if not get_user.succeed:
+            messages.error(request, get_user.message)
+            return redirect(request.META.get("HTTP_REFERER"))
+
+        result_group.users.add(get_user.result)
+        result_group.save()
+
+        return render(request, "group_detail.html", {"group": result_group})
+
+    return render(request, "group_detail.html", {"error": "Unable to add a user"})
+
+
+def group_goal_add(request, group_id):
+    '''
+    Handler to add a goal to a group
+    '''
+    if not request.POST:
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    if not "name" in request.POST:
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    result = GoalManager.create(name=request.POST["name"], group_id=group_id)
+    if not result.succeed:
+        messages.error(request, result.message)
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    return render(
+        request,
+        "group_detail.html",
+        {"group": GroupManager.objects_get(group_id=group_id).result},
+    )

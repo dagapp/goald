@@ -4,5 +4,58 @@
         <script>alert("{{ message }}");</script>
     {% endfor %}
 {% endif %}
-You are at home
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Группы</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="{% load static %}">
+    <script src="{% static 'js/modal.js' %}"></script>
+</head>
+
+<body>
+    <div class="group-list">
+        <h2>Группы</h2>
+        <ul>
+            {% for group in groups%}
+            <li>
+                <a href="{% url 'group' group_id=group.id %}">
+                <div class="group-avatar">
+                    <img src="{{ group.image }}" height=100 width=100><br><br>
+                </div>
+                </a>
+                {{ group.name }}
+            </li>
+            {% endfor %}
+        </ul>
+        <button id="openModal">Создать группу</button>
+        <button>Вступить в группу</button>
+    </div>
+
+    <div id="modal" class="modal">
+        <span class="close-button">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Имя группы:</label>
+            <input type="text" name="group_name" required><br><br>
+
+            <label>Аватарка:</label>
+            <input type="file" name="group_avatar" accept="static/images/groupProfiles/*"><br><br>
+
+            <label>Режим приватности:</label>
+            <select name="privacy_mode">
+                <option value="public">Публичный</option>
+                <option value="private">Приватный</option>
+            </select>
+            <br>
+            <br>
+            <input type="submit" value="Создать группу">
+        </form>
+    </div>
+</body>
+
+<script>
+    setupModal("modal", "openModal", "close-button");
+</script>
+
 {% include "footer.html" %}

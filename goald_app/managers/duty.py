@@ -1,5 +1,5 @@
 '''
-Module for handling duty records in table
+Module for handling duty records in db
 '''
 
 from goald_app.managers.manager import ManagerResult
