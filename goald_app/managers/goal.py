@@ -54,7 +54,7 @@ class GoalManager:
         '''
         Check if goal exists
         '''
-        if Goal.objects.filter(goal_id=id).exists():
+        if Goal.objects.filter(goal_id=goal_id).exists():
             return ManagerResult(True, "Goal exists")
 
         return ManagerResult(False, "Goal doesnt exist!")

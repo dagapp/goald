@@ -238,7 +238,7 @@ def group_create(request):
         settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
     )
     fs = FileSystemStorage(location=storage_location)
-    filename = fs.save(image.name, image)
+    fs.save(image.name, image)
     image_path = "static/images/groupProfiles/" + image.name
 
     selected_privacy_mode = request.POST.get("privacy_mode", None)
@@ -292,16 +292,15 @@ def group_image_update(request, group_id):
         )
         fs = FileSystemStorage(location=storage_location)
         fs.save(image.name, image)
-
         image_path = "static/images/groupProfiles/" + image.name
 
-        group = result.result
-        group.image = image_path
-        group.save()
+        result_group = result.result
+        result_group.image = image_path
+        result_group.save()
 
-        return render(request, "group_detail.html", {"group": group})
+        return render(request, "group_detail.html", {"group": result_group})
 
-    return render(request, "group_detail.html", {"error": "Upload image error"})
+    return render(request, "group_detail.html", {"error": "Unable to upload an image"})
 
 
 def group_user_add(request, group_id):
@@ -314,7 +313,7 @@ def group_user_add(request, group_id):
         return redirect(request.META.get("HTTP_REFERER"))
 
     if request.method == "POST":
-        group = result.result
+        result_group = result.result
         username = request.POST["username"]
 
         get_user = UserManager.objects_get(login=username)
@@ -322,10 +321,12 @@ def group_user_add(request, group_id):
             messages.error(request, get_user.message)
             return redirect(request.META.get("HTTP_REFERER"))
 
-        group.users.add(get_user.result)
-        group.save()
+        result_group.users.add(get_user.result)
+        result_group.save()
 
-        return render(request, "group_detail.html", {"group": group})
+        return render(request, "group_detail.html", {"group": result_group})
+    
+    return render(request, "group_detail.html", {"error": "Unable to add a user"})
 
 
 def group_goal_add(request, group_id):

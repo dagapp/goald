@@ -5,9 +5,10 @@ Module for handling group records in db
 import string
 import random
 
-from .manager import ManagerResult
-from ..models import Group
-from ..models import User
+from goald_app.models import Group
+from goald_app.models import User
+
+from goald_app.managers.manager import ManagerResult
 
 
 class GroupManager:
