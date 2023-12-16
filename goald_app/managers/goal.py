@@ -70,5 +70,5 @@ class GoalManager:
         if Goal.objects.filter(name=name, group_id=group_id).exists():
             return ManagerResult(False, "Goal already exists!")
 
-        Goal.objects.create(name=name, is_active=True, group_id=group_id)
+        Goal.objects.create(name=name, is_active=True, group_id=Group.objects.get(id=group_id))
         return ManagerResult(True, "Goal created successfully!")

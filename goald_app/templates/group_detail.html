@@ -62,7 +62,7 @@
                 <span class="close-buttonUser">&times;</span>
                 <form action="{% url 'group/users/add' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label>Имя пользователя</label>
-                    <input type="text" name="name" required><br><br>        
+                    <input type="text" name="username" required><br><br>        
                     <input type="submit" value="Добавить участника">
                 </form>
             </div>

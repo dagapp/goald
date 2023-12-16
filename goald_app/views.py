@@ -35,14 +35,14 @@ def login(request):
     '''
     Handler to login a user
     '''
-    return render(request, "login.html", {"form_action": "auth"})
+    return render(request, "login.html", {"form_action": "user/auth"})
 
 
 def register(request):
     '''
     Handler to register a user
     '''
-    return render(request, "register.html", {"form_action": "create"})
+    return render(request, "register.html", {"form_action": "user/create"})
 
 
 def user_create(request):
@@ -98,7 +98,7 @@ def user_auth(request):
     # Set a session for further user authorizing
     request.session["id"] = UserManager.objects_get(user_login).result.id
 
-    return redirect("users")
+    return redirect("test/users")
 
 
 def user_deauth(request):
