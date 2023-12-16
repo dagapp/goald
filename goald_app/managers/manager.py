@@ -1,5 +1,5 @@
 '''
-Module defining auxiliary AuthManager and ManagerResult
+Module defining auxiliary ManagerResult
 '''
 
 from dataclasses import dataclass
@@ -14,17 +14,3 @@ class ManagerResult:
     succeed: bool
     message: str
     result:  Manager = None
-
-
-class AuthManager:
-    '''
-    Parent class for managers that require user auth
-    '''
-    user_id: int = None
-
-    @staticmethod
-    def auth(user_id: int):
-        '''
-        Auth a user with given id
-        '''
-        AuthManager.user_id = user_id
