@@ -10,7 +10,6 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 
-from goald_app.managers.manager import AuthManager
 from goald_app.managers.user import UserManager
 from goald_app.managers.duty import DutyManager
 from goald_app.managers.goal import GoalManager
@@ -105,9 +104,6 @@ def user_deauth(request):
     '''
     Handler to deauth the user
     '''
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("login")
-
     # Deleting session
     request.session.pop("id")
 
@@ -118,12 +114,10 @@ def user_change(request):
     '''
     Handler to change the password
     '''
-    # Check if request has needed session_id cookie,
+    # Check
     # if user actually exists,
     # if request is POST
     # if it has password field
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("login")
 
     result = UserManager.exists(request.session["id"])
     if not result.succeed:
@@ -149,10 +143,8 @@ def user_delete(request):
     '''
     Handler to delete the user
     '''
-    # Check if request has needed session_id cookie,
+    # Check
     # if user actually exists
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("login")
 
     # Call UserManager.exists to know if user exists
     result = UserManager.exists(request.session["id"])
@@ -173,37 +165,31 @@ def test_users(request):
     '''
     Handler to get all users from database
     '''
-    # Check if request has needed session_id cookie
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("login")
-
-    return render(request, "users.html", {"users": UserManager.objects_all().result})
+    return render(request, "users.html", {"users" : UserManager.objects_all().result})
 
 
 def test_goals(request):
     '''
     Handler to get goals of a user
     '''
-    # Check if request has needed session_id cookie,
+    # Check
     # if request is GET,
     # if it has id field
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("home")
-
-    AuthManager.auth(request.session["id"])
+    user_id = request.session["id"]
 
     if request.GET:
         if "goal_id" not in request.GET:
             return redirect("home")
 
-        result = GoalManager.objects_get(goal_id=request.GET["goal_id"])
+        result = GoalManager.objects_get(goal_id=request.GET["goal_id"],
+                                         user_id=user_id)
         if not result.succeed:
             messages.error(request, result.message)
             return redirect("home")
 
         return render(request, "goals.html", {"goals": result.result})
 
-    result = GoalManager.objects_all()
+    result = GoalManager.objects_all(user_id=user_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")
@@ -215,10 +201,6 @@ def test_duties(request):
     '''
     Handler to get all duties
     '''
-    # Check if request has needed session_id cookie
-    if "id" not in request.session or not request.session["id"]:
-        return redirect("login")
-
     return render(request, "duties.html", {"duties": DutyManager.objects_all()})
 
 

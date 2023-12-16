@@ -2,7 +2,7 @@
 Module for handling goal records in db
 '''
 
-from goald_app.managers.manager import ManagerResult, AuthManager
+from goald_app.managers.manager import ManagerResult
 from goald_app.models import User, Group, Goal
 
 
@@ -12,13 +12,13 @@ class GoalManager:
     '''
 
     @staticmethod
-    def objects_all() -> ManagerResult:
+    def objects_all(user_id: int) -> ManagerResult:
         '''
         Get all goals from the table
         '''
         try:
             result = []
-            groups = Group.objects.filter(users__id=AuthManager.user_id)
+            groups = Group.objects.filter(users__id=user_id)
             for group in groups:
                 result += Goal.objects.filter(group_id=group)
 
@@ -31,15 +31,13 @@ class GoalManager:
         return ManagerResult(False, "No goals found!")
 
     @staticmethod
-    def objects_get(goal_id: int) -> ManagerResult:
+    def objects_get(user_id: int, goal_id: int) -> ManagerResult:
         '''
         Get a goal with given id from the table
         '''
         try:
-            users = User.objects.filter(
-                id=AuthManager.user_id,
-                groups__id=Group.objects.filter(goal__id=goal_id)[0].id,
-            )
+            users = User.objects.filter(id=user_id,
+                                        groups__id=Group.objects.filter(goal__id=goal_id)[0].id)
             if users:
                 result = Goal.objects.filter(id=goal_id)
                 return ManagerResult(True, "", result)
