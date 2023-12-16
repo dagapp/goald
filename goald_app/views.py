@@ -325,7 +325,7 @@ def group_user_add(request, group_id):
         result_group.save()
 
         return render(request, "group_detail.html", {"group": result_group})
-    
+
     return render(request, "group_detail.html", {"error": "Unable to add a user"})
 
 
