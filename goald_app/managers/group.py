@@ -35,13 +35,14 @@ class GroupManager():
         return ManagerResult(False, "Group doesnt exist!")
 
     @staticmethod
-    def create(leader_id: int, name: str, image: str, is_public: bool) -> ManagerResult:
+    def create(leader_id: int, name: str, image: str = "static/images/groupProfiles/group_pic.png", is_public: bool = True) -> ManagerResult:
         if Group.objects.filter(name=name).exists():
             return ManagerResult(False, "Group already exists!")
         
-        tag = "@" + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
+        tag = '@' + ''.join(name_ch if name_ch in string.ascii_letters or name_ch in string.digits else '_' for name_ch in name)
+        while Group.object.get(tag=tag).exists(): tag += random.choice(string.digits)
 
-        Group.objects.create(leader_id=User.objects.get(id = leader_id), name=name, tag=tag, image=image, is_public=is_public)
+        Group.objects.create(leader_id=User.objects.get(id=leader_id), name=name, tag=tag, image=image, is_public=is_public)
 
         return ManagerResult(True, "Group created successfully!")
     
