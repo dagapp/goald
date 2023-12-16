@@ -9,25 +9,24 @@ from goald_app import views
 urlpatterns = [
     path("", views.index, name="index"),
 
+    path("home", views.home, name="home"),
+
     path("login",    views.login,    name="login"),
     path("register", views.register, name="register"),
 
-    path("create", views.create, name="create"),
-    path("auth",   views.auth,   name="auth"),
-    path("deauth", views.deauth, name="deauth"),
-    path("change", views.change, name="change"),
-    path("delete", views.delete, name="delete"),
+    path("user/create", views.user_create, name="user/create"),
+    path("user/auth",   views.user_auth,   name="user/auth"  ),
+    path("user/deauth", views.user_deauth, name="user/deauth"),
+    path("user/change", views.user_change, name="user/change"),
+    path("user/delete", views.user_delete, name="user/delete"),
 
-    path("users",  views.users,  name="users"),
-    path("duties", views.duties, name="duties"),
-    path("goals",  views.goals,  name="goals"),
+    path("test/users",  views.test_users,  name="test/users" ),
+    path("test/duties", views.test_duties, name="test/duties"),
+    path("test/goals",  views.test_goals,  name="test/goals" ),
 
-    path("create_group", views.create_group, name="create_group"),
-
-    path('groups/<int:group_id>/', views.group_detail, name='group_detail'),
-    path('upload_group_image/<int:group_id>/', views.upload_group_image, name='upload_group_image'),
-    path('groups/<int:group_id>/user_adding/', views.user_adding, name='user_adding'),
-    path('groups/<int:group_id>/goal_create/', views.goal_create, name='goal_create'),
-
-    path("home", views.home, name="home"),
+    path("group/create",                       views.group_create,       name="group/create"      ),
+    path("group/<int:group_id>/",              views.group,              name="group"             ),
+    path("group/<int:group_id>/update/image/", views.group_update_image, name="group/update/image"),
+    path("group/<int:group_id>/add/user",      views.group_add_user,     name="group/add/user"    ),
+    path("group/<int:group_id>/add/goal",      views.group_add_goal,     name="group/add/goal"    ),
 ]

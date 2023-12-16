@@ -20,9 +20,16 @@ from goald_app.managers.group   import GroupManager
 
 def index(request):
     '''
-    main page of app
+    main page of the app
     '''
     return HttpResponse("Hello bober!")
+
+
+def home(request):
+    '''
+    home page of app
+    '''
+    return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
 
 
 def login(request):
@@ -39,7 +46,7 @@ def register(request):
     return render(request, "register.html", { "form_action" : "create" })
 
 
-def create(request):
+def user_create(request):
     '''
     handler to create a user
     '''
@@ -67,7 +74,7 @@ def create(request):
     return redirect("login")
 
 
-def auth(request):
+def user_auth(request):
     '''
     handler to auth the user
     '''
@@ -93,7 +100,7 @@ def auth(request):
     return redirect("users")
 
 
-def deauth(request):
+def user_deauth(request):
     '''
     handler to deauth the user
     '''
@@ -106,7 +113,7 @@ def deauth(request):
     return redirect("login")
 
 
-def change(request):
+def user_change(request):
     '''
     handler to change the password
     '''
@@ -137,7 +144,7 @@ def change(request):
     return redirect("home")
 
 
-def delete(request):
+def user_delete(request):
     '''
     handler to delete the user
     '''
@@ -161,7 +168,7 @@ def delete(request):
     return redirect("login")
 
 
-def users(request):
+def test_users(request):
     '''
     handler to get all users from database
     '''
@@ -172,38 +179,7 @@ def users(request):
     return render(request, "users.html", { "users" : UserManager.objects_all().result })
 
 
-def home(request):
-    '''
-    home page of app
-    '''
-    return render(request, "home.html", { "groups" : GroupManager.objects_all().result })
-
-def create_group(request):
-    if not request.POST:
-        return redirect("home")
-
-    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
-        return redirect("home")
-
-    image = request.FILES['group_avatar']
-    
-    storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
-    fs = FileSystemStorage(location= storage_location)
-    filename = fs.save(image.name, image)
-    image_path= 'static/images/groupProfiles/' + image.name
-
-    selected_privacy_mode = request.POST.get('privacy_mode', None)
-    is_public = False
-    if selected_privacy_mode == "Публичный":
-        is_public = True
-
-    result = GroupManager.create(leader_id=request.session["id"], name=request.POST["group_name"], image=image_path, is_public=is_public)
-    if not result.succeed:
-        messages.error(request, result.message)
-
-    return redirect("home")
-
-def goals(request):
+def test_goals(request):
     '''
     handler to get goals of a user
     '''
@@ -234,7 +210,7 @@ def goals(request):
     return render(request, "goals.html", {"goals" : result.result})
 
 
-def duties(request):
+def test_duties(request):
     '''
     handler to get all duties
     '''
@@ -244,7 +220,34 @@ def duties(request):
 
     return render(request, "duties.html", {"duties" : DutyManager.objects_all()})
 
-def group_detail(request, group_id):
+
+def group_create(request):
+    if not request.POST:
+        return redirect("home")
+
+    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
+        return redirect("home")
+
+    image = request.FILES['group_avatar']
+    
+    storage_location = os.path.join(settings.BASE_DIR, 'goald_app','static', 'images', 'groupProfiles')
+    fs = FileSystemStorage(location=storage_location)
+    filename = fs.save(image.name, image)
+    image_path= 'static/images/groupProfiles/' + image.name
+
+    selected_privacy_mode = request.POST.get('privacy_mode', None)
+    is_public = False
+    if selected_privacy_mode == "public":
+        is_public = True
+
+    result = GroupManager.create(leader_id=request.session["id"], name=request.POST["group_name"], image=image_path, is_public=is_public)
+    if not result.succeed:
+        messages.error(request, result.message)
+
+    return redirect("home")
+
+
+def group(request, group_id):
     # Check if request has needed session_id cookie
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
@@ -257,7 +260,7 @@ def group_detail(request, group_id):
     return render(request, "group_detail.html", {"group" : result.result})
 
 
-def upload_group_image(request, group_id):
+def group_update_image(request, group_id):
     result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
@@ -279,9 +282,9 @@ def upload_group_image(request, group_id):
 
         return render(request, "group_detail.html", {"group": group})
 
-    return render(request, "group_detail.html", {"error": "Ошибка загрузки изображения"})
+    return render(request, "group_detail.html", {"error": "Upload image error"})
 
-def user_adding(request, group_id):
+def group_add_user(request, group_id):
     result = GroupManager.objects_get(id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
@@ -301,7 +304,7 @@ def user_adding(request, group_id):
 
         return render(request, "group_detail.html", {"group": group})
     
-def goal_create(request, group_id):
+def group_add_goal(request, group_id):
     if not request.POST:
         return redirect(request.META.get('HTTP_REFERER'))
 
