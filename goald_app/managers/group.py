@@ -7,12 +7,21 @@ import string
 import random
 
 class GroupManager():
+    '''
+    Manager to handle groups in table
+    '''
     @staticmethod
     def objects_all() -> ManagerResult:
+        '''
+        Get all groups from table
+        '''
         return ManagerResult(True, "", Group.objects.all())
-    
+
     @staticmethod
-    def objects_get(id: int) -> ManagerResult:
+    def objects_get(group_id: int) -> ManagerResult:
+        '''
+        Get a group with given name from the table
+        '''
         try:
             return ManagerResult(True, "Group found", Group.objects.get(id=id))
         except Group.DoesNotExist:
