@@ -23,7 +23,7 @@ class GroupManager():
         Get a group with given name from the table
         '''
         try:
-            return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
+            return ManagerResult(True, "Group found", Group.objects.get(id=id))
         except Group.DoesNotExist:
              return ManagerResult(False, "Group doesnt exist!")
         
