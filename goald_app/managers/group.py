@@ -62,7 +62,7 @@ class GroupManager:
             else "_"
             for name_ch in name
         )
-        while Group.object.get(tag=tag).exists():
+        while Group.objects.filter(tag=tag).exists():
             tag += random.choice(string.digits)
 
         Group.objects.create(
