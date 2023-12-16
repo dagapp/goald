@@ -24,9 +24,9 @@ urlpatterns = [
     path("test/duties", views.test_duties, name="test/duties"),
     path("test/goals",  views.test_goals,  name="test/goals" ),
 
-    path("group/create",                       views.group_create,       name="group/create"      ),
-    path("group/<int:group_id>/",              views.group,              name="group"             ),
-    path("group/<int:group_id>/update/image/", views.group_update_image, name="group/update/image"),
-    path("group/<int:group_id>/add/user",      views.group_add_user,     name="group/add/user"    ),
-    path("group/<int:group_id>/add/goal",      views.group_add_goal,     name="group/add/goal"    ),
+    path("group/create",                      views.group_create,       name="group/create"      ),
+    path("group/<int:group_id>",              views.group,              name="group"             ),
+    path("group/<int:group_id>/image/update", views.group_image_update, name="group/image/update"),
+    path("group/<int:group_id>/users/add",    views.group_user_add,     name="group/users/add"   ),
+    path("group/<int:group_id>/goals/add",    views.group_goal_add,     name="group/goals/add"   ),
 ]

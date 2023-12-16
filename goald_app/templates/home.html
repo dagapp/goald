@@ -20,7 +20,7 @@
         <ul>
             {% for group in groups%}
             <li>
-                <a href="{% url 'group_detail' group_id=group.id %}">
+                <a href="{% url 'group' group_id=group.id %}">
                 <div class="group-avatar">
                     {% if group.image %}
                     <img src="{{ group.image }}" height=100 width=100><br><br>
@@ -39,7 +39,7 @@
 
     <div id="modal" class="modal">
         <span class="close-button">&times;</span>
-        <form action="create_group" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <label>Имя группы:</label>
             <input type="text" name="group_name" required><br><br>
 

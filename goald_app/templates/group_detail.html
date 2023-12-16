@@ -18,7 +18,7 @@
     <div class="container">
         <div class="group-details">
 
-            <form method="post" enctype="multipart/form-data" action="{% url 'upload_group_image' group_id=group.id %}">
+            <form method="post" enctype="multipart/form-data" action="{% url 'group/image/update' group_id=group.id %}">
                 {% csrf_token %}
                 <div class="group-image" id="group-image-container">
                     <label for="image-input" class="add-image-button">
@@ -60,7 +60,7 @@
 
             <div id="modalUser" class="modalUser">
                 <span class="close-buttonUser">&times;</span>
-                <form action="{% url 'user_adding' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <form action="{% url 'group/users/add' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label>Имя пользователя</label>
                     <input type="text" name="name" required><br><br>        
                     <input type="submit" value="Добавить участника">
@@ -83,7 +83,7 @@
 
             <div id="modalGoal" class="modalGoal">
                 <span class="close-buttonGoal">&times;</span>
-                <form action="{% url 'goal_create' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <form action="{% url 'group/goals/add' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label>Название цели</label>
                     <input type="text" name="name" required><br><br>        
                     <input type="submit" value="Добавить цель">

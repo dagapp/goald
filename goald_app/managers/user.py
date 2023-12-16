@@ -1,5 +1,5 @@
 '''
-Module for handling user records in table
+Module for handling user records in db
 '''
 
 from bcrypt import gensalt, hashpw
