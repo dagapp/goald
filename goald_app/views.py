@@ -232,14 +232,16 @@ def group_create(request):
     if not "group_name" in request.POST or not "privacy_mode" in request.POST:
         return redirect("home")
 
-    image = request.FILES["group_avatar"]
+    image_path = "static/images/groupProfiles/wNHQWT4wufY.jpg"
+    if request.POST.get("group_avatar", None) != "":
+        image = request.FILES["group_avatar"]
 
-    storage_location = os.path.join(
-        settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
-    )
-    fs = FileSystemStorage(location=storage_location)
-    fs.save(image.name, image)
-    image_path = "static/images/groupProfiles/" + image.name
+        storage_location = os.path.join(
+            settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
+        )
+        fs = FileSystemStorage(location=storage_location)
+        fs.save(image.name, image)
+        image_path = "static/images/groupProfiles/" + image.name
 
     selected_privacy_mode = request.POST.get("privacy_mode", None)
     is_public = False

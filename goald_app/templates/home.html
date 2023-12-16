@@ -22,11 +22,7 @@
             <li>
                 <a href="{% url 'group' group_id=group.id %}">
                 <div class="group-avatar">
-                    {% if group.image %}
                     <img src="{{ group.image }}" height=100 width=100><br><br>
-                    {% else %}
-                    <img src="{{ 'static\images\groupProfiles\wNHQWT4wufY.jpg' }}" height=100 width=100><br><br>
-                    {% endif %}
                 </div>
                 </a>
                 {{ group.name }}
