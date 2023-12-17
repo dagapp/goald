@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from goald_app.managers.report import ReportManager
-from goald_app.managers.goal import GoalManager
 
 
 def update_text(request, report_id):
@@ -23,6 +22,10 @@ def update_text(request, report_id):
         report.text = request.FILES["text"]
         report.save()
 
-        return render(request, "goal.html", {"goal": GoalManager.get(goal_id=report.goal_id).result})
+        return render(
+            request, 
+            "reports.html", 
+            {"reports": ReportManager.get_all(goal_id=report.goal_id)}
+            )
 
-    return render(request, "goal.html", {"error": "Unable to upload an image"})
+    return render(request, "reports.html", {"error": "Unable to upload an text"})

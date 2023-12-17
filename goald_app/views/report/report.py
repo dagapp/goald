@@ -4,7 +4,7 @@ File for defining handlers for group in Django notation
 
 
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 
 from goald_app.managers.report import ReportManager
 from goald_app.managers.image import ImageManager

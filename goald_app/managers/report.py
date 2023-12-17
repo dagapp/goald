@@ -17,8 +17,8 @@ class ReportManager():
         '''
         if not Goal.objects.filter(id=goal_id).exists():
             return ManagerResult(False, "Goal with id={goal_id} doesnt exist!")
-        
-        result = Report.objects.filter(goal_id=goal_id) 
+
+        result = Report.objects.filter(goal_id=goal_id)
         return ManagerResult(True, "", result)
     
     @staticmethod
