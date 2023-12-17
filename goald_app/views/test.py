@@ -14,7 +14,7 @@ def users(request):
     '''
     Handler to get all users from database
     '''
-    return render(request, "users.html", {"users" : UserManager.objects_all().result})
+    return render(request, "users.html", {"users" : UserManager.get_all().result})
 
 
 def goals(request):
@@ -30,7 +30,7 @@ def goals(request):
         if "goal_id" not in request.GET:
             return redirect("home")
 
-        result = GoalManager.objects_get(goal_id=request.GET["goal_id"],
+        result = GoalManager.get(goal_id=request.GET["goal_id"],
                                          user_id=user_id)
         if not result.succeed:
             messages.error(request, result.message)
@@ -38,7 +38,7 @@ def goals(request):
 
         return render(request, "goals.html", {"goals": result.result})
 
-    result = GoalManager.objects_all(user_id=user_id)
+    result = GoalManager.get_all(user_id=user_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")
@@ -50,4 +50,4 @@ def duties(request):
     '''
     Handler to get all duties
     '''
-    return render(request, "duties.html", {"duties": DutyManager.objects_all()})
+    return render(request, "duties.html", {"duties": DutyManager.get_all()})

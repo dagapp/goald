@@ -27,5 +27,5 @@ def add(request, group_id):
     return render(
         request,
         "group_detail.html",
-        {"group": GroupManager.objects_get(group_id=group_id).result},
+        {"group": GroupManager.get(group_id=group_id).result},
     )

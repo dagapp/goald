@@ -13,7 +13,7 @@ def add(request, group_id):
     '''
     Handler to add a user to a group
     '''
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.get(group_id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect(request.META.get("HTTP_REFERER"))
@@ -22,7 +22,7 @@ def add(request, group_id):
         result_group = result.result
         username = request.POST["username"]
 
-        get_user = UserManager.objects_get(login=username)
+        get_user = UserManager.get(login=username)
         if not get_user.succeed:
             messages.error(request, get_user.message)
             return redirect(request.META.get("HTTP_REFERER"))

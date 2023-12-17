@@ -13,7 +13,7 @@ def update(request, group_id):
     '''
     Handler to update a group image
     '''
-    result_group = GroupManager.objects_get(group_id=group_id)
+    result_group = GroupManager.get(group_id=group_id)
     if not result_group.succeed:
         messages.error(request, result_group.message)
         return redirect(request.META.get("HTTP_REFERER"))

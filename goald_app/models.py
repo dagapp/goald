@@ -2,10 +2,16 @@
 File for defining modles in Django notation
 '''
 
+import datetime
+import string
+import random
+
 from django.db import models
 from django.core.validators import FileExtensionValidator
 
-# Create your models here.
+
+DEFAULT_NAME_CHARS = string.ascii_letters + string.digits
+DEFAULT_NAME_SIZE = 10
 
 
 class User(models.Model):
@@ -16,8 +22,20 @@ class User(models.Model):
     login = models.CharField(null=False, max_length=50)
     password = models.BinaryField(null=False)
 
-    name = models.CharField(null=True, max_length=50)
-    second_name = models.CharField(null=True, max_length=50)
+    name = models.CharField(
+        null=True,
+        max_length=50,
+        default=lambda: "".join(
+            random.choice(DEFAULT_NAME_CHARS) for _ in range(DEFAULT_NAME_SIZE)
+        ),
+    )
+    second_name = models.CharField(
+        null=True,
+        max_length=50,
+        default=lambda: "".join(
+            random.choice(DEFAULT_NAME_CHARS) for _ in range(DEFAULT_NAME_SIZE)
+        ),
+    )
 
 
 class Group(models.Model):
@@ -26,7 +44,7 @@ class Group(models.Model):
     '''
 
     tag = models.CharField(null=False, max_length=50)
-    is_public = models.BooleanField(null=False)
+    is_public = models.BooleanField(null=False, default=True)
 
     name = models.CharField(null=True, max_length=50)
     password = models.BinaryField(null=True)
@@ -47,14 +65,20 @@ class Group(models.Model):
 
 class Goal(models.Model):
     '''
-    class to represent a Goal model
+    Class to represent a Goal model
     '''
 
-    name = models.CharField(null=False, max_length=50)
+    name = models.CharField(
+        null=False,
+        max_length=50,
+        default=lambda: "".join(
+            random.choice(DEFAULT_NAME_CHARS) for _ in range(DEFAULT_NAME_SIZE)
+        ),
+    )
     is_active = models.BooleanField(null=False, default=True)
 
     deadline = models.DateTimeField(null=True)
-    alert_period = models.TimeField(null=True)
+    alert_period = models.DurationField(null=True)
 
     group_id = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
     report_id = models.ForeignKey("Report", null=True, on_delete=models.CASCADE)
@@ -64,14 +88,18 @@ class Goal(models.Model):
 
 class Duty(models.Model):
     '''
-    class to represent a Duty model
+    Class to represent a Duty model
     '''
 
-    final_value = models.IntegerField(null=False)
-    current_value = models.IntegerField(null=False)
+    final_value = models.IntegerField(null=False, default=0)
+    current_value = models.IntegerField(null=False, default=0)
 
-    deadline = models.DateTimeField(null=True)
-    alert_period = models.TimeField(null=True)
+    deadline = models.DateTimeField(
+        null=True, default=lambda: datetime.datetime.now() + datetime.timedelta(days=30)
+    )
+    alert_period = models.DurationField(
+        null=True, default=lambda: datetime.timedelta(weeks=1)
+    )
 
     user_id = models.ForeignKey("User", null=False, on_delete=models.CASCADE)
     goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
@@ -79,12 +107,12 @@ class Duty(models.Model):
 
 class Event(models.Model):
     '''
-    class to represent a Event model
+    Class to represent a Event model
     '''
 
-    type = models.IntegerField(null=False)
-    text = models.CharField(null=False, max_length=500)
-    timestamp = models.DateTimeField(null=False)
+    type = models.IntegerField(null=False, default=0)
+    text = models.CharField(null=False, max_length=500, default="")
+    timestamp = models.DateTimeField(null=False, default=datetime.datetime.now)
 
     group_id = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
     goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
@@ -92,11 +120,11 @@ class Event(models.Model):
 
 class Report(models.Model):
     '''
-    class to represent a Report model
+    Class to represent a Report model
     '''
 
     proof = models.ImageField(null=False)
 
-    text = models.CharField(null=True, max_length=500)
+    text = models.CharField(null=True, max_length=500, default="")
 
     goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
