@@ -3,7 +3,6 @@ Module for handling goal records in db
 '''
 
 import datetime
-from logging import Manager
 
 from goald_app.managers.common import ManagerResult
 from goald_app.models import User, Group, Goal, Duty
@@ -64,11 +63,11 @@ class GoalManager:
     @staticmethod
     def create(
         name: str,
-        deadline: datetime.datetime,
-        alert_period: datetime.time,
         group_id: int,
+        final_value: int = 0,
+        deadline: datetime.datetime = None,
+        alert_period: datetime.time = None,
         # supergoal_id: int,
-        final_value: int,
     ) -> ManagerResult:
         '''
         Create a goal and start it
@@ -136,9 +135,9 @@ class GoalManager:
                 "Goal's deadline get successfully",
                 Goal.objects.get(id=goal_id).deadline,
             )
-        else:
-            Goal.objects.get(id=goal_id).deadline = deadline
-            return ManagerResult(True, "Goal's deadline set successfully")
+
+        Goal.objects.get(id=goal_id).deadline = deadline
+        return ManagerResult(True, "Goal's deadline set successfully")
 
     @staticmethod
     def alert_period(
@@ -156,10 +155,10 @@ class GoalManager:
                 "Goal's alert period get successfully",
                 Goal.objects.get(id=goal_id).alert_period,
             )
-        else:
-            Goal.objects.get(id=goal_id).alert_period = alert_perion
-            return ManagerResult(True, "Goal's alert period set successfully")
-    
+
+        Goal.objects.get(id=goal_id).alert_period = alert_perion
+        return ManagerResult(True, "Goal's alert period set successfully")
+
     @staticmethod
     def delete(goal_id: int) -> ManagerResult:
         '''
@@ -167,9 +166,9 @@ class GoalManager:
         '''
         if not Goal.objects.filter(id=goal_id).exists():
             return ManagerResult(False, "Goal doesn't exist!")
-        
+
         Duty.objects.filter(goal_id=goal_id).delete()
-        
+
         Goal.objects.get(id=goal_id).delete()
 
         return ManagerResult(True, "Goal has been successfully deleted")

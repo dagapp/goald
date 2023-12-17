@@ -48,8 +48,8 @@ class GroupManager:
     @staticmethod
     def create(
         name: str,
-        password: str,
         leader_id: int,
+        password: str = None,
         image: str = "static/images/groupProfiles/group_pic.png",
         is_public: bool = True,
     ) -> ManagerResult:
@@ -71,6 +71,7 @@ class GroupManager:
         Group.objects.create(
             leader_id=User.objects.get(id=leader_id),
             name=name,
+            password=password,
             tag=tag,
             image=image,
             is_public=is_public,

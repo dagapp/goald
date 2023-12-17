@@ -77,12 +77,8 @@ class Goal(models.Model):
     )
     is_active = models.BooleanField(null=False, default=True)
 
-    deadline = models.DateTimeField(
-        null=True, default=lambda: datetime.datetime.now() + datetime.timedelta(days=30)
-    )
-    alert_period = models.DurationField(
-        null=True, default=lambda: datetime.timedelta(weeks=1)
-    )
+    deadline = models.DateTimeField(null=True)
+    alert_period = models.DurationField(null=True)
 
     group_id = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
     report_id = models.ForeignKey("Report", null=True, on_delete=models.CASCADE)

@@ -95,7 +95,7 @@ def change(request):
         return redirect("home")
 
     # Call UserManager.change to change user"s password
-    result = UserManager.change(request.session["id"], request.POST["password"])
+    result = UserManager.change_password(request.session["id"], request.POST["password"])
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")

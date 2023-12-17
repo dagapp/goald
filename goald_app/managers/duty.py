@@ -2,15 +2,15 @@
 Module for handling duty records in db
 '''
 
-from logging import Manager
 from goald_app.managers.common import ManagerResult
 from goald_app.models import Duty
 
 
-class DutyManager():
+class DutyManager:
     '''
     Manager for handling duties in table
     '''
+
     @staticmethod
     def get_all() -> list:
         '''
@@ -28,7 +28,7 @@ class DutyManager():
 
         Duty.objects.create(user_id=user_id, goal_id=goal_id, final_value=final_value)
         return ManagerResult(True, "Duty has been created")
-    
+
     @staticmethod
     def pay(user_id: int, goal_id: int, value: int) -> ManagerResult:
         '''
@@ -40,9 +40,11 @@ class DutyManager():
             pass
 
         return ManagerResult(False, "No duty found!")
-    
+
     @staticmethod
-    def delegate(user_id: int, goal_id: int, delegate_id: int, value: int) -> ManagerResult:
+    def delegate(
+        user_id: int, goal_id: int, delegate_id: int, value: int
+    ) -> ManagerResult:
         '''
         Delegate a duty to someone
         '''
@@ -50,9 +52,13 @@ class DutyManager():
             Duty.objects.get(user_id=user_id, goal_id=goal_id)
 
             try:
-                Duty.objects.get(user_id=delegate_id, goal_id=goal_id).final_value += value
+                Duty.objects.get(
+                    user_id=delegate_id, goal_id=goal_id
+                ).final_value += value
             except Duty.DoesNotExist:
-                Duty.objects.create(user_id=delegate_id, goal_id=goal_id, final_value=value)
+                Duty.objects.create(
+                    user_id=delegate_id, goal_id=goal_id, final_value=value
+                )
 
         except Duty.DoesNotExist:
             pass
