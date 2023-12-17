@@ -61,17 +61,17 @@ def view(request, group_id):
 
     return JsonResponse(result)
 
-def list(user_id: int):
+def list(request):
     """
     Handler to serialize groups to json
     """
-    groups = GroupManager.get_all_by_user_id(user_id=user_id)
+    groups = GroupManager.get_all_by_user_id(user_id=request.session['id'])
     result = []
     grp = {}
     for group in groups:
         grp['name'] = group.name
         grp['tag'] = group.tag
-        grp['image'] = group.image
+        grp['image'] = group.image.url
         result.append(grp)
 
-    return JsonResponse(result)
+    return JsonResponse(result, safe=False)
