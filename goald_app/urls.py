@@ -23,8 +23,25 @@ urlpatterns = [
     path("group/<int:group_id>/users/add",    views.group.user.add,     name="group/users/add"   ),
     path("group/<int:group_id>/goals/add",    views.group.goal.add,     name="group/goals/add"   ),
 
-    path("report/create/<int:goal_id>",         views.report.report.create,      name="report/create"),
-    path("report/<int:goal_id>",                views.report.report.view,        name="report"),
-    path("report/<int:report_id>/proof/update", views.report.proof.update_proof, name="report/proof/update"),
-    path("report/<int:report_id>/text/update",  views.report.text.update_text,   name="report/text/update"),
+    path(
+        "group/<int:goal_id>/reports/create", 
+        views.report.report.create, 
+        name="group/report/create"
+    ), #fixme
+
+    path(
+        "report/<int:report_id>",                
+        views.report.report.view,        
+        name="report"
+    ),
+    path(
+        "report/<int:report_id>/proof/update", 
+        views.report.proof.update_proof, 
+        name="report/proof/update"
+    ),
+    path(
+        "report/<int:report_id>/text/update",  
+        views.report.text.update_text,   
+        name="report/text/update"
+    ),
 ]

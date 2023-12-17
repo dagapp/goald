@@ -9,8 +9,6 @@ from goald_app.managers.common import DoesNotExist
 from goald_app.managers.report import ReportManager
 from goald_app.managers.image import ImageManager
 
-from goald_app.views.group import goal
-
 
 def create(request, goal_id: int):
     """
@@ -34,7 +32,7 @@ def create(request, goal_id: int):
     return redirect("goal")
 
 
-def view(request, goal_id):
+def view(request, report_id):
     """
     Handler of a reports page
     """
@@ -42,10 +40,10 @@ def view(request, goal_id):
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    if not ReportManager.exists(goal_id=goal_id):
+    if not ReportManager.exists(report_id=report_id):
         messages.error(request, "Goal doesn't exist")
         return redirect(request.META.get("HTTP_REFERER"))
 
     return render(
-        request, "reports.html", {"reports": ReportManager.get_all(goal_id=goal_id)}
+        request, "reports.html", {"reports": ReportManager.get(report_id=report_id)}
     )
