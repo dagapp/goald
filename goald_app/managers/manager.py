@@ -1,16 +1,15 @@
+'''
+Module defining auxiliary ManagerResult
+'''
+
 from dataclasses import dataclass
 
-# Dataclass for managers' return values
+
 @dataclass
 class ManagerResult:
+    '''
+    Dataclass for managers' return values
+    '''
     succeed: bool
     message: str
-    result:  object = None
-
-# Parent class for managers that require user auth
-class AuthManager:
-    user_id: int = None
-
-    @staticmethod
-    def auth(user_id: int):
-        AuthManager.user_id = user_id
+    result:  any = None

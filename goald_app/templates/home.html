@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Группы</title>
     <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="{% load static %}">
+    <script src="{% static 'js/modal.js' %}"></script>
 </head>
 
 <body>
@@ -18,14 +20,12 @@
         <ul>
             {% for group in groups%}
             <li>
+                <a href="{% url 'group' group_id=group.id %}">
                 <div class="group-avatar">
-                    {% if group.image %}
                     <img src="{{ group.image }}" height=100 width=100><br><br>
-                    {% else %}
-                    <img src="{{ 'static\images\groupProfiles\wNHQWT4wufY.jpg' }}" height=100 width=100><br><br>
-                    {% endif %}
                 </div>
-                {{ group.tag }}
+                </a>
+                {{ group.name }}
             </li>
             {% endfor %}
         </ul>
@@ -35,7 +35,7 @@
 
     <div id="modal" class="modal">
         <span class="close-button">&times;</span>
-        <form action="createGroup" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <label>Имя группы:</label>
             <input type="text" name="group_name" required><br><br>
 
@@ -46,31 +46,16 @@
             <select name="privacy_mode">
                 <option value="public">Публичный</option>
                 <option value="private">Приватный</option>
-            </select><br><br>
-
+            </select>
+            <br>
+            <br>
             <input type="submit" value="Создать группу">
         </form>
     </div>
 </body>
 
 <script>
-    let modal = document.getElementById("modal");
-    let btn = document.getElementById("openModal");
-    let span = document.getElementsByClassName("close-button")[0];
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    setupModal("modal", "openModal", "close-button");
 </script>
 
 {% include "footer.html" %}
