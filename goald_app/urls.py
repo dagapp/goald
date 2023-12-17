@@ -12,10 +12,8 @@ urlpatterns = [
 
     path("login",    views.common.login,    name="login"),
     path("register", views.common.register, name="register"),
+    path("logout",   views.common.logout,   name="logout"),
 
-    path("user/create", views.user.create, name="user/create"),
-    path("user/auth",   views.user.auth,   name="user/auth"  ),
-    path("user/deauth", views.user.deauth, name="user/deauth"),
     path("user/change", views.user.change, name="user/change"),
     path("user/delete", views.user.delete, name="user/delete"),
 

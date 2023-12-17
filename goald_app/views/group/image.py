@@ -1,6 +1,6 @@
-'''
+"""
 File for defining handlers for group.image in Django notation
-'''
+"""
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -10,19 +10,19 @@ from goald_app.managers.image import ImageManager
 
 
 def update(request, group_id):
-    '''
+    """
     Handler to update a group image
-    '''
-    result_group = GroupManager.get(group_id=group_id)
-    if not result_group.succeed:
-        messages.error(request, result_group.message)
+    """
+    if not GroupManager.exists(group_id=group_id):
+        messages.error(request, "Group doesn't exist")
         return redirect(request.META.get("HTTP_REFERER"))
 
-    if request.method == "POST" and request.FILES.get("image"):
-        result_image = ImageManager.store(request.FILES["group_avatar"])
+    group = GroupManager.get(group_id=group_id)
 
-        group = result_group.result
-        group.image = result_image.result
+    if request.method == "POST" and request.FILES.get("image"):
+        image = ImageManager.store(request.FILES["group_avatar"])
+
+        group.image = image
         group.save()
 
         return render(request, "group_detail.html", {"group": group})
