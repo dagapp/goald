@@ -110,7 +110,7 @@ a {
 .goals-title{
   font-family: 'Helvetica', sans-serif;
   color:grey;
-  margin-left: 50px;
+  margin-left: 20px;
 }
 
 button, .modal input[type="submit"] { 
@@ -137,14 +137,14 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-right: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .goals-card {
-  width: 400px;
+  width: 46.5%;
   border-radius: 15px;
   border: 2px solid rgb(255, 255, 255);
-  margin-bottom: 10px;
-  margin-left: 50px;
+  margin-bottom: 20px;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
@@ -239,8 +239,8 @@ button:hover {
 
 .personal-area {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 35px;
+  right: 35px;
   padding: 10px;
   font-size: 16px; 
   display: flex;
@@ -260,7 +260,7 @@ button:hover {
 .group-info-title{
   font-family: 'Helvetica', sans-serif;
   color:grey;
-  margin-left: 50px;
+  margin-left: 20px;
 }
 
 .group-info-container{
@@ -311,7 +311,7 @@ button:hover {
 
 .group-info-details {
   display: flex;
-  margin-left: 50px;
+  margin-left: 20px;
 }
 
 .add-image-button {
