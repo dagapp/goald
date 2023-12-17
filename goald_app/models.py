@@ -32,8 +32,8 @@ class Group(models.Model):
     password = models.BinaryField(null=True)
     image = models.ImageField(
         null=True,
-        upload_to='media/',
-        default="default.jpg",
+        upload_to='group',
+        default="group/default.jpg",
         blank=True,
         validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
     )

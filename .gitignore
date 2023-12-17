@@ -2,6 +2,6 @@
 **/*.sqlite3
 goald_app/migrations/*
 !goald_app/migrations/__init__.py
-media/groupProfiles/*
-!media/groupProfiles/
+media/group/images/*
+!media/group/images/
 .vscode
