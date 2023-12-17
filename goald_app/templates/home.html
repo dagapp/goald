@@ -22,7 +22,7 @@
             <li>
                 <a href="{% url 'group' group_id=group.id %}">
                 <div class="group-avatar">
-                    <img src="{{ group.image }}" height=100 width=100><br><br>
+                    <img src="{{ group.image.url }}" height=100 width=100><br><br>
                 </div>
                 </a>
                 {{ group.name }}

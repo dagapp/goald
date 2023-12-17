@@ -21,10 +21,10 @@ class ImageManager:
         Store an image in a filesystem
         '''
         storage_location = os.path.join(
-            settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
+            settings.MEDIA_ROOT, "groupProfiles"
         )
         fs = FileSystemStorage(location=storage_location)
         fs.save(image.name, image)
-        image_path = "static/images/groupProfiles/" + image.name
+        image_path = "groupProfiles/" + image.name
 
         return ManagerResult(True, "Imaged is stored successfully", image_path)

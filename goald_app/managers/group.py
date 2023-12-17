@@ -47,7 +47,7 @@ class GroupManager:
     def create(
         leader_id: int,
         name: str,
-        image: str = "static/images/groupProfiles/group_pic.png",
+        image: str,
         is_public: bool = True,
     ) -> ManagerResult:
         '''
