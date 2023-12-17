@@ -62,9 +62,9 @@ class GroupManager:
     @staticmethod
     def create(
         name: str,
+        image: str,
         leader_id: int,
         password: str = None,
-        image: str = "static/images/groupProfiles/group_pic.png",
         is_public: bool = True,
     ) -> ManagerResult:
         '''
