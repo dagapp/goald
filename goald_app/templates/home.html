@@ -8,6 +8,9 @@
 </head>
 
 <body>
+    <div class="logo">
+        <img src="/static/img/logo.png" alt="Logo">
+    </div>
     <div class="personal-area">
         <img src="/static/img/person.png" alt="Icon">
         <span>Личный кабинет</span>
@@ -35,8 +38,25 @@
             <button>Вступить в группу</button><br>
         </div>
         </div>
+        <div class="goals-group-event-container">
+            <div class="shadow">
+            <h2 class="group-info-title">Информация о группе</h2>
+            <div class="group-info-details">
+                <div class="group-info-image" id="group-info-image-container">
+                    <label for="image-input" class="add-image-button">
+                    <img src="{{ "/static/img/person.png" }}" alt="Group Image" id="group-info-image">
+                    </label>
+                </div>
+                <div class="group-info-info">
+                    <div class="group-info-tag">@test</div>
+                    <div class="group-info-name">Test Group</div>
+                    <div class="group-info-description">
+                        <textarea placeholder="Описание группы">{{ group.description }}</textarea>
+                    </div>
+                </div>
+            </div>
 
-        <div class="goals-group-container">
+            </div>
             <div class="shadow">
             <div id="goals">
                 <h2 class="goals-title">Цели</h2>

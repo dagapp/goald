@@ -1,3 +1,16 @@
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  padding-left: 35px;
+}
+
+.logo img{
+  width: 70%; /* Уменьшаем размер аватара */
+  height: auto;
+}
+
 a {
   text-decoration: none; /* Убираем подчеркивание */
   color: #0077cc; /* Цвет текста ссылки */
@@ -35,6 +48,7 @@ a {
   .container {
     display: flex;
     padding: 15px;
+    margin-top: 80px;
   }
   
   .shadow
@@ -218,7 +232,7 @@ button:hover {
   cursor: pointer;
 }
 
-.goals-group-container{
+.goals-group-event-container{
   display: flex;
   flex-direction: column;
 }
@@ -241,4 +255,72 @@ button:hover {
   width: 20px;
   margin-right: 5px;
   margin-bottom: 5px;
+}
+
+.group-info-title{
+  font-family: 'Helvetica', sans-serif;
+  color:grey;
+  margin-left: 50px;
+}
+
+.group-info-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-right: 50px;
+}
+
+/* GROUP NAME */
+.group-info {
+  flex: 1;
+}
+
+.group-info-tag {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.group-info-name {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.group-info-description textarea {
+  width: 300%;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.group-info-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.group-info-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.group-info-details {
+  display: flex;
+  margin-left: 50px;
+}
+
+.add-image-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  color: #fff;
+  cursor: pointer;
 }
