@@ -21,10 +21,6 @@ urlpatterns = [
     path("user/change", views.user.change, name="user/change"),
     path("user/delete", views.user.delete, name="user/delete"),
 
-    path("test/users",  views.test.users,  name="test/users" ),
-    path("test/duties", views.test.duties, name="test/duties"),
-    path("test/goals",  views.test.goals,  name="test/goals" ),
-
     path("group/create",                      views.group.group.create, name="group/create"      ),
     path("group/<int:group_id>",              views.group.group.view,   name="group"             ),
     path("group/<int:group_id>/image/update", views.group.image.update, name="group/image/update"),

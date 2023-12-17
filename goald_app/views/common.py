@@ -19,7 +19,7 @@ def home(request):
     '''
     Home page of the app
     '''
-    return render(request, "home.html", {"groups": GroupManager.get_all().result})
+    return render(request, "home.html", {"groups": GroupManager.get_all_by_user_id(request.session["id"]).result})
 
 
 def login(request):
