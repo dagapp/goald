@@ -25,6 +25,6 @@ def update(request, group_id):
         group.image = image
         group.save()
 
-        return render(request, "group_detail.html", {"group": group})
+        return render(request, "group.html", {"group": group})
 
-    return render(request, "group_detail.html", {"error": "Unable to upload an image"})
+    return render(request, "group.html", {"error": "Unable to upload an image"})
