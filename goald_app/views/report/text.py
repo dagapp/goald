@@ -13,7 +13,7 @@ def update_text(request, report_id):
     '''
     Handler to update a text
     '''
-    result_report = ReportManager.get(report_id==report_id)
+    result_report = ReportManager.get(report_id=report_id)
     if not result_report.succeed:
         messages.error(request, result_report.message)
         return redirect(request.META.get("HTTP_REFERER"))
