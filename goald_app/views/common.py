@@ -46,7 +46,7 @@ def login(request):
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = UserManager.get(user_login).id
+    request.session["id"] = UserManager.get(login=user_login).id
 
     return redirect("home")
 
