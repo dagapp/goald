@@ -20,9 +20,9 @@ def create(request):
     if not "group_name" in request.POST or not "privacy_mode" in request.POST:
         return redirect("home")
 
-    image_path = "static/images/groupProfiles/wNHQWT4wufY.jpg"
+    image_path = "group/default.jpg"
     if request.POST.get("group_avatar", None) != "":
-        ImageManager.store(request.FILES["group_avatar"])
+        image_path = ImageManager.store(request.FILES["group_avatar"]).result
 
     selected_privacy_mode = request.POST.get("privacy_mode", None)
     is_public = False
