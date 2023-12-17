@@ -105,9 +105,7 @@ class GoalManager:
         Goal.objects.get(id=goal_id).is_active = False
 
     @staticmethod
-    def deadline(
-        goal_id: int, deadline: datetime.datetime = None
-    ) -> datetime.datetime:
+    def deadline(goal_id: int, deadline: datetime.datetime = None) -> datetime.datetime:
         """
         Set/get a deadline value
         """
@@ -116,7 +114,7 @@ class GoalManager:
 
         if deadline is not None:
             Goal.objects.get(id=goal_id).deadline = deadline
-        
+
         return Goal.objects.get(id=goal_id).deadline
 
     @staticmethod
@@ -131,7 +129,7 @@ class GoalManager:
 
             if alert_perion is not None:
                 goal.alert_period = alert_perion
-            
+
             return goal.alert_period
         except Goal.DoesNotExist as e:
             raise DoesNotExist from e
