@@ -61,7 +61,7 @@ def auth(request):
     # Set a session for further user authorizing
     request.session["id"] = UserManager.get(user_login).result.id
 
-    return redirect("test/users")
+    return redirect("home")
 
 
 def deauth(request):

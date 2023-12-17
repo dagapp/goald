@@ -82,13 +82,45 @@ class GroupManager:
         while Group.objects.filter(tag=tag).exists():
             tag += random.choice(string.digits)
 
-        Group.objects.create(
-            leader_id=User.objects.get(id=leader_id),
+        group = Group.objects.create(
+            tag=tag,
+            is_public=is_public,
             name=name,
             password=password,
-            tag=tag,
             image=image,
-            is_public=is_public,
+            leader=User.objects.get(id=leader_id),
         )
 
+        try:
+            group.users.add(User.objects.get(id=leader_id))
+        except User.DoesNotExist:
+            return ManagerResult(False, "User doesn't exist!")
+
         return ManagerResult(True, "Group created successfully!")
+
+    @staticmethod
+    def add_user(group_id: int, user_id: int) -> ManagerResult:
+        '''
+        Add user to a group
+        '''
+        try:
+            try:
+                Group.objects.get(id=group_id).users.add(User.objects.get(id=user_id))
+            except User.DoesNotExist:
+                return ManagerResult(False, "User doesn't exist!")
+        except Group.DoesNotExist:
+            pass
+
+        return ManagerResult(False, "Group doesn't exist!")
+
+    @staticmethod
+    def del_user(group_id: int, user_id: int) -> ManagerResult:
+        '''
+        Delete user from a group
+        '''
+        try:
+            Group.objects.get(id=group_id).users.get(id=user_id).delete()
+        except Group.DoesNotExist:
+            pass
+
+        return ManagerResult(False, "Group doesn't exist!")

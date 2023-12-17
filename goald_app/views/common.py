@@ -2,22 +2,14 @@
 File for defining handlers for common pages in Django notation
 '''
 
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from goald_app.managers.group import GroupManager
 
 
-def index(request):
-    '''
-    Main page of the app
-    '''
-    return HttpResponse("Hello bober!")
-
-
 def home(request):
     '''
-    Home page of the app
+    Handler for home page of the app
     '''
     return render(
         request,
@@ -28,13 +20,20 @@ def home(request):
 
 def login(request):
     '''
-    Handler to login a user
+    Handler for logging in a user
     '''
     return render(request, "login.html", {"form_action": "user/auth"})
 
 
 def register(request):
     '''
-    Handler to register a user
+    Handler for registering a user
     '''
     return render(request, "register.html", {"form_action": "user/create"})
+
+
+def logout(request):
+    '''
+    Handler for logging out a user
+    '''
+    return redirect("login")

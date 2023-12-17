@@ -1,6 +1,6 @@
-'''
+"""
 File for defining url paths and corresponding handlers in Django notation
-'''
+"""
 
 from django.urls import path
 
@@ -8,9 +8,7 @@ from goald_app import views
 
 
 urlpatterns = [
-    path("", views.common.index, name="index"),
-
-    path("home", views.common.home, name="home"),
+    path("", views.common.home, name="home"),
 
     path("login",    views.common.login,    name="login"),
     path("register", views.common.register, name="register"),
