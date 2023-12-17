@@ -3,7 +3,6 @@ Module defining auxiliary ManagerResult
 '''
 
 from dataclasses import dataclass
-from django.db.models.manager import Manager
 
 
 @dataclass
@@ -13,4 +12,4 @@ class ManagerResult:
     '''
     succeed: bool
     message: str
-    result:  Manager = None
+    result:  any = None

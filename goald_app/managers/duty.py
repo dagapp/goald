@@ -8,7 +8,7 @@ from goald_app.models import Duty
 
 class DutyManager():
     '''
-    Manager to handle duties in table
+    Manager for handling duties in table
     '''
     @staticmethod
     def objects_all() -> list:

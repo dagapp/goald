@@ -13,7 +13,7 @@ LENGTH_HASH = 60
 
 class UserManager():
     '''
-    Manager to handle users in table
+    Manager for handling users in table
     '''
     @staticmethod
     def objects_all() -> ManagerResult:
