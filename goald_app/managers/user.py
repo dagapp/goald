@@ -41,14 +41,16 @@ class UserManager:
         """
         if "user_id" in kwds:
             if "login" in kwds:
-                return User.objects.filter(id=kwds["user_id"], login=kwds["login"]).exists()
-            
+                return User.objects.filter(
+                    id=kwds["user_id"], login=kwds["login"]
+                ).exists()
+
             return User.objects.filter(id=kwds["user_id"]).exists()
-        else:
-            if "login" in kwds:
-                return User.objects.filter(login=kwds["login"]).exists()
-            
-            raise IncorrectData
+        
+        if "login" in kwds:
+            return User.objects.filter(login=kwds["login"]).exists()
+
+        raise IncorrectData
 
     @staticmethod
     def auth(login: str, password: str) -> None:
@@ -86,7 +88,9 @@ class UserManager:
         """
         try:
             user = User.objects.get(id=user_id)
-            user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
+            user.password = hashpw(
+                bytes(password, "utf-8"), user.password[:LENGTH_SALT]
+            )
             user.save()
         except User.DoesNotExist as e:
             raise DoesNotExist from e
