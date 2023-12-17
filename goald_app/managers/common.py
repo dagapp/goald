@@ -1,15 +1,15 @@
-'''
+"""
 Module defining auxiliary ManagerResult
-'''
+"""
 
 from dataclasses import dataclass
 
 
-@dataclass
-class ManagerResult:
-    '''
-    Dataclass for managers' return values
-    '''
-    succeed: bool
-    message: str
-    result:  any = None
+class DoesNotExist(Exception):
+    pass
+
+class AlreadyExists(Exception):
+    pass
+
+class IncorrectData(Exception):
+    pass

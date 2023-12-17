@@ -1,53 +1,50 @@
-'''
+"""
 Module for handling duty records in db
-'''
+"""
 
-from goald_app.managers.common import ManagerResult
+from goald_app.managers.common import DoesNotExist, AlreadyExists
 from goald_app.models import Duty
 
 
 class DutyManager:
-    '''
+    """
     Manager for handling duties in table
-    '''
+    """
 
     @staticmethod
-    def get_all() -> list:
-        '''
+    def get_all() -> any:
+        """
         Get all duties from the table
-        '''
+        """
         return Duty.objects.all()
 
     @staticmethod
-    def create(user_id: int, goal_id: int, final_value: int) -> ManagerResult:
-        '''
+    def create(user_id: int, goal_id: int, final_value: int) -> None:
+        """
         Create a duty with given user_id, goal_id, final_value
-        '''
+        """
         if Duty.objects.filter(user_id=user_id, goal_id=goal_id).exists():
-            return ManagerResult(False, "Duty already exists!")
+            raise AlreadyExists
 
         Duty.objects.create(user_id=user_id, goal_id=goal_id, final_value=final_value)
-        return ManagerResult(True, "Duty has been created")
 
     @staticmethod
-    def pay(user_id: int, goal_id: int, value: int) -> ManagerResult:
-        '''
+    def pay(user_id: int, goal_id: int, value: int) -> None:
+        """
         Pay a some value
-        '''
+        """
         try:
             Duty.objects.get(user_id=user_id, goal_id=goal_id).current_value += value
         except Duty.DoesNotExist:
-            pass
-
-        return ManagerResult(False, "No duty found!")
+            raise DoesNotExist
 
     @staticmethod
     def delegate(
         user_id: int, goal_id: int, delegate_id: int, value: int
-    ) -> ManagerResult:
-        '''
+    ) -> None:
+        """
         Delegate a duty to someone
-        '''
+        """
         try:
             Duty.objects.get(user_id=user_id, goal_id=goal_id)
 
@@ -61,15 +58,14 @@ class DutyManager:
                 )
 
         except Duty.DoesNotExist:
-            pass
-
-        return ManagerResult(False, "No duty found!")
+            raise DoesNotExist
 
     @staticmethod
-    def delete(user_id: int, goal_id: int) -> ManagerResult:
-        '''
+    def delete(user_id: int, goal_id: int) -> None:
+        """
         Delete duty with given user_id, goal_id
-        '''
-        Duty.objects.filter(user_id=user_id, goal_id=goal_id).delete()
-
-        return ManagerResult(True, "Duty deleted successfully!")
+        """
+        try:
+            Duty.objects.filter(user_id=user_id, goal_id=goal_id).delete()
+        except Duty.DoesNotExist:
+            raise DoesNotExist
