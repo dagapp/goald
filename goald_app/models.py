@@ -58,9 +58,9 @@ class Group(models.Model):
 
     users = models.ManyToManyField("User", related_name="groups")
 
-    leader_id = models.ForeignKey("User", null=False, on_delete=models.CASCADE)
+    leader = models.ForeignKey("User", null=False, on_delete=models.CASCADE)
 
-    supergroup_id = models.ForeignKey("self", null=True, on_delete=models.CASCADE)
+    supergroup = models.ForeignKey("self", null=True, on_delete=models.CASCADE)
 
 
 class Goal(models.Model):
@@ -80,10 +80,10 @@ class Goal(models.Model):
     deadline = models.DateTimeField(null=True)
     alert_period = models.DurationField(null=True)
 
-    group_id = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
-    report_id = models.ForeignKey("Report", null=True, on_delete=models.CASCADE)
+    group = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
+    report = models.ForeignKey("Report", null=True, on_delete=models.CASCADE, related_name="goal_report")
 
-    supergoal_id = models.ForeignKey("self", null=True, on_delete=models.CASCADE)
+    supergoal = models.ForeignKey("self", null=True, on_delete=models.CASCADE)
 
 
 class Duty(models.Model):
@@ -101,8 +101,8 @@ class Duty(models.Model):
         null=True, default=lambda: datetime.timedelta(weeks=1)
     )
 
-    user_id = models.ForeignKey("User", null=False, on_delete=models.CASCADE)
-    goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", null=False, on_delete=models.CASCADE)
+    goal = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
 
 
 class Event(models.Model):
@@ -114,8 +114,8 @@ class Event(models.Model):
     text = models.CharField(null=False, max_length=500, default="")
     timestamp = models.DateTimeField(null=False, default=datetime.datetime.now)
 
-    group_id = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
-    goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
+    group = models.ForeignKey("Group", null=False, on_delete=models.CASCADE)
+    goal = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
 
 
 class Report(models.Model):
@@ -127,4 +127,4 @@ class Report(models.Model):
 
     text = models.CharField(null=True, max_length=500, default="")
 
-    goal_id = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE)
+    goal = models.ForeignKey("Goal", null=False, on_delete=models.CASCADE, related_name="report_goal")
