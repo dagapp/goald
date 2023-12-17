@@ -49,7 +49,7 @@ def view(request, group_id):
     if not "id" in request.session or not request.session["id"]:
         return redirect("login")
 
-    result = GroupManager.objects_get(group_id=group_id)
+    result = GroupManager.get(group_id=group_id)
     if not result.succeed:
         messages.error(request, result.message)
         return redirect("home")

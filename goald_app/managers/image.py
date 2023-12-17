@@ -7,7 +7,7 @@ import os
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from goald_app.managers.manager import ManagerResult
+from goald_app.managers.common import ManagerResult
 
 
 class ImageManager:

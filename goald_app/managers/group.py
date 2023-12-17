@@ -8,7 +8,7 @@ import random
 from goald_app.models import Group
 from goald_app.models import User
 
-from goald_app.managers.manager import ManagerResult
+from goald_app.managers.common import ManagerResult
 
 
 class GroupManager:
@@ -17,21 +17,37 @@ class GroupManager:
     '''
 
     @staticmethod
-    def objects_all() -> ManagerResult:
+    def get_all() -> ManagerResult:
         '''
         Get all groups from table
         '''
         return ManagerResult(True, "", Group.objects.all())
 
     @staticmethod
-    def objects_get(group_id: int) -> ManagerResult:
+    def get(group_id: int) -> ManagerResult:
         '''
         Get a group with given name from the table
         '''
         try:
             return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
         except Group.DoesNotExist:
-            return ManagerResult(False, "Group doesnt exist!")
+            pass
+
+        return ManagerResult(False, "Group doesnt exist!")
+
+    @staticmethod
+    def get_all_by_user_id(user_id: int) -> ManagerResult:
+        '''
+        Get all groups by given user_id
+        '''
+        try:
+            return ManagerResult(
+                True, "Groups found", Group.objects.filter(users__id=user_id)
+            )
+        except Group.DoesNotExist:
+            pass
+
+        return ManagerResult(False, "No groups found!")
 
     @staticmethod
     def exists(group_id: int) -> ManagerResult:
@@ -45,9 +61,10 @@ class GroupManager:
 
     @staticmethod
     def create(
-        leader_id: int,
         name: str,
         image: str,
+        leader_id: int,
+        password: str = None,
         is_public: bool = True,
     ) -> ManagerResult:
         '''
@@ -68,6 +85,7 @@ class GroupManager:
         Group.objects.create(
             leader_id=User.objects.get(id=leader_id),
             name=name,
+            password=password,
             tag=tag,
             image=image,
             is_public=is_public,
