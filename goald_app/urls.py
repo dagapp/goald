@@ -4,7 +4,7 @@ File for defining url paths and corresponding handlers in Django notation
 
 from django.urls import path
 
-import goald_app.views as views
+from goald_app import views
 
 
 urlpatterns = [

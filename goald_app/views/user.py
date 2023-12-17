@@ -123,4 +123,3 @@ def delete(request):
     request.session.pop("id")
 
     return redirect("login")
-

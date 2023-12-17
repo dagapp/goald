@@ -51,4 +51,3 @@ def duties(request):
     Handler to get all duties
     '''
     return render(request, "duties.html", {"duties": DutyManager.objects_all()})
-

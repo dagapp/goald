@@ -13,4 +13,4 @@ class ManagerResult:
     '''
     succeed: bool
     message: str
-    result:  Manager = None
+    result:  any = None

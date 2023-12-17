@@ -2,14 +2,12 @@
 File for defining handlers for group in Django notation
 '''
 
-import os
 
 from django.contrib import messages
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 
 from goald_app.managers.group import GroupManager
+from goald_app.managers.image import ImageManager
 
 
 def create(request):
@@ -24,14 +22,7 @@ def create(request):
 
     image_path = "static/images/groupProfiles/wNHQWT4wufY.jpg"
     if request.POST.get("group_avatar", None) != "":
-        image = request.FILES["group_avatar"]
-
-        storage_location = os.path.join(
-            settings.BASE_DIR, "goald_app", "static", "images", "groupProfiles"
-        )
-        fs = FileSystemStorage(location=storage_location)
-        fs.save(image.name, image)
-        image_path = "static/images/groupProfiles/" + image.name
+        ImageManager.store(request.FILES["group_avatar"])
 
     selected_privacy_mode = request.POST.get("privacy_mode", None)
     is_public = False
