@@ -91,7 +91,7 @@ class GoalManager:
             current_value=final_value,
             deadline=deadline,
             alert_period=alert_period,
-            user_id=Group.objects.get(id=group_id).leader_id,
+            user_id=Group.objects.get(id=group_id).leader,
             goal_id=goal,
         )
 

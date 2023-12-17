@@ -4,6 +4,7 @@
         <script>alert("{{ message }}");</script>
     {% endfor %}
 {% endif %}
+
 <form action="{{ form_action }}" method=post>{% csrf_token %}
     <div class="container">
         <h1>Log in</h1>

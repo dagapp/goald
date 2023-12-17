@@ -30,9 +30,9 @@ def create(request):
         is_public = True
 
     result = GroupManager.create(
-        leader_id=request.session["id"],
         name=request.POST["group_name"],
         image=image_path,
+        leader_id=request.session["id"],
         is_public=is_public,
     )
     if not result.succeed:
