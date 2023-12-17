@@ -22,4 +22,26 @@ urlpatterns = [
     path("group/<int:group_id>/image/update", views.group.image.update, name="group/image/update"),
     path("group/<int:group_id>/users/add",    views.group.user.add,     name="group/users/add"   ),
     path("group/<int:group_id>/goals/add",    views.group.goal.add,     name="group/goals/add"   ),
+
+    path(
+        "group/<int:goal_id>/reports/create",
+        views.report.report.create,
+        name="group/report/create"
+    ),
+
+    path(
+        "report/<int:report_id>",
+        views.report.report.view,
+        name="report"
+    ),
+    path(
+        "report/<int:report_id>/proof/update",
+        views.report.proof.update,
+        name="report/proof/update"
+    ),
+    path(
+        "report/<int:report_id>/text/update",
+        views.report.text.update,
+        name="report/text/update"
+    ),
 ]
