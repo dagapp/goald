@@ -9,7 +9,7 @@ from goald_app.managers.common import DoesNotExist
 from goald_app.managers.report import ReportManager
 
 
-def update_proof(request, report_id):
+def update(request, report_id):
     """
     Handler to update a proof
     """
@@ -19,6 +19,6 @@ def update_proof(request, report_id):
         except DoesNotExist:
             messages.error(request, "Report doesn't exist")
     else:
-        messages.error(request, "Wrong HTTP method")
-        
+        messages.error(request, "Wrong HTTP method for updating the proof")
+
     return redirect(request.META.get("HTTP_REFERER"))
