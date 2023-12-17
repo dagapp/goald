@@ -15,7 +15,7 @@ class AuthorizationMiddleware:
         '''
         One-time configuration and initialization.
         '''
-        self.permited_wo_id = ["/login", "/register", "/auth", "/create"]
+        self.permited_wo_id = ["/login", "/register", "/user/auth", "/user/create"]
         self.get_response = get_response
 
     def __call__(self, request):
