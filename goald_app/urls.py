@@ -27,7 +27,7 @@ urlpatterns = [
         "group/<int:goal_id>/reports/create",
         views.report.report.create,
         name="group/report/create"
-    ), #fixme
+    ),
 
     path(
         "report/<int:report_id>",
