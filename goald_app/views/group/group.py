@@ -69,6 +69,7 @@ def list(request):
     result = []
     grp = {}
     for group in groups:
+        grp['id'] = group.id
         grp['name'] = group.name
         grp['tag'] = group.tag
         grp['image'] = group.image.url

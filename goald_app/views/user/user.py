@@ -1,12 +1,11 @@
 """
-File for defining handlers for user in Django notation
+File for defining handlers for group in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import redirect
 
 from goald_app.managers.user import UserManager
-
+from django.http import JsonResponse
 
 def change(request):
     """
@@ -54,3 +53,17 @@ def delete(request):
     request.session.pop("id")
 
     return redirect("login")
+
+def view(request):
+    """
+    Handler to serialize user to json
+    """
+    result = {}
+    user = UserManager.get(request.session['id'])
+    result['login'] = user.login
+    result['name'] = user.name
+    result['second_name'] = user.second_name
+    result['groups'] = [group.name for group in user.groups.all()]
+    result['duties'] = [duty.current_value for duty in user.duties_user.all()]
+
+    return JsonResponse(result)
