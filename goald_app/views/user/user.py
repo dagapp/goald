@@ -59,11 +59,20 @@ def view(request):
     Handler to serialize user to json
     """
     result = {}
-    user = UserManager.get(request.session['id'])
+    user = UserManager.get(user_id=request.session['id'])
     result['login'] = user.login
     result['name'] = user.name
     result['second_name'] = user.second_name
-    result['groups'] = [group.name for group in user.groups.all()]
-    result['duties'] = [duty.current_value for duty in user.duties_user.all()]
+
+    result['goals'] = []
+    for group in user.groups.all(): 
+        result['goals'].extend(
+            [{'group_name': group.name, 
+              'group_tag': group.tag, 
+              'name': goal.name,
+              'is_active': goal.is_active,
+              'deadline': goal.deadline} 
+              for goal in group.goals_group.all()]
+              )
 
     return JsonResponse(result)
