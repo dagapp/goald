@@ -55,4 +55,4 @@ def view(request, group_id):
         messages.error(request, "Group doesn't exist")
         return redirect("home")
 
-    return render(request, "group_detail.html", {"group": GroupManager.get(group_id=group_id)})
+    return render(request, "group.html", {"group": GroupManager.get(group_id=group_id)})
