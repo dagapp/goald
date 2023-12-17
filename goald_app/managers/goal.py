@@ -25,11 +25,10 @@ class GoalManager:
             for group in groups:
                 result += Goal.objects.filter(group_id=group)
 
-            if result:
-                return result
+            return result
 
-        except Goal.DoesNotExist:
-            raise DoesNotExist
+        except Goal.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def get(user_id: int, goal_id: int) -> any:
@@ -37,15 +36,18 @@ class GoalManager:
         Get a goal with given id from the table
         """
         try:
+            '''
             users = User.objects.filter(
-                id=user_id, groups__id=Group.objects.filter(goal__id=goal_id)[0].id
+                id=user_id, groups__id=Group.objects.get(goal__id=goal_id).id
             )
             if users:
                 result = Goal.objects.filter(id=goal_id)
                 return result
+            '''
+            return Group.objects.filter(users__id=user_id).goals.get(goal_id=goal_id)
 
-        except Goal.DoesNotExist:
-            DoesNotExist
+        except Goal.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def exists(goal_id: int) -> bool:
@@ -68,15 +70,17 @@ class GoalManager:
         """
         if not Group.objects.filter(id=group_id).exists():
             raise DoesNotExist
+        
+        group = Group.objects.get(id=group_id)
 
-        if Goal.objects.filter(name=name, group_id=group_id).exists():
+        if Goal.objects.filter(name=name, group=group).exists():
             raise AlreadyExists
 
         goal = Goal.objects.create(
             name=name,
             deadline=deadline,
             alert_period=alert_period,
-            group_id=Group.objects.get(id=group_id),
+            group=group,
             # supergoal_id=supergoal_id,
         )
 
@@ -85,8 +89,8 @@ class GoalManager:
             current_value=final_value,
             deadline=deadline,
             alert_period=alert_period,
-            user_id=Group.objects.get(id=group_id).leader,
-            goal_id=goal,
+            user=group.leader,
+            goal=goal,
         )
 
     @staticmethod
@@ -152,4 +156,3 @@ class GoalManager:
             goal.delete()
         except Goal.DoesNotExist:
             raise DoesNotExist
-

@@ -35,8 +35,8 @@ class DutyManager:
         """
         try:
             Duty.objects.get(user_id=user_id, goal_id=goal_id).current_value += value
-        except Duty.DoesNotExist:
-            raise DoesNotExist
+        except Duty.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def delegate(
@@ -57,8 +57,8 @@ class DutyManager:
                     user_id=delegate_id, goal_id=goal_id, final_value=value
                 )
 
-        except Duty.DoesNotExist:
-            raise DoesNotExist
+        except Duty.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def delete(user_id: int, goal_id: int) -> None:
@@ -67,5 +67,5 @@ class DutyManager:
         """
         try:
             Duty.objects.filter(user_id=user_id, goal_id=goal_id).delete()
-        except Duty.DoesNotExist:
-            raise DoesNotExist
+        except Duty.DoesNotExist as e:
+            raise DoesNotExist from e
