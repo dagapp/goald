@@ -41,7 +41,6 @@ def login(request):
 
     try:
         UserManager.auth(user_login, user_password)
-
     except (DoesNotExist, IncorrectData):
         messages.error(request, "Incorrect login or password")
         return redirect("login")
