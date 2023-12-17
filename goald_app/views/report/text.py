@@ -23,8 +23,8 @@ def update_text(request, report_id):
         report.save()
 
         return render(
-            request, 
-            "reports.html", 
+            request,
+            "reports.html",
             {"reports": ReportManager.get_all(goal_id=report.goal_id)}
             )
 

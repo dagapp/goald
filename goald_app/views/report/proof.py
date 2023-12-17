@@ -20,14 +20,13 @@ def update_proof(request, report_id):
 
     if request.method == "POST" and request.FILES.get("proof"):
         result_image = ImageManager.store(request.FILES["proof"])
-
         report = result_report.result
         report.image = result_image.result
         report.save()
 
         return render(
-            request, 
-            "reports.html", 
+            request,
+            "reports.html",
             {"reports": ReportManager.get_all(goal_id=report.goal_id)}
             )
 
