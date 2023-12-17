@@ -9,7 +9,7 @@ from goald_app.managers.common import AlreadyExists
 
 from goald_app.managers.group import GroupManager
 from goald_app.managers.image import ImageManager
-import json
+from django.http import JsonResponse
 
 
 def create(request):
@@ -53,11 +53,13 @@ def view(request, group_id):
     result['name'] = group.name
     result['tag'] = group.tag
     result['is_public'] = group.is_public
-    result['image'] = group.image
-    result['users'] = [ {'name': user.name, 'second_name': user.second_name} for user in group.users ]
-    result['leader'] = {'name': group.leader.name, 'second_name': group.leader.second_name}
+    result['image'] = group.image.url
+    result['users'] = [ {'login': user.login} for user in group.users.all() ]
+    result['leader_login'] = group.leader.login
+    result['goals'] = [goal.name for goal in group.goals_group.all()]
+    result['events'] = [event.name for event in group.events_group.all()]
 
-    return json.dumps(result)
+    return JsonResponse(result)
 
 def list(user_id: int):
     """
@@ -72,4 +74,4 @@ def list(user_id: int):
         grp['image'] = group.image
         result.append(grp)
 
-    return json.dumps(result)
+    return JsonResponse(result)
