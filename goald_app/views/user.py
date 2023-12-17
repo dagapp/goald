@@ -59,7 +59,7 @@ def auth(request):
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = UserManager.objects_get(user_login).result.id
+    request.session["id"] = UserManager.get(user_login).result.id
 
     return redirect("test/users")
 

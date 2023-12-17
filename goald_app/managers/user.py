@@ -4,7 +4,7 @@ Module for handling user records in db
 
 from bcrypt import gensalt, hashpw
 
-from goald_app.managers.manager import ManagerResult
+from goald_app.managers.common import ManagerResult
 from goald_app.models import User
 
 LENGTH_SALT = 29
@@ -16,14 +16,14 @@ class UserManager():
     Manager for handling users in table
     '''
     @staticmethod
-    def objects_all() -> ManagerResult:
+    def get_all() -> ManagerResult:
         '''
         Get all users from the table
         '''
         return ManagerResult(True, "", User.objects.all())
 
     @staticmethod
-    def objects_get(login: str) -> ManagerResult:
+    def get(login: str) -> ManagerResult:
         '''
         Get a users with given login from the table
         '''
@@ -62,13 +62,6 @@ class UserManager():
         return ManagerResult(True, "User authenticated successfully!")
 
     @staticmethod
-    def deauth(_id: int) -> ManagerResult:
-        '''
-        Deauth the user with given id
-        '''
-        return ManagerResult(True, "User successfully deauthenticated!")
-
-    @staticmethod
     def create(login: str, password: str) -> ManagerResult:
         '''
         Create a user with given login and password
@@ -84,21 +77,21 @@ class UserManager():
         return ManagerResult(True, "User created successfully!")
 
     @staticmethod
-    def change(_id: int, password: str) -> ManagerResult:
+    def change_password(user_id: int, password: str) -> ManagerResult:
         '''
         Change a user's password with given login and new password
         '''
-        user = User.objects.get(id=_id)
+        user = User.objects.get(id=user_id)
         user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
         user.save()
 
         return ManagerResult(True, "Users password changed successfully!")
 
     @staticmethod
-    def delete(_id: int) -> ManagerResult:
+    def delete(user_id: int) -> ManagerResult:
         '''
         Delete the user with given id
         '''
-        User.objects.filter(id=_id).delete()
+        User.objects.filter(id=user_id).delete()
 
         return ManagerResult(True, "User deleted successfully!")
