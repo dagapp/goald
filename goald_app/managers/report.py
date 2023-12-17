@@ -34,6 +34,16 @@ class ReportManager():
         return ManagerResult(False, "Report doesnt exist!")
 
     @staticmethod
+    def exists(report_id: int) -> ManagerResult:
+        '''
+        Check if report exists
+        '''
+        if Report.objects.filter(report_id=report_id).exists():
+            return ManagerResult(True, "Report exists")
+
+        return ManagerResult(False, "Report doesnt exist!")
+
+    @staticmethod
     def create(goal_id: int, text: str, proof: str) -> ManagerResult:
         '''
         Create a report with given goal_id, text and proof

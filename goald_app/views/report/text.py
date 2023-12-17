@@ -18,14 +18,7 @@ def update_text(request, report_id):
         return redirect(request.META.get("HTTP_REFERER"))
 
     if request.method == "POST" and request.FILES.get("text"):
-        report = result_report.result
-        report.text = request.FILES["text"]
-        report.save()
-
-        return render(
-            request,
-            "reports.html",
-            {"reports": ReportManager.get_all(goal_id=report.goal_id)}
-            )
+        ReportManager.text(report_id=report_id, text=request.FILES["text"])
+        return redirect("reports")
 
     return render(request, "reports.html", {"error": "Unable to upload an text"})
