@@ -2,7 +2,7 @@
 Module for handling report records in table
 '''
 
-from goald_app.managers.manager import ManagerResult
+from goald_app.managers.common import ManagerResult
 from goald_app.models import Report
 
 
@@ -11,7 +11,7 @@ class ReportManager():
     Manager to handle reports in table
     '''
     @staticmethod
-    def objects_all() -> list:
+    def get_all() -> list:
         '''
         Get all reports from the table
         '''
