@@ -1,97 +1,106 @@
-'''
+"""
 Module for handling user records in db
-'''
+"""
 
 from bcrypt import gensalt, hashpw
 
-from goald_app.managers.common import ManagerResult
+from goald_app.managers.common import DoesNotExist, AlreadyExists, IncorrectData
+
 from goald_app.models import User
 
 LENGTH_SALT = 29
 LENGTH_HASH = 60
 
 
-class UserManager():
-    '''
+class UserManager:
+    """
     Manager for handling users in table
-    '''
+    """
+
     @staticmethod
-    def get_all() -> ManagerResult:
-        '''
+    def get_all() -> any:
+        """
         Get all users from the table
-        '''
-        return ManagerResult(True, "", User.objects.all())
+        """
+        return User.objects.all()
 
     @staticmethod
-    def get(login: str) -> ManagerResult:
-        '''
+    def get(login: str) -> any:
+        """
         Get a users with given login from the table
-        '''
+        """
         try:
-            return ManagerResult(True, "User found", User.objects.get(login=login))
-        except User.DoesNotExist:
-            return ManagerResult(False, "User doesnt exist!")
+            return User.objects.get(login=login)
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
-    def exists(user_id: int) -> ManagerResult:
-        '''
+    def exists(*args, **kwds) -> bool:
+        """
         Check wheteher a user with given id exists
-        '''
-        if User.objects.filter(id=user_id).exists():
-            return ManagerResult(True, "User exists")
+        """
+        if "user_id" in kwds:
+            if "login" in kwds:
+                return User.objects.filter(
+                    id=kwds["user_id"], login=kwds["login"]
+                ).exists()
 
-        return ManagerResult(False, "User doesnt exist!")
+            return User.objects.filter(id=kwds["user_id"]).exists()
+
+        if "login" in kwds:
+            return User.objects.filter(login=kwds["login"]).exists()
+
+        raise IncorrectData
 
     @staticmethod
-    def auth(login: str, password: str) -> ManagerResult:
-        '''
+    def auth(login: str, password: str) -> None:
+        """
         Auth a user with given login and password
-        '''
-        user = None
+        """
         try:
             user = User.objects.get(login=login)
-        except User.DoesNotExist:
-            return ManagerResult(False, "Incorrect login or password!")
 
-        salt = user.password[:LENGTH_SALT]
-        salted_hash = hashpw(bytes(password, "utf-8"), salt)
+            salt = user.password[:LENGTH_SALT]
+            salted_hash = hashpw(bytes(password, "utf-8"), salt)
 
-        if salted_hash != user.password:
-            return ManagerResult(False, "Incorrect login or password!")
-
-        return ManagerResult(True, "User authenticated successfully!")
+            if salted_hash != user.password:
+                raise IncorrectData
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
-    def create(login: str, password: str) -> ManagerResult:
-        '''
+    def create(login: str, password: str) -> None:
+        """
         Create a user with given login and password
-        '''
+        """
         if User.objects.filter(login=login).exists():
-            return ManagerResult(False, "User already exists!")
+            raise AlreadyExists
 
         salt = gensalt()
         salted_hash = hashpw(bytes(password, "utf-8"), salt)
 
         User.objects.create(login=login, password=salted_hash)
 
-        return ManagerResult(True, "User created successfully!")
-
     @staticmethod
-    def change_password(user_id: int, password: str) -> ManagerResult:
-        '''
+    def change_password(user_id: int, password: str) -> None:
+        """
         Change a user's password with given login and new password
-        '''
-        user = User.objects.get(id=user_id)
-        user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
-        user.save()
-
-        return ManagerResult(True, "Users password changed successfully!")
+        """
+        try:
+            user = User.objects.get(id=user_id)
+            user.password = hashpw(
+                bytes(password, "utf-8"), user.password[:LENGTH_SALT]
+            )
+            user.save()
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
-    def delete(user_id: int) -> ManagerResult:
-        '''
+    def delete(user_id: int) -> None:
+        """
         Delete the user with given id
-        '''
-        User.objects.filter(id=user_id).delete()
-
-        return ManagerResult(True, "User deleted successfully!")
+        """
+        try:
+            User.objects.filter(id=user_id).delete()
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
