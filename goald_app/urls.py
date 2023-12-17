@@ -44,7 +44,4 @@ urlpatterns = [
         views.report.text.update,
         name="report/text/update"
     ),
-
-    path("info/group/<int:group_id>", views.info.group, name="info"),
-    path("info/list", views.info.list)
 ]
