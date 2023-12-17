@@ -1,7 +1,8 @@
 **/__pycache__
 **/*.sqlite3
+**/.DS_Store
 goald_app/migrations/*
 !goald_app/migrations/__init__.py
-goald_app/static/images/*
-!goald_app/static/images/
+media/group/images/*
+!media/group/images/default.jpg
 .vscode

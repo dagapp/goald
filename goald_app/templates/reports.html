@@ -1,0 +1,17 @@
+{% include "header.html" %}
+<style> body { background-color: white; } </style>
+<table border=1>
+    <tr>
+        <td><b>goal id</b></td>
+        <td><b>text</b></td>
+        <td><b>proof</b></td>
+	</tr>
+	{% for report in reports%}
+    <tr>
+        <td>{{ report.goal_id }}</td>
+        <td>{{ report.text }}</td>
+        <td>{{ report.proof }}</td>
+    </tr>
+	{% endfor %}
+</table>
+{% include "footer.html" %}

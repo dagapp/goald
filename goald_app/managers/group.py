@@ -1,6 +1,6 @@
-'''
+"""
 Module for handling group records in db
-'''
+"""
 
 import string
 import random
@@ -8,53 +8,61 @@ import random
 from goald_app.models import Group
 from goald_app.models import User
 
-from goald_app.managers.manager import ManagerResult
+from goald_app.managers.common import DoesNotExist, AlreadyExists
 
 
 class GroupManager:
-    '''
+    """
     Manager for handling groups in table
-    '''
+    """
 
     @staticmethod
-    def objects_all() -> ManagerResult:
-        '''
+    def get_all() -> any:
+        """
         Get all groups from table
-        '''
-        return ManagerResult(True, "", Group.objects.all())
+        """
+        return Group.objects.all()
 
     @staticmethod
-    def objects_get(group_id: int) -> ManagerResult:
-        '''
+    def get(group_id: int) -> any:
+        """
         Get a group with given name from the table
-        '''
+        """
         try:
-            return ManagerResult(True, "Group found", Group.objects.get(id=group_id))
-        except Group.DoesNotExist:
-            return ManagerResult(False, "Group doesnt exist!")
+            return Group.objects.get(id=group_id)
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
-    def exists(group_id: int) -> ManagerResult:
-        '''
-        Check if group exists
-        '''
-        if Group.objects.filter(id=group_id).exists():
-            return ManagerResult(True, "Group exists")
+    def get_all_by_user_id(user_id: int) -> any:
+        """
+        Get all groups by given user_id
+        """
+        try:
+            return Group.objects.filter(users__id=user_id)
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
 
-        return ManagerResult(False, "Group doesnt exist!")
+    @staticmethod
+    def exists(group_id: int) -> bool:
+        """
+        Check if group exists
+        """
+        return Group.objects.filter(id=group_id).exists()
 
     @staticmethod
     def create(
-        leader_id: int,
         name: str,
-        image: str = "static/images/groupProfiles/group_pic.png",
+        image: str,
+        leader_id: int,
+        password: str = None,
         is_public: bool = True,
-    ) -> ManagerResult:
-        '''
+    ) -> None:
+        """
         Create a group with given leader_id, name, image and is_public arguments
-        '''
+        """
         if Group.objects.filter(name=name).exists():
-            return ManagerResult(False, "Group already exists!")
+            raise AlreadyExists
 
         tag = "@" + "".join(
             name_ch
@@ -65,12 +73,39 @@ class GroupManager:
         while Group.objects.filter(tag=tag).exists():
             tag += random.choice(string.digits)
 
-        Group.objects.create(
-            leader_id=User.objects.get(id=leader_id),
-            name=name,
+        group = Group.objects.create(
             tag=tag,
-            image=image,
             is_public=is_public,
+            name=name,
+            password=password,
+            image=image,
+            leader=User.objects.get(id=leader_id),
         )
 
-        return ManagerResult(True, "Group created successfully!")
+        try:
+            group.users.add(User.objects.get(id=leader_id))
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
+
+    @staticmethod
+    def add_user(group_id: int, login: int) -> None:
+        """
+        Add user to a group
+        """
+        try:
+            try:
+                Group.objects.get(id=group_id).users.add(User.objects.get(login=login))
+            except User.DoesNotExist as e:
+                raise DoesNotExist from e
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
+
+    @staticmethod
+    def del_user(group_id: int, user_id: int) -> None:
+        """
+        Delete user from a group
+        """
+        try:
+            Group.objects.get(id=group_id).users.get(id=user_id).delete()
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e

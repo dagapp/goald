@@ -75,7 +75,7 @@
         <div class="goals">
             <h2>Цели группы</h2>
             <ul>
-                {% for goal in group.goal_set.all %}
+                {% for goal in group.goals_group.all %}
                 <li>{{ goal.name }}</li>
                 {% endfor %}
             </ul>
