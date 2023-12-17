@@ -13,7 +13,7 @@ from goald_app.managers.manager import ManagerResult
 
 class GroupManager:
     '''
-    Manager to handle groups in table
+    Manager for handling groups in table
     '''
 
     @staticmethod

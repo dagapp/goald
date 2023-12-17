@@ -8,7 +8,7 @@ from goald_app.models import User, Group, Goal
 
 class GoalManager:
     '''
-    Manager to handle goals in table
+    Manager for handling goals in table
     '''
 
     @staticmethod

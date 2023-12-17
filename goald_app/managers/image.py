@@ -26,5 +26,5 @@ class ImageManager:
         fs = FileSystemStorage(location=storage_location)
         fs.save(image.name, image)
         image_path = "static/images/groupProfiles/" + image.name
-    
+
         return ManagerResult(True, "Imaged is stored successfully", image_path)
