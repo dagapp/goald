@@ -1,4 +1,3 @@
-{% include "header.html" %}
 {% if messages %}
     {% for message in messages %}
         <script>alert("{{ message }}");</script>
@@ -9,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% load static %}">
-    <link rel="stylesheet" href="{% static 'css/group_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/group.css' %}">
     <script src="{% static 'js/modal.js' %}"></script>
     <title>{{ group.name }}</title>
 </head>
@@ -106,5 +105,3 @@
         </div>
         
     </div>
-
-{% include "footer.html" %}

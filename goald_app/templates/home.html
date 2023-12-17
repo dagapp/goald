@@ -20,7 +20,7 @@
             <div class="shadow">
                 <a href="{% url 'group' group_id=group.id %}" class="group-card">
                     <div class="avatar">
-                        <img src="{{ group.image }}" alt="Аватар">
+                        <img src="{{ group.image.url }}" alt="Аватар">
                     </div>
                     <div class="group-info">
                         <h2>{{ group.name }}</h2>

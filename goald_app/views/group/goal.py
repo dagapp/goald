@@ -31,6 +31,6 @@ def add(request, group_id):
 
     return render(
         request,
-        "group_detail.html",
+        "group.html",
         {"group": GroupManager.get(group_id=group_id)},
     )
