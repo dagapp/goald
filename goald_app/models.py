@@ -4,7 +4,6 @@ File for defining modles in Django notation
 
 import datetime
 import string
-import random
 
 from django.db import models
 from django.core.validators import FileExtensionValidator

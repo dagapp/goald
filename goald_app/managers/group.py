@@ -90,7 +90,7 @@ class GroupManager:
             image=image,
             leader=User.objects.get(id=leader_id),
         )
-        
+
         try:
             group.users.add(User.objects.get(id=leader_id))
         except User.DoesNotExist:
@@ -112,7 +112,7 @@ class GroupManager:
             pass
 
         return ManagerResult(False, "Group doesn't exist!")
-    
+
     @staticmethod
     def del_user(group_id: int, user_id: int) -> ManagerResult:
         '''
@@ -124,5 +124,3 @@ class GroupManager:
             pass
 
         return ManagerResult(False, "Group doesn't exist!")
-    
-

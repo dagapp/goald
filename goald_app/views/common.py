@@ -2,7 +2,6 @@
 File for defining handlers for common pages in Django notation
 '''
 
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from goald_app.managers.group import GroupManager
