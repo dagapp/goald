@@ -1,6 +1,6 @@
-"""
+'''
 File for defining modles in Django notation
-"""
+'''
 
 import datetime
 import string
@@ -14,9 +14,9 @@ DEFAULT_NAME_SIZE = 10
 
 
 class User(models.Model):
-    """
+    '''
     Class to represent a User model
-    """
+    '''
 
     login = models.CharField(null=False, max_length=50)
     password = models.BinaryField(null=False)
@@ -26,9 +26,9 @@ class User(models.Model):
 
 
 class Group(models.Model):
-    """
+    '''
     Class to represent a Group model
-    """
+    '''
 
     tag = models.CharField(null=False, max_length=50)
     is_public = models.BooleanField(null=False, default=True)
@@ -55,9 +55,9 @@ class Group(models.Model):
 
 
 class Goal(models.Model):
-    """
+    '''
     Class to represent a Goal model
-    """
+    '''
 
     name = models.CharField(null=False, max_length=50)
     is_active = models.BooleanField(null=False, default=True)
@@ -78,9 +78,9 @@ class Goal(models.Model):
 
 
 class Duty(models.Model):
-    """
+    '''
     Class to represent a Duty model
-    """
+    '''
 
     final_value = models.IntegerField(null=False, default=0)
     current_value = models.IntegerField(null=False, default=0)
@@ -97,9 +97,9 @@ class Duty(models.Model):
 
 
 class Event(models.Model):
-    """
+    '''
     Class to represent a Event model
-    """
+    '''
 
     type = models.IntegerField(null=False, default=0)
     text = models.CharField(null=False, max_length=500, default="")
@@ -114,9 +114,9 @@ class Event(models.Model):
 
 
 class Report(models.Model):
-    """
+    '''
     Class to represent a Report model
-    """
+    '''
 
     proof = models.ImageField(null=False)
 

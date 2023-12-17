@@ -1,6 +1,6 @@
-'''
+"""
 File for defining url paths and corresponding handlers in Django notation
-'''
+"""
 
 from django.urls import path
 
