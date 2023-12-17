@@ -31,8 +31,8 @@ class UserManager:
         """
         try:
             return User.objects.get(login=login)
-        except User.DoesNotExist:
-            raise DoesNotExist
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def exists(*args, **kwds) -> bool:
@@ -42,13 +42,13 @@ class UserManager:
         if "user_id" in kwds:
             if "login" in kwds:
                 return User.objects.filter(id=kwds["user_id"], login=kwds["login"]).exists()
-            else:
-                return User.objects.filter(id=kwds["user_id"]).exists()
+            
+            return User.objects.filter(id=kwds["user_id"]).exists()
         else:
             if "login" in kwds:
                 return User.objects.filter(login=kwds["login"]).exists()
-            else:
-                raise IncorrectData
+            
+            raise IncorrectData
 
     @staticmethod
     def auth(login: str, password: str) -> None:
@@ -63,8 +63,8 @@ class UserManager:
 
             if salted_hash != user.password:
                 raise IncorrectData
-        except User.DoesNotExist:
-            raise DoesNotExist
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def create(login: str, password: str) -> None:
@@ -88,8 +88,8 @@ class UserManager:
             user = User.objects.get(id=user_id)
             user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
             user.save()
-        except User.DoesNotExist:
-            raise DoesNotExist
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def delete(user_id: int) -> None:
@@ -98,5 +98,5 @@ class UserManager:
         """
         try:
             User.objects.filter(id=user_id).delete()
-        except User.DoesNotExist:
-            raise DoesNotExist
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e

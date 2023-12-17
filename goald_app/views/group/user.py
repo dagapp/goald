@@ -3,11 +3,9 @@ File for defining handlers for group in Django notation
 """
 
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from requests import RequestException
+from django.shortcuts import redirect
 from goald_app.managers.common import DoesNotExist
 
-from goald_app.managers.user import UserManager
 from goald_app.managers.group import GroupManager
 
 

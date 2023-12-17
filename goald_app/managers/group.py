@@ -30,8 +30,8 @@ class GroupManager:
         """
         try:
             return Group.objects.get(id=group_id)
-        except Group.DoesNotExist:
-            raise DoesNotExist
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def get_all_by_user_id(user_id: int) -> any:
@@ -40,8 +40,8 @@ class GroupManager:
         """
         try:
             return Group.objects.filter(users__id=user_id)
-        except Group.DoesNotExist:
-            raise DoesNotExist
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def exists(group_id: int) -> bool:
@@ -84,8 +84,8 @@ class GroupManager:
 
         try:
             group.users.add(User.objects.get(id=leader_id))
-        except User.DoesNotExist:
-            raise DoesNotExist
+        except User.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def add_user(group_id: int, login: int) -> None:
@@ -95,10 +95,10 @@ class GroupManager:
         try:
             try:
                 Group.objects.get(id=group_id).users.add(User.objects.get(login=login))
-            except User.DoesNotExist:
-                raise DoesNotExist
-        except Group.DoesNotExist:
-            raise DoesNotExist
+            except User.DoesNotExist as e:
+                raise DoesNotExist from e
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def del_user(group_id: int, user_id: int) -> None:
@@ -107,5 +107,5 @@ class GroupManager:
         """
         try:
             Group.objects.get(id=group_id).users.get(id=user_id).delete()
-        except Group.DoesNotExist:
-            raise DoesNotExist
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e

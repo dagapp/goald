@@ -16,7 +16,7 @@ def update(request, group_id):
     if not GroupManager.exists(group_id=group_id):
         messages.error(request, "Group doesn't exist")
         return redirect(request.META.get("HTTP_REFERER"))
-    
+
     group = GroupManager.get(group_id=group_id)
 
     if request.method == "POST" and request.FILES.get("image"):

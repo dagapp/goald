@@ -5,7 +5,7 @@ File for defining handlers for user in Django notation
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from goald_app.managers.common import DoesNotExist, AlreadyExists, IncorrectData
+from goald_app.managers.common import IncorrectData
 from goald_app.managers.user import UserManager
 
 

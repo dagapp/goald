@@ -4,9 +4,8 @@ Module for handling goal records in db
 
 import datetime
 
-
 from goald_app.managers.common import DoesNotExist, AlreadyExists
-from goald_app.models import User, Group, Goal, Duty
+from goald_app.models import Group, Goal, Duty
 
 
 class GoalManager:
@@ -36,14 +35,6 @@ class GoalManager:
         Get a goal with given id from the table
         """
         try:
-            '''
-            users = User.objects.filter(
-                id=user_id, groups__id=Group.objects.get(goal__id=goal_id).id
-            )
-            if users:
-                result = Goal.objects.filter(id=goal_id)
-                return result
-            '''
             return Group.objects.filter(users__id=user_id).goals.get(goal_id=goal_id)
 
         except Goal.DoesNotExist as e:
@@ -70,7 +61,7 @@ class GoalManager:
         """
         if not Group.objects.filter(id=group_id).exists():
             raise DoesNotExist
-        
+
         group = Group.objects.get(id=group_id)
 
         if Goal.objects.filter(name=name, group=group).exists():
@@ -116,34 +107,34 @@ class GoalManager:
     @staticmethod
     def deadline(
         goal_id: int, deadline: datetime.datetime = None
-    ) -> datetime.datetime | None:
+    ) -> datetime.datetime:
         """
         Set/get a deadline value
         """
         if not Goal.objects.filter(id=goal_id).exists():
             raise DoesNotExist
 
-        if deadline is None:
-            return Goal.objects.get(id=goal_id).deadline
-
-        Goal.objects.get(id=goal_id).deadline = deadline
+        if deadline is not None:
+            Goal.objects.get(id=goal_id).deadline = deadline
+        
+        return Goal.objects.get(id=goal_id).deadline
 
     @staticmethod
     def alert_period(
         goal_id: int, alert_perion: datetime.timedelta = None
-    ) -> datetime.datetime | None:
+    ) -> datetime.datetime:
         """
         Set/get an alert_perion value
         """
         try:
             goal = Goal.objects.get(id=goal_id)
 
-            if alert_perion is None:
-                return goal.alert_period
-
-            goal.alert_period = alert_perion
-        except Goal.DoesNotExist:
-            raise DoesNotExist
+            if alert_perion is not None:
+                goal.alert_period = alert_perion
+            
+            return goal.alert_period
+        except Goal.DoesNotExist as e:
+            raise DoesNotExist from e
 
     @staticmethod
     def delete(goal_id: int) -> None:
@@ -154,5 +145,5 @@ class GoalManager:
             goal = Goal.objects.get(id=goal_id)
             Duty.objects.filter(goal_id=goal_id).delete()
             goal.delete()
-        except Goal.DoesNotExist:
-            raise DoesNotExist
+        except Goal.DoesNotExist as e:
+            raise DoesNotExist from e

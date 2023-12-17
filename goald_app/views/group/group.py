@@ -5,7 +5,7 @@ File for defining handlers for group in Django notation
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from goald_app.managers.common import AlreadyExists, DoesNotExist
+from goald_app.managers.common import AlreadyExists
 
 from goald_app.managers.group import GroupManager
 from goald_app.managers.image import ImageManager
