@@ -9,6 +9,7 @@ from goald_app.managers.common import AlreadyExists
 
 from goald_app.managers.group import GroupManager
 from goald_app.managers.image import ImageManager
+import json
 
 
 def create(request):
@@ -45,14 +46,30 @@ def create(request):
 
 def view(request, group_id):
     """
-    Handler of a group page
+    Handler to serialize group to json
     """
-    # Check if request has needed session_id cookie
-    if not "id" in request.session or not request.session["id"]:
-        return redirect("login")
+    result = {}
+    group = GroupManager.get(group_id=group_id)
+    result['name'] = group.name
+    result['tag'] = group.tag
+    result['is_public'] = group.is_public
+    result['image'] = group.image
+    result['users'] = [ {'name': user.name, 'second_name': user.second_name} for user in group.users ]
+    result['leader'] = {'name': group.leader.name, 'second_name': group.leader.second_name}
 
-    if not GroupManager.exists(group_id=group_id):
-        messages.error(request, "Group doesn't exist")
-        return redirect("home")
+    return json.dumps(result)
 
-    return render(request, "group_detail.html", {"group": GroupManager.get(group_id=group_id)})
+def list(user_id: int):
+    """
+    Handler to serialize groups to json
+    """
+    groups = GroupManager.get_all_by_user_id(user_id=user_id)
+    result = []
+    grp = {}
+    for group in groups:
+        grp['name'] = group.name
+        grp['tag'] = group.tag
+        grp['image'] = group.image
+        result.append(grp)
+
+    return json.dumps(result)
