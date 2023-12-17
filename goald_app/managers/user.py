@@ -46,7 +46,7 @@ class UserManager:
                 ).exists()
 
             return User.objects.filter(id=kwds["user_id"]).exists()
-        
+
         if "login" in kwds:
             return User.objects.filter(login=kwds["login"]).exists()
 
