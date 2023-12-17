@@ -3,7 +3,7 @@ File for defining handlers for group.image in Django notation
 """
 
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 
 from goald_app.managers.common import DoesNotExist
 from goald_app.managers.report import ReportManager
