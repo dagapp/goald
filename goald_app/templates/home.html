@@ -17,12 +17,12 @@
     </div>
     <div class="container">
         <div id="groups">
-            <div class="shadow">
+            <div id="group-container" class="shadow">
             <h2 class="group-title">Группы</h2>
             {% for group in groups%}
             </li>
             <div class="shadow">
-                <a href="{% url 'group' group_id=group.id %}" class="group-card">
+                <a class="group-card">
                     <div class="avatar">
                         <img src="{{ group.image.url }}" alt="Аватар">
                     </div>
