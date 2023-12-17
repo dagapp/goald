@@ -36,6 +36,20 @@ class GroupManager:
         return ManagerResult(False, "Group doesnt exist!")
 
     @staticmethod
+    def get_all_by_user_id(user_id: int) -> ManagerResult:
+        '''
+        Get all groups by given user_id
+        '''
+        try:
+            return ManagerResult(
+                True, "Groups found", Group.objects.filter(users__id=user_id)
+            )
+        except Group.DoesNotExist:
+            pass
+
+        return ManagerResult(False, "No groups found!")
+
+    @staticmethod
     def exists(group_id: int) -> ManagerResult:
         '''
         Check if group exists
