@@ -10,6 +10,7 @@ from goald_app.managers.common import AlreadyExists
 from goald_app.managers.group import GroupManager
 from goald_app.managers.image import ImageManager
 from django.http import JsonResponse
+import json
 
 
 def create(request):
@@ -17,31 +18,42 @@ def create(request):
     Handler to create group
     """
     if not request.POST:
-        return redirect("home")
+        return JsonResponse(
+            {"Result" : "Bad", 
+            "msg": "not POST"}
+            )
 
-    if not "group_name" in request.POST or not "privacy_mode" in request.POST:
-        return redirect("home")
+    data = json.loads(request.body)
+
+    if not "group_name" in data or not "privacy_mode" in data:
+        return JsonResponse(
+            {"Result" : "Bad", 
+            "msg": "group_name or privacy_mode does not exist in request"}
+            )
 
     image_path = "group/default.jpg"
-    if request.POST.get("group_avatar", None) != "":
+    if data["group_avatar"] != "":
         image_path = ImageManager.store(request.FILES["group_avatar"])
 
-    selected_privacy_mode = request.POST.get("privacy_mode", None)
+    selected_privacy_mode = data["privacy_mode"]
     is_public = False
     if selected_privacy_mode == "public":
         is_public = True
 
     try:
         GroupManager.create(
-            name=request.POST["group_name"],
+            name=data["group_name"],
             image=image_path,
             leader_id=request.session["id"],
             is_public=is_public,
         )
     except AlreadyExists:
-        messages.error(request, "Group already exists")
+        return JsonResponse(
+            {"Result" : "Bad", 
+            "msg": "group already exists"}
+            )
 
-    return redirect("home")
+    return JsonResponse({"Result" : "Ok"})
 
 
 def view(request, group_id):
