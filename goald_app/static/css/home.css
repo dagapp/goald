@@ -312,6 +312,54 @@ button:hover {
   margin-bottom: 20px;
 }
 
+.group-info-participants-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.group-info-participants {
+  margin-left: 50px;
+}
+
+.group-info-participants-name {
+  width: 300px;
+  height: 100px;
+  overflow: auto;
+  border: 1px solid #ddd; /* Добавлены границы для наглядности */
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group-info-participants h2{
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.group-info-participants-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.group-info-participants {
+  margin-left: 50px;
+}
+
+.group-info-participants-name {
+  width: 300px;
+  height: 100px;
+  overflow: auto;
+  border: 1px solid #ddd; /* Добавлены границы для наглядности */
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group-info-participants h2{
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Helvetica', sans-serif;
+}
+
 .add-image-button {
   display: flex;
   justify-content: center;
@@ -322,3 +370,86 @@ button:hover {
   color: #fff;
   cursor: pointer;
 }
+
+.group-info-button {
+  margin-left: 30px;
+  padding-bottom: 10px;
+}
+  
+  .modalUser, 
+  .modalGoal{
+    display: none;
+    border: 1px solid #ccc;
+    background-color: #fefefe;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: 25%; 
+    height: 30%; 
+    z-index: 10000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;  
+  }
+  
+  .modal {
+    display: none;
+    border: 1px solid #ccc;
+    background-color: #fefefe;
+    padding: 30px;
+    margin-bottom: 10px;
+    width: 70%; 
+    height: 30%; 
+    z-index: 10000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;  
+  }
+
+  .openModalUser:hover, 
+  .openModalGoal:hover,
+  .openModal:hover{
+    background-color: #45a049;
+  }
+  
+  .modalUser-content, 
+  .modalGoal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    height: auto;
+  }
+  
+  
+  .close-buttonUser, 
+  .close-buttonGoal,
+  .close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close-buttonUser:hover,
+  .close-buttonUser:focus,
+  .close-buttonGoal:hover,
+  .close-buttonGoal:focus,
+  .close-button:hover,
+  .close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }

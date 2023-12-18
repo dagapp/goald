@@ -3,6 +3,11 @@
         <script>alert("{{ message }}");</script>
     {% endfor %}
 {% endif %}
+
+<head>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+
 <form action="{{ form_action }}" method=post>{% csrf_token %}
     <div class="container">
         <h1>Register</h1>
