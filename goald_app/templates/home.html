@@ -67,12 +67,18 @@
                             <h2>Ваня</h2>
                             <h2>Ваня</h2>
                         </div>
-                </div>  
+                    </div>  
+                </div>
+                <div class="group-info-button">
+                    <button id="openModalUser">Добавить участинка</button>
                 </div>
             </div>
             <div class="shadow">
             <div id="goals">
                 <h2 class="goals-title">Цели</h2>
+                <div class="group-info-button">
+                    <button id="openModalGoal">Добавить цель</button>
+                </div>
                 <div class="goals-container ">
                     <div class="goals-card">
                         <h2>Подготовить проект </h2>
@@ -105,7 +111,6 @@
 
 
     <div id="modal" class="modal">
-        <div class="modal-content">
             <span class="close-button">&times;</span>
             <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label for="group-name">
@@ -126,10 +131,35 @@
                 <button id="submit">Применить изменения</button>
             </form>
         </select>
-        </div>
     </div>
-    </body>
+
+    <div id="modalGoal" class="modalGoal">
+        <span class="close-buttonGoal">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Название цели</label>
+            <input type="text" name="name" required><br><br>        
+            <button type="submit">Добавить цель</button>
+        </form>
+    </div>
+
+    <div id="modalUser" class="modalUser">
+        <span class="close-buttonUser">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Имя участника</label>
+            <input type="text" name="name" required><br><br>        
+            <button type="submit">Добавить участника</button>
+        </form>
+    </div>
+</body>
 
 <script>
     setupModal("modal", "openModal", "close-button");
+</script>
+
+<script>
+    setupModal("modalGoal", "openModalGoal", "close-buttonGoal");
+</script>
+
+<script>
+    setupModal("modalUser", "openModalUser", "close-buttonUser");
 </script>
