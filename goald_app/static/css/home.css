@@ -314,6 +314,30 @@ button:hover {
   margin-left: 20px;
 }
 
+.group-info-participants-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.group-info-participants {
+  margin-left: 50px;
+}
+
+.group-info-participants-name {
+  width: 300px;
+  height: 100px;
+  overflow: auto;
+  border: 1px solid #ddd; /* Добавлены границы для наглядности */
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group-info-participants h2{
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Helvetica', sans-serif;
+}
+
 .add-image-button {
   display: flex;
   justify-content: center;
