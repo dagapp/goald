@@ -18,42 +18,42 @@ def create(request):
     Handler to create group
     """
     if not request.POST:
-        return JsonResponse(
-            {"Result" : "Bad", 
-            "msg": "not POST"}
-            )
+        return JsonResponse({
+            "result" : "error", 
+            "message": "wrong HTTP method"
+        })
 
     data = json.loads(request.body)
 
-    if not "group_name" in data or not "privacy_mode" in data:
-        return JsonResponse(
-            {"Result" : "Bad", 
-            "msg": "group_name or privacy_mode does not exist in request"}
-            )
+    if not "name" in data or not "is_private" in data:
+        return JsonResponse({
+            "result" : "error", 
+            "message": "group_name or privacy_mode doesn't exist in request"
+        })
 
     image_path = "group/default.jpg"
-    if data["group_avatar"] != "":
-        image_path = ImageManager.store(request.FILES["group_avatar"])
+    if data["image"] != "":
+        image_path = ImageManager.store(request.FILES["image"])
 
-    selected_privacy_mode = data["privacy_mode"]
+    selected_privacy_mode = data["is_private"]
     is_public = False
     if selected_privacy_mode == "public":
         is_public = True
 
     try:
         GroupManager.create(
-            name=data["group_name"],
+            name=data["name"],
             image=image_path,
             leader_id=request.session["id"],
             is_public=is_public,
         )
     except AlreadyExists:
-        return JsonResponse(
-            {"Result" : "Bad", 
-            "msg": "group already exists"}
-            )
+        return JsonResponse({
+            "result" : "error", 
+            "message": "group already exists"
+        })
 
-    return JsonResponse({"Result" : "Ok"})
+    return JsonResponse({"result" : "ok"})
 
 
 def view(request, group_id):

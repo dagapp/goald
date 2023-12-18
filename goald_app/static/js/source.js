@@ -19,6 +19,8 @@ var Group = function (group) {
     self.tag = group.tag;
     self.name = group.name;
     self.image = group.image;
+    self.leader = group.leader;
+    self.is_private = group.is_private;
 };
 
 var Goal = function (goal) {
@@ -40,6 +42,8 @@ var Manager = function () {
     var api = new API();
 
     self.init = function () {
+        group_list.init(api.create_group);
+
         group_list.update(api.get_group_list, function (group_id) {
             group_profile.update(api.get_group_info, group_id);
         });
@@ -49,6 +53,12 @@ var Manager = function () {
 
 var GroupList = function () {
     var self = this;
+
+    self.init = function (create) {
+        $("#group-create").on("click", function () {
+            create().then(r => self.update());
+        });
+    };
 
     self.update = async function (get, action) {
         clear();
@@ -167,11 +177,11 @@ var API = function () {
             });
     }
 
-    function post(url) {
+    function post(url, data) {
         return fetch(url, {
             method: "POST",
             headers: {...headers},
-            body: data
+            body: JSON.stringify(data)
         }).then(r => {
             if (r.ok) {
                 return r.json();
@@ -223,5 +233,13 @@ var API = function () {
                 }
             );
         return result;
+    };
+
+    self.create_group = async function (group) {
+        return await post("group/create", {
+            "name": group.name,
+            "image": group.image,
+            "is_private": group.is_private,
+        });
     };
 };
