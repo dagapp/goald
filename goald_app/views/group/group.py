@@ -48,18 +48,20 @@ def view(request, group_id):
     """
     Handler to serialize group to json
     """
-    result = {}
     group = GroupManager.get(group_id=group_id)
-    result['name'] = group.name
-    result['tag'] = group.tag
-    result['is_public'] = group.is_public
-    result['image'] = group.image.url
-    result['users'] = [ {'login': user.login} for user in group.users.all() ]
-    result['leader_login'] = group.leader.login
-    result['goals'] = [goal.name for goal in group.goals_group.all()]
-    result['events'] = [event.name for event in group.events_group.all()]
 
-    return JsonResponse(result)
+    return JsonResponse({
+        "group": {
+            "name": group.name,
+            "tag": group.tag,
+            "is_public": group.is_public,
+            "image": group.image.url,
+            "users": [ {"login": user.login} for user in group.users.all() ],
+            "leader_login": group.leader.login,
+        },
+        "goals": [goal.name for goal in group.goals_group.all()],
+        "events": [event.name for event in group.events_group.all()],
+    })
 
 def list(request):
     """
@@ -67,12 +69,12 @@ def list(request):
     """
     groups = GroupManager.get_all_by_user_id(user_id=request.session['id'])
     result = []
-    grp = {}
     for group in groups:
-        grp['id'] = group.id
-        grp['name'] = group.name
-        grp['tag'] = group.tag
-        grp['image'] = group.image.url
-        result.append(grp)
+        result.append({
+            "id": group.id,
+            "name": group.name,
+            "tag": group.tag,
+            "image": group.image.url,
+        })
 
     return JsonResponse(result, safe=False)

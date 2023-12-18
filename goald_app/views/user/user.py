@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from goald_app.managers.user import UserManager
+from goald_app.managers.goal import GoalManager
 from django.http import JsonResponse
 
 def change(request):
@@ -58,11 +59,12 @@ def summary(request):
     """
     Handler to serialize user to json
     """
+    '''
     result = {}
+
     user = UserManager.get(user_id=request.session['id'])
+
     result['login'] = user.login
-    result['name'] = user.name
-    result['second_name'] = user.second_name
 
     result['goals'] = []
     for group in user.groups.all(): 
@@ -74,5 +76,10 @@ def summary(request):
               'deadline': goal.deadline} 
               for goal in group.goals_group.all()]
               )
-
-    return JsonResponse(result)
+    '''
+    return JsonResponse({
+        "goals": [{
+            "name": goal.name,
+        } for goal in GoalManager.get_all(user_id=request.session["id"])],
+        "events": [],
+    })

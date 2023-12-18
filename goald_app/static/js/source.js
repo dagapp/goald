@@ -19,9 +19,17 @@ var Group = function (group) {
     self.tag = group.tag;
     self.name = group.name;
     self.image = group.image;
-    self.goals = group.goals;
-    self.events = group.events;
 };
+
+var Goal = function (goal) {
+    var self = this;
+
+    self.name = goal;
+};
+
+var Event = function (event) {
+    var self = this;
+}
 
 var Manager = function () {
     var self = this;
@@ -33,9 +41,9 @@ var Manager = function () {
 
     self.init = function () {
         group_list.update(api.get_group_list, function (group_id) {
-            group_profile.update(api.get_group_info);
+            group_profile.update(api.get_group_info, group_id);
         });
-        group_profile.update(api.get_full_info);
+        //group_profile.update(api.get_full_info);
     };
 };
 
@@ -78,7 +86,7 @@ var GroupList = function () {
                     </a>
                 </li>
             `)
-            .bind("click", function () { 
+            .bind("click", function () {
                 return action(group.id)
             });
     };
@@ -87,36 +95,54 @@ var GroupList = function () {
 var GroupProfile = function() {
     var self = this;
 
-    self.update = async function (get, action) {
-        get().then(group => 
-            showGroup(group)
-        );
+    var goals_list = new GoalsList();
+
+    self.update = async function (get, group_id) {
+        get(group_id).then(result => {
+            showGroup(result["group"]);
+            showGoals(result["goals"]);
+        });
     };
 
     function showGroup (group) {
-        if(group.$('#group-info-container').css('display') == 'none') {
-            $('#group-info-container').show();
+        if ($('#group-info-container').css('display') == 'none') {
+            $('#group-info-container').slideDown();
         }
         $("#group-info-image").attr("src", group.image);
-        $("#group-info-tag").text(group.tag);
-        $("#group-info-name").text(group.name);
+        $(".group-info-tag").text(group.tag);
+        $(".group-info-name").text(group.name);
+    }
+
+    function showGoals (goals) {
+        goals_list.update(goals);
     }
 };
 
 var GoalsList = function() {
     var self = this;
 
-    self.update = async function () {
-
+    self.update = function (goals) {
+        clear();
+        goals.forEach(goal => addGoal(goal));
     };
 
-    function addGoal () {
-        
+    function addGoal (goal) {
+        $(".goals-container").append(element(goal));
     }
 
     function clear () {
-
+        $(".goals-card").remove();
     }
+
+    function element (goal) {
+        return $("<div>")
+            .addClass("goals-card")
+            .html(`
+                <h2>${goal.name}</h2>
+                <span class="active-status"></span>
+                <p>${goal.is_active ? "активна" : "не активна"} до ${goal.deadline}</p>
+            `);
+    };
 }
 
 var API = function () {
@@ -127,7 +153,7 @@ var API = function () {
     };
 
     function get(url) {
-        return fetch("group/list", {
+        return fetch(url, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -188,8 +214,12 @@ var API = function () {
     self.get_group_info = async function (group_id) {
         let result = await get(`group/${group_id}`)
             .then(
-                g => {
-                    return new Group(g);
+                r => {
+                    var goals = []
+                    r.goals.forEach(g => {
+                        goals.push(new Goal(g));
+                    });
+                    return {"group": new Group(r.group), "goals": goals};
                 }
             );
         return result;

@@ -182,11 +182,8 @@ button:hover {
   display: none;
   position: fixed;
   z-index: 1;
-  left: 0;
-  top: 0;
   width: 50%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -235,6 +232,7 @@ button:hover {
 .goals-group-event-container{
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .personal-area {
@@ -312,6 +310,7 @@ button:hover {
 .group-info-details {
   display: flex;
   margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .add-image-button {
