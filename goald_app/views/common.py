@@ -17,7 +17,10 @@ def home(request):
     return render(
         request,
         "home.html",
-        {"groups": GroupManager.get_all_by_user_id(request.session["id"])},
+        {
+            "login": UserManager.get(user_id=request.session["id"]).login, 
+            "groups": GroupManager.get_all_by_user_id(request.session["id"])
+        },
     )
 
 
