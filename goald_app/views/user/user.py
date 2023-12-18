@@ -54,7 +54,7 @@ def delete(request):
 
     return redirect("login")
 
-def view(request):
+def summary(request):
     """
     Handler to serialize user to json
     """

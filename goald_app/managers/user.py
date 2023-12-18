@@ -36,18 +36,18 @@ class UserManager:
                     return User.objects.get(id=kwds["user_id"], login=kwds["login"])
                 except User.DoesNotExist as e:
                     raise DoesNotExist from e
-            
+
             try:
                 return User.objects.get(id=kwds["user_id"])
             except User.DoesNotExist as e:
                 raise DoesNotExist from e
-        
+
         if "login" in kwds:
             try:
                 return User.objects.get(login=kwds["login"])
             except User.DoesNotExist as e:
                 raise DoesNotExist from e
-        
+
         raise IncorrectData
 
     @staticmethod

@@ -7,72 +7,117 @@ $(document).ready(function () {
 
     init();
 
-    $("#logo").on("click", () => {
+    $(".logo").on("click", () => {
         init();
-    });
-
-    $("#openModal").on("click", () => {
-
     });
 });
 
-var Manager = function () {
+var Group = function (group) {
     var self = this;
 
-    var groups = [];
+    self.id = group.id;
+    self.tag = group.tag;
+    self.name = group.name;
+    self.image = group.image;
+    self.goals = group.goals;
+    self.events = group.events;
+};
+
+var Manager = function () {
+    var self = this;
 
     var group_list = new GroupList();
     var group_profile = new GroupProfile();
 
     var api = new API();
 
-    var init = function () {
-        group_list.update(api.get_group_list);
-        group_profile.update(api.get_group_info);
+    self.init = function () {
+        group_list.update(api.get_group_list, function (group_id) {
+            group_profile.update(api.get_group_info);
+        });
+        group_profile.update(api.get_full_info);
     };
 };
 
 var GroupList = function () {
     var self = this;
 
-    self.update = function (group_list) {
-        group_list.forEach(group => {
-            addGroup(group);
-        });
+    self.update = async function (get, action) {
+        clear();
+        get().then(groups => 
+            groups.forEach(group => {
+                addGroup(group, action);
+            })
+        );
     };
 
-    function addGroup (group) {
-        $("#group-container")
-            .append(
-                element(group.id, group.tag, group.name, group.image_url, )
+    function addGroup (group, action) {
+        $(".group-title")
+            .after(
+                element(group, action)
             );
     }
 
-    function element (id, tag, name, image_url, action) {
-        return $("<button>")
-            .attr({
-                type: "button",
-            })
-            .addClass("groupListButton")
-            .html("")
-            .bind("click", action())
+    function clear() {
+        $(".group-list-element").remove();
+    }
+
+    function element (group, action) {
+        return $("<div>")
+            .addClass("shadow group-list-element")
+            .html(`
+                </li>
+                    <a class="group-card">
+                        <div class="avatar">
+                            <img src="${group.image}" alt="avatar">
+                        </div>
+                        <div class="group-info">
+                            <h2>${group.name}</h2>
+                            <p>${group.tag}</p>
+                        </div>
+                    </a>
+                </li>
+            `)
+            .bind("click", function () { 
+                return action(group.id)
+            });
     };
 };
 
 var GroupProfile = function() {
     var self = this;
+
+    self.update = async function (get, action) {
+        get().then(group => 
+            showGroup(group)
+        );
+    };
+
+    function showGroup (group) {
+        if(group.$('#group-info-container').css('display') == 'none') {
+            $('#group-info-container').show();
+        }
+        $("#group-info-image").attr("src", group.image);
+        $("#group-info-tag").text(group.tag);
+        $("#group-info-name").text(group.name);
+    }
 };
 
-var Group = function () {
+var GoalsList = function() {
     var self = this;
 
-    var id = 0;
-    var tag = "";
-    var type = 0;
-    var name = "";
-    var image_url = "";
-    var leader_id = 0;
-};
+    self.update = async function () {
+
+    };
+
+    function addGoal () {
+        
+    }
+
+    function clear () {
+
+    }
+}
 
 var API = function () {
     var self = this;
@@ -82,19 +127,16 @@ var API = function () {
     };
 
     function get(url) {
-        return fetch(url)
-            .then(r => {
+        return fetch("group/list", {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+            },
+        }).then(r => {
                 if (r.ok) {
-                    return r.json;
+                    return r.json();
                 } else {
                     throw new Error(`Bad response: ${r.status} ${r.statusText}`);
-                }
-            })
-            .then(d => {
-                if (d.ok) {
-                    return d.result;
-                } else {
-                    throw new Error(`Empty result`);
                 }
             });
     }
@@ -128,7 +170,15 @@ var API = function () {
     }
 
     self.get_group_list = async function () {
-        return await get("group/list");
+        let groups = await get("group/list")
+            .then(g => {
+                group_list = [];
+                g.forEach(group => {
+                    group_list.push(new Group(group));
+                })
+                return group_list;
+            });
+        return groups;
     };
 
     self.get_full_info = async function () {
@@ -136,6 +186,12 @@ var API = function () {
     };
 
     self.get_group_info = async function (group_id) {
-        return await get(`group/${group_id}`);
+        let result = await get(`group/${group_id}`)
+            .then(
+                g => {
+                    return new Group(g);
+                }
+            );
+        return result;
     };
 };

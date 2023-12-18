@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="static/css/home.css">
     <link rel="stylesheet" href="{% load static %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/source.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>
 </head>
 
@@ -18,28 +19,28 @@
     <div class="container">
         <div id="groups">
             <div id="group-container" class="shadow">
-            <h2 class="group-title">Группы</h2>
-            {% for group in groups%}
-            </li>
-            <div class="shadow">
-                <a class="group-card">
-                    <div class="avatar">
-                        <img src="{{ group.image.url }}" alt="Аватар">
+                <h2 class="group-title">Группы</h2>
+                <!--{% for group in groups%}
+                </li>
+                    <div class="shadow">
+                        <a class="group-card">
+                            <div class="avatar">
+                                <img src="{{ group.image.url }}" alt="Аватар">
+                            </div>
+                            <div class="group-info">
+                                <h2>{{ group.name }}</h2>
+                                <p>{{ group.tag }}</p>
+                            </div>
+                        </a>
                     </div>
-                    <div class="group-info">
-                        <h2>{{ group.name }}</h2>
-                        <p>{{ group.tag }}</p>
-                    </div>
-                </a>
-            </div>
-            </li>
-            {% endfor %}
-            <button id="openModal">Создать группу</button>
-            <button>Вступить в группу</button><br>
+                </li>
+                {% endfor %}-->
+                <button id="openModal">Создать группу</button>
+                <button>Вступить в группу</button><br>
         </div>
         </div>
         <div class="goals-group-event-container">
-            <div class="shadow">
+            <div id="group-info-container" class="shadow" style="display: none;">
             <h2 class="group-info-title">Информация о группе</h2>
             <div class="group-info-details">
                 <div class="group-info-image" id="group-info-image-container">
