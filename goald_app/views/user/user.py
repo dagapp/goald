@@ -1,12 +1,14 @@
 """
 File for defining handlers for group in Django notation
 """
+
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 from goald_app.managers.user import UserManager
 from goald_app.managers.goal import GoalManager
-from django.http import JsonResponse
+
 
 def change(request):
     """
@@ -28,9 +30,7 @@ def change(request):
         return redirect("home")
 
     # Call UserManager.change to change user"s password
-    UserManager.change_password(
-        request.session["id"], request.POST["password"]
-    )
+    UserManager.change_password(request.session["id"], request.POST["password"])
 
     return redirect("home")
 
@@ -55,31 +55,19 @@ def delete(request):
 
     return redirect("login")
 
+
 def summary(request):
     """
     Handler to serialize user to json
     """
-    '''
-    result = {}
-
-    user = UserManager.get(user_id=request.session['id'])
-
-    result['login'] = user.login
-
-    result['goals'] = []
-    for group in user.groups.all(): 
-        result['goals'].extend(
-            [{'group_name': group.name, 
-              'group_tag': group.tag, 
-              'name': goal.name,
-              'is_active': goal.is_active,
-              'deadline': goal.deadline} 
-              for goal in group.goals_group.all()]
-              )
-    '''
-    return JsonResponse({
-        "goals": [{
-            "name": goal.name,
-        } for goal in GoalManager.get_all(user_id=request.session["id"])],
-        "events": [],
-    })
+    return JsonResponse(
+        {
+            "goals": [
+                {
+                    "name": goal.name,
+                }
+                for goal in GoalManager.get_all(user_id=request.session["id"])
+            ],
+            "events": [],
+        }
+    )
