@@ -8,6 +8,7 @@ from django.http import JsonResponse
 
 from goald_app.managers.common import AlreadyExists
 from goald_app.managers.group import GroupManager
+from goald_app.managers.user import UserManager, dataclass_encoder
 from goald_app.managers.image import ImageManager
 
 
@@ -58,33 +59,12 @@ def view(request, group_id):
     """
     Handler to serialize group to json
     """
-    group = GroupManager.get(group_id=group_id)
-
-    return JsonResponse({
-        "group": {
-            "name": group.name,
-            "tag": group.tag,
-            "is_public": group.is_public,
-            "image": group.image.url,
-            "users": [ {"login": user.login} for user in group.users.all() ],
-            "leader_login": group.leader.login,
-        },
-        "goals": [goal.name for goal in group.goals_group.all()],
-        "events": [event.name for event in group.events_group.all()],
-    })
+    group = UserManager.get_group(user_id=request.session['id'], group_id=group_id)
+    return JsonResponse(data=group, safe=False, encoder=dataclass_encoder)
 
 def list(request):
     """
     Handler to serialize groups to json
     """
-    groups = GroupManager.get_all_by_user_id(user_id=request.session['id'])
-    result = []
-    for group in groups:
-        result.append({
-            "id": group.id,
-            "name": group.name,
-            "tag": group.tag,
-            "image": group.image.url,
-        })
-
-    return JsonResponse(result, safe=False)
+    groups = UserManager.get_groups(user_id=request.session['id'])
+    return JsonResponse(data=groups, safe=False, encoder=dataclass_encoder)

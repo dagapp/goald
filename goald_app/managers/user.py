@@ -6,15 +6,92 @@ from bcrypt import gensalt, hashpw
 
 from goald_app.managers.common import DoesNotExist, AlreadyExists, IncorrectData
 
-from goald_app.models import User
+from goald_app.models import User, Group, Goal, Event, Report
+
+import dataclasses
+import json
+from dataclasses import dataclass
 
 LENGTH_SALT = 29
 LENGTH_HASH = 60
 
+class dataclass_encoder(json.JSONEncoder):
+    def default(self, o):
+        if dataclasses.is_dataclass(o):
+            return dataclasses.asdict(o)
+        return super().default(o)
+
+@dataclass
+class UserResult:
+    login: str
+    name: str
+    second_name: str
+
+    def __init__(self, user: User):
+        self.login = user.login
+        self.name = user.name
+        self.second_name = user.second_name
+
+@dataclass
+class EventResult:
+    type: int
+    text: str
+    timestamp: str
+
+    def __init__(self, event: Event):
+        self.type = event.type
+        self.text = event.text
+        self.timestamp = str(event.timestamp)
+
+@dataclass
+class ReportResult:
+    proof: str
+    text: str
+
+    def __init__(self, report: Report):
+        self.proof = report.proof.url
+        self.text = report.text
+
+@dataclass
+class GoalResult:
+    name: str
+    is_active: bool
+    deadline: str
+    alert_period: str
+    events: list[EventResult]
+    reports: list[ReportResult]
+
+    def __init__(self, goal: Goal):
+        self.name = goal.name
+        self.is_active = goal.is_active
+        self.deadline = str(goal.deadline)
+        self.alert_period = str(goal.alert_period)
+        self.events = [EventResult(event) for event in goal.events_goal.all()]
+        self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
+
+@dataclass
+class GroupResult:
+    id: int
+    tag: str
+    name: str
+    image: str
+    users: list[UserResult]
+    goals: list[GoalResult]
+    events: list[EventResult]
+
+    def __init__(self, group: Group):
+        self.id = group.id
+        self.tag = group.tag
+        self.name = group.name
+        self.image = group.image.url
+        self.users = [UserResult(user) for user in group.users.all()]
+        self.goals = [GoalResult(goal) for goal in group.goals_group.all().prefetch_related('events_goal', 'reports_goal')]
+        self.events = [EventResult(event) for event in group.events_group.all()]
+
 
 class UserManager:
     """
-    Manager for handling users in table
+    Manager for handling
     """
 
     @staticmethod
@@ -118,4 +195,26 @@ class UserManager:
         try:
             User.objects.filter(id=user_id).delete()
         except User.DoesNotExist as e:
+            raise DoesNotExist from e
+
+    @staticmethod
+    def get_groups(user_id: int) -> list[GroupResult]:
+        """
+        Get all groups by given user_id
+        """
+        try:
+            groups = User.objects.get(id=user_id).groups.all().prefetch_related('users', 'goals_group', 'events_group')
+            return [GroupResult(group) for group in groups]
+        except Group.DoesNotExist as e:
+            raise DoesNotExist from e
+
+    @staticmethod
+    def get_group(user_id: int, group_id: int) -> GroupResult:
+        """
+        Get group by given user_id and group_id
+        """
+        try:
+            group = User.objects.get(id=user_id).groups.all().prefetch_related('users', 'goals_group', 'events_group').get(id=group_id)
+            return GroupResult(group)
+        except Group.DoesNotExist as e:
             raise DoesNotExist from e
