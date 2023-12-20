@@ -10,18 +10,18 @@ from goald_app import views
 urlpatterns = [
     path("", views.common.home, name="home"),
 
-    #auth handlers
+    # auth handlers
     path("login",    views.common.login,    name="login"),
     path("register", views.common.register, name="register"),
     path("logout",   views.common.logout,   name="logout"),
 
-    #user handlers
+    # user handlers
     path("user/summary", views.user.user.summary, name="user/summary"),
 
     path("user/change",  views.user.user.change,  name="user/change" ),
     path("user/delete",  views.user.user.delete,  name="user/delete" ),
 
-    #group handlers
+    # group handlers
     path("group/<int:group_id>",              views.group.group.view,   name="group"             ),
     path("group/list",                        views.group.group.list,   name="group/list"        ),
 
@@ -30,7 +30,7 @@ urlpatterns = [
     path("group/<int:group_id>/users/add",    views.group.user.add,     name="group/users/add"   ),
     path("group/<int:group_id>/goals/add",    views.group.goal.add,     name="group/goals/add"   ),
 
-    #report handlers
+    # report handlers
     path(
         "group/<int:goal_id>/reports/create",
         views.report.report.create,
