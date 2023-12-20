@@ -122,55 +122,72 @@
             </div> 
         </div>
     </div>
-    <div id="modal" class="modal">
-        <span class="close-button">&times;</span>
-        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <label for="group-name">
-                    Имя группы:  
-                    <input type="text" id="group_name" name="group_name">
-                </label>
-                <label for="avatar">
-                    Аватар:
-                    <input type="file" name="group_avatar" accept="static/images/groupProfiles/*">
-                </label>
-                <label for="privacy">
-                    Режим приватности:
-                    <select id="privacy_mode" name="privacy_mode">
-                        <option value="public">Публичный</option>
-                        <option value="private">Приватный</option>
-                    </select>
-                </label>
-            <button id="create-group-button">Создать группы</button>
-        </form>
-    </div>
-
-    <div id="modalGoal" class="modalGoal">
-        <span class="close-buttonGoal">&times;</span>
-        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-            <label>Название цели</label>
-            <input type="text" name="name" required><br><br>        
-            <button id="add-goal-button" type="submit">Добавить цель</button>
-        </form>
-    </div>
-
-    <div id="modalUser" class="modalUser">
-        <span class="close-buttonUser">&times;</span>
-        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-            <label>Имя участника</label>
-            <input type="text" name="name" required><br><br>        
-            <button id="add-user-button" type="submit">Добавить участника</button>
-        </form>
-    </div>
-
-    <script>
-        setupModal("modal", "openModal", "close-button");
-    </script>
     
+    <!--models windows-->
+    <div id="blackout" class="blackout"></div>
+    <div id="groupPlusPressed" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('groupPlusPressed')">&times;</button>
+        </div>
+        <form>
+            <input class="form-button"  value="Создать группу" onclick="openCreateGroupWindow()" />
+            <input class="form-button"  value="Вступить в группу" />
+        </form>
+    </div>
+
+    <div id="createGroupWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('createGroupWindow')">&times;</button>
+        </div>
+        <h4>Создание группы</h4>
+        <form>
+            <input type="text" name="name" class="lineedit form-control" placeholder="Название группы"/>
+            <input type="text" name="tag" class="lineedit form-control" placeholder="Тэг"/>
+            <input type="text" name="description" class="lineedit form-control" placeholder="Описание группы"/>
+            <select name="pets" id="pet-select">
+                <option value="mode">Приватность</option>
+                <option value="public">Публичная</option>
+                <option value="private">Приватная</option>
+            </select>
+            <label for="avatar" class="select-file-button" style="font-weight: normal; font-size: 0.9rem;">
+               Выберите аватар
+            </label>
+            <input id="avatar" type="file" style="display: none;">
+            
+            {% comment %} <input type="password" name="password" class="lineedit form-control" placeholder="Парооль"/> {% endcomment %}
+            <input class="form-button"  value="Создать группу" />
+        </form>
+    </div>
+
     <script>
-        setupModal("modalGoal", "openModalGoal", "close-buttonGoal");
-    </script>
-    
-    <script>
-        setupModal("modalUser", "openModalUser", "close-buttonUser");
+        function setBlackout() {
+            var blackout = document.getElementById('blackout');
+            blackout.style.display = 'block';
+        }
+
+        function removeBlackout() {
+            var blackout = document.getElementById('blackout');
+            blackout.style.display = 'none';
+        }
+
+        function openModal() {
+            var modal = document.getElementById('groupPlusPressed');
+            modal.style.display = 'block';
+            setBlackout();
+        }
+        
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            removeBlackout();
+        }
+
+        function openCreateGroupWindow() {
+            closeModal('groupPlusPressed');
+            document.getElementById('groupPlusPressed').style.display = 'none';
+            var modal = document.getElementById('createGroupWindow');
+            modal.style.display = 'block';
+            setBlackout();
+        }
     </script>
 </body>
