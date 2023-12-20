@@ -9,83 +9,119 @@
 </head>
 
 <body>
-    <div id="header" class="shadow">
-        <div id="logo">
-            <img src="/static/img/logo.png" alt="logo">
+    <div>
+        <div id="header" class="shadow">
+            <div id="logo">
+                <img src="/static/img/logo.png" alt="logo">
+            </div>
+            <div id="my-account" class="button shadow">
+                <img src="/static/img/person.png" alt="icon">
+                <span>{{ login }}</span>
+            </div>
         </div>
-        <div id="my-account" class="button shadow">
-            <img src="/static/img/person.png" alt="icon">
-            <span>{{ login }}</span>
+        <div id="container">
+            <div id="list-container">
+                <div id="group-list" class="list shadow">
+                    <div class="title">
+                        <h2 class="title-text">Группы</h2>
+                        <div class="buttons">
+                            <h2 class="alter-button grey-button">+</h2>
+                            <h2 class="alter-button grey-button">-</h2>
+                        </div>
+                    </div>
+                    <div class="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет групп</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="goal-list" class="list shadow">
+                    <div class="title">
+                        <h2 class="title-text">Цели</h2>
+                        <div class="buttons">
+                            <h2 class="alter-button grey-button">+</h2>
+                            <h2 class="alter-button grey-button">-</h2>
+                        </div>
+                    </div>
+                    <div id="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет целей</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <div id="entity" style="display: none;">
+                    <div id="entity-info" class="shadow">
+                        <div class="info">
+                            <div class="title">
+                                <h2 class="title-text">Группа</h2>
+                            </div>
+                            <div id="group-info">
+                                <div id="group-info-image-container">
+                                    <img id="group-info-image" alt="image">
+                                </div>
+                                <div id="group-info-name-container">
+                                    <h2 id="group-info-name" class="title-text"></h2>
+                                    <h4 id="group-info-tag" class="title-text"></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info" style="display: none;">
+                            <div class="title">
+                                <h2 class="title-text">Цель</h2>
+                            </div>
+                            <div>
+                                <div id="goal-info-name-container">
+                                    <h2 id="goal-info-name" class="title-text">goal</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="participant-list" class="list shadow">
+                        <div class="title">
+                            <h2 class="title-text">Участники</h2>
+                            <div class="buttons">
+                                <h2 class="alter-button grey-button">+</h2>
+                                <h2 class="alter-button grey-button">-</h2>
+                            </div>
+                        </div>
+                        <div id="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет участников</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="event-chat-report" class="shadow">
+                    <div id="event-chat-report-choice" class="title">
+                        <div class="event-chat-report-option grey-button" style="color: black;">
+                            <h2 class="title-text">Cобытия</h2>
+                        </div>
+                        <div class="event-chat-report-option grey-button">
+                            <h2 class="title-text">Сообщения</h2>
+                        </div>
+                        <div class="event-chat-report-option grey-button">
+                            <h2 class="title-text">Отчёты</h2>
+                        </div>
+                    </div>
+                    <div id="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет событий</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div> 
         </div>
     </div>
-    <div id="container">
-        <div id="list-container">
-            <div id="group-list" class="list shadow">
-                <div>
-                    <h2 class="title">Группы</h2>
-                    <h2 class="plus-button">+</h2>
-                </div>
-                <div id="group-list-content">
-                    <div class="list-element no-element">
-                        <h2 class="title">Нет групп</h2>
-                    </div>
-                </div>
-            </div>
-            <div id="goal-list" class="list shadow">
-                <div>
-                    <h2 id="goal-title" class="title">Цели</h2>
-                    <h2 class="plus-button">+</h2>
-                </div>
-                <div id="goal-list-content">
-                    <div class="list-element no-element">
-                        <h2 class="title">Нет целей</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="content">
-            <div id="entity" style="display: none;">
-                <div id="entity-info" class="shadow">
-                    <div>
-                        <h2 id="entity-title" class="title">Группа</h2>
-                    </div>
-                    <div>
-                        <div id="entity-info-image-container">
-                            <img id="entity-info-image" alt="image">
-                        </div>
-                        <div id="entity-info-name-container">
-                            <h2 id="entity-info-title" class="title"></h2>
-                        </div>
-                    </div>
-                </div>
-                <div id="participant-list" class="list shadow">
-                    <div>
-                        <h2 id="participant-title" class="title">Участники</h2>
-                        <h2 class="plus-button">+</h2>
-                    </div>
-                    <div id="participant-list-content">
-                        <div class="list-element no-element">
-                            <h2 class="title">Нет участников</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="event-chat-report" class="shadow">
-                <div id="event-chat-report-choice">
-                    <div class="event-chat-report-option" style="color: black;">
-                        <h2 class="title">Cобытия</h2>
-                    </div>
-                    <div class="event-chat-report-option">
-                        <h2 class="title">Сообщения</h2>
-                    </div>
-                    <div class="event-chat-report-option">
-                        <h2 class="title">Отчёты</h2>
-                    </div>
-                </div>
-            </div>  
-        </div> 
-    </div>
-
     <div id="modal" class="modal">
         <span class="close-button">&times;</span>
         <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
