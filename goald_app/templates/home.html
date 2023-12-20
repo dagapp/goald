@@ -23,7 +23,7 @@
             <div id="group-list" class="list shadow">
                 <div>
                     <h2 class="title">Группы</h2>
-                    <h2 class="plus-button">+</h2>
+                    <h2 id="plus-button-group" class="plus-button" onclick="openModal()">+</h2>
                 </div>
                 <div id="group-list-content">
                     <div class="list-element no-element">
@@ -85,4 +85,72 @@
             </div>  
         </div> 
     </div>
+    
+    <!--models windows-->
+    <div id="blackout" class="blackout"></div>
+    <div id="groupPlusPressed" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('groupPlusPressed')">&times;</button>
+        </div>
+        <form>
+            <input class="form-button"  value="Создать группу" onclick="openCreateGroupWindow()" />
+            <input class="form-button"  value="Вступить в группу" />
+        </form>
+    </div>
+
+    <div id="createGroupWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('createGroupWindow')">&times;</button>
+        </div>
+        <h4>Создание группы</h4>
+        <form>
+            <input type="text" name="name" class="lineedit form-control" placeholder="Название группы"/>
+            <input type="text" name="tag" class="lineedit form-control" placeholder="Тэг"/>
+            <input type="text" name="description" class="lineedit form-control" placeholder="Описание группы"/>
+            <select name="pets" id="pet-select">
+                <option value="mode">Приватность</option>
+                <option value="public">Публичная</option>
+                <option value="private">Приватная</option>
+            </select>
+            <label for="avatar" class="select-file-button" style="font-weight: normal; font-size: 0.9rem;">
+               Выберите аватар
+            </label>
+            <input id="avatar" type="file" style="display: none;">
+            
+            {% comment %} <input type="password" name="password" class="lineedit form-control" placeholder="Парооль"/> {% endcomment %}
+            <input class="form-button"  value="Создать группу" />
+        </form>
+    </div>
+
+    <script>
+        function setBlackout() {
+            var blackout = document.getElementById('blackout');
+            blackout.style.display = 'block';
+        }
+
+        function removeBlackout() {
+            var blackout = document.getElementById('blackout');
+            blackout.style.display = 'none';
+        }
+
+        function openModal() {
+            var modal = document.getElementById('groupPlusPressed');
+            modal.style.display = 'block';
+            setBlackout();
+        }
+        
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            removeBlackout();
+        }
+
+        function openCreateGroupWindow() {
+            closeModal('groupPlusPressed');
+            document.getElementById('groupPlusPressed').style.display = 'none';
+            var modal = document.getElementById('createGroupWindow');
+            modal.style.display = 'block';
+            setBlackout();
+        }
+    </script>
 </body>
