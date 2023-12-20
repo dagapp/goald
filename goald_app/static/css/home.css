@@ -121,10 +121,14 @@ body {
   display: flex;
 }
 
+#entity-info {
+  width: 100%;
+}
+
 #entity-info-image-container {
   width: 200px;
   height: 200px;
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -137,10 +141,6 @@ body {
 #entity-info-name-container {
   margin-top: 20px;
   text-align: center;
-}
-
-#participant-list {
-  width: 100%;
 }
 
 .active-status {

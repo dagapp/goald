@@ -178,6 +178,7 @@ var GoalsList = function() {
             .html(`
                 <div class="goal-list-title">
                     <h2 class="title">${goal.name}</h2>
+                    <h4 class="title" style="float: right; color: grey;">@group</h4>
                 </div>
                 <div class="goal-list-status">
                     <span class="${goal.is_active ? "active-status" : "notactive-status" }"></span>
