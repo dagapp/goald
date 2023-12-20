@@ -4,119 +4,173 @@
     <link rel="stylesheet" href="static/css/home.css">
     <link rel="stylesheet" href="{% load static %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/source.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>
 </head>
 
 <body>
-    <div class="logo">
-        <img src="/static/img/logo.png" alt="Logo">
-    </div>
-    <div class="personal-area">
-        <img src="/static/img/person.png" alt="Icon">
-        <span>Личный кабинет</span>
-    </div>
-    <div class="container">
-        <div id="groups">
-            <div class="shadow">
-            <h2 class="group-title">Группы</h2>
-            {% for group in groups%}
-            </li>
-            <div class="shadow">
-                <a href="{% url 'group' group_id=group.id %}" class="group-card">
-                    <div class="avatar">
-                        <img src="{{ group.image.url }}" alt="Аватар">
-                    </div>
-                    <div class="group-info">
-                        <h2>{{ group.name }}</h2>
-                        <p>{{ group.tag }}</p>
-                    </div>
-                </a>
+    <div>
+        <div id="header" class="shadow">
+            <div id="logo">
+                <img src="/static/img/logo.png" alt="logo">
             </div>
-            </li>
-            {% endfor %}
-            <button id="openModal">Создать группу</button>
-            <button>Вступить в группу</button><br>
+            <div id="my-account" class="button shadow">
+                <img src="/static/img/person.png" alt="icon">
+                <span>{{ login }}</span>
+            </div>
         </div>
+        <div id="container">
+            <div id="list-container">
+                <div id="group-list" class="list shadow">
+                    <div class="title">
+                        <h2 class="title-text">Группы</h2>
+                        <div class="buttons">
+                            <h2 class="alter-button grey-button">+</h2>
+                            <h2 class="alter-button grey-button">-</h2>
+                        </div>
+                    </div>
+                    <div class="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет групп</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="goal-list" class="list shadow">
+                    <div class="title">
+                        <h2 class="title-text">Цели</h2>
+                        <div class="buttons">
+                            <h2 class="alter-button grey-button">+</h2>
+                            <h2 class="alter-button grey-button">-</h2>
+                        </div>
+                    </div>
+                    <div id="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет целей</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <div id="entity" style="display: none;">
+                    <div id="entity-info" class="shadow">
+                        <div class="info">
+                            <div class="title">
+                                <h2 class="title-text">Группа</h2>
+                            </div>
+                            <div id="group-info">
+                                <div id="group-info-image-container">
+                                    <img id="group-info-image" alt="image">
+                                </div>
+                                <div id="group-info-name-container">
+                                    <h2 id="group-info-name" class="title-text"></h2>
+                                    <h4 id="group-info-tag" class="title-text"></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info" style="display: none;">
+                            <div class="title">
+                                <h2 class="title-text">Цель</h2>
+                            </div>
+                            <div>
+                                <div id="goal-info-name-container">
+                                    <h2 id="goal-info-name" class="title-text">goal</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="participant-list" class="list shadow">
+                        <div class="title">
+                            <h2 class="title-text">Участники</h2>
+                            <div class="buttons">
+                                <h2 class="alter-button grey-button">+</h2>
+                                <h2 class="alter-button grey-button">-</h2>
+                            </div>
+                        </div>
+                        <div id="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет участников</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="event-chat-report" class="shadow">
+                    <div id="event-chat-report-choice" class="title">
+                        <div class="event-chat-report-option grey-button" style="color: black;">
+                            <h2 class="title-text">Cобытия</h2>
+                        </div>
+                        <div class="event-chat-report-option grey-button">
+                            <h2 class="title-text">Сообщения</h2>
+                        </div>
+                        <div class="event-chat-report-option grey-button">
+                            <h2 class="title-text">Отчёты</h2>
+                        </div>
+                    </div>
+                    <div id="list-content-container">
+                        <div class="list-content">
+                            <div class="list-element no-element">
+                                <h2 class="title-text">Нет событий</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div> 
         </div>
-        <div class="goals-group-event-container">
-            <div class="shadow">
-            <h2 class="group-info-title">Информация о группе</h2>
-            <div class="group-info-details">
-                <div class="group-info-image" id="group-info-image-container">
-                    <label for="image-input" class="add-image-button">
-                    <img src="{{ "/static/img/person.png" }}" alt="Group Image" id="group-info-image">
-                    </label>
-                </div>
-                <div class="group-info-info">
-                    <div class="group-info-tag">@test</div>
-                    <div class="group-info-name">Test Group</div>
-                    <div class="group-info-description">
-                        <textarea placeholder="Описание группы">{{ group.description }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            </div>
-            <div class="shadow">
-            <div id="goals">
-                <h2 class="goals-title">Цели</h2>
-                <div class="goals-container ">
-                    <div class="goals-card">
-                        <h2>Подготовить проект </h2>
-                        <span class="active-status"></span><p>Статус: активна до 18.12.2023 </p>
-                        <p>Описание: Необходимо сделать проект по СУБД</p>
-                    </div>
-                    <div class="goals-card">
-                        <h2>Подготовить проект </h2>
-                        <span class="active-status"></span><p>Статус: активна до 18.12.2023 </p>
-                        <p>Описание: Необходимо сделать проект по СУБД</p>
-                    </div>
-                    <div class="goals-card">
-                        <h2>Подготовить проект </h2>
-                        <span class="active-status"></span><p>Статус: активна до 18.12.2023 </p>
-                        <p>Описание: Необходимо сделать проект по СУБД</p>
-                    </div>
-                    <div class="goals-card">
-                        <h2>Подготовить проект </h2>
-                        <span class="active-status"></span><p>Статус: активна до 18.12.2023 </p>
-                        <p>Описание: Необходимо сделать проект по СУБД</p>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <div class="shadow">
-            <div id="events">
-                <h2 class="goals-title">Cобытия</h2>
-            </div>  
-        </div> 
-
-
+    </div>
     <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <label for="group-name">
-                        Имя группы:  
-                        <input type="text" id="group_name" name="group_name">
-                    </label>
-                    <label for="avatar">
-                        Аватар:
-                        <input type="file" name="group_avatar" accept="static/images/groupProfiles/*">
-                    </label>
-                    <label for="privacy">
-                        Режим приватности:
-                        <select id="privacy_mode" name="privacy_mode">
-                            <option value="public">Публичный</option>
-                            <option value="private">Приватный</option>
-                        </select>
-                    </label>
-                <button id="submit">Применить изменения</button>
-            </form>
-        </select>
-        </div>
+        <span class="close-button">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <label for="group-name">
+                    Имя группы:  
+                    <input type="text" id="group_name" name="group_name">
+                </label>
+                <label for="avatar">
+                    Аватар:
+                    <input type="file" name="group_avatar" accept="static/images/groupProfiles/*">
+                </label>
+                <label for="privacy">
+                    Режим приватности:
+                    <select id="privacy_mode" name="privacy_mode">
+                        <option value="public">Публичный</option>
+                        <option value="private">Приватный</option>
+                    </select>
+                </label>
+            <button id="create-group-button">Создать группы</button>
+        </form>
     </div>
-    </body>
 
-<script>
-    setupModal("modal", "openModal", "close-button");
-</script>
+    <div id="modalGoal" class="modalGoal">
+        <span class="close-buttonGoal">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Название цели</label>
+            <input type="text" name="name" required><br><br>        
+            <button id="add-goal-button" type="submit">Добавить цель</button>
+        </form>
+    </div>
+
+    <div id="modalUser" class="modalUser">
+        <span class="close-buttonUser">&times;</span>
+        <form action="{% url 'group/create' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <label>Имя участника</label>
+            <input type="text" name="name" required><br><br>        
+            <button id="add-user-button" type="submit">Добавить участника</button>
+        </form>
+    </div>
+
+    <script>
+        setupModal("modal", "openModal", "close-button");
+    </script>
+    
+    <script>
+        setupModal("modalGoal", "openModalGoal", "close-buttonGoal");
+    </script>
+    
+    <script>
+        setupModal("modalUser", "openModalUser", "close-buttonUser");
+    </script>
+</body>

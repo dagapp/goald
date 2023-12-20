@@ -17,7 +17,10 @@ def home(request):
     return render(
         request,
         "home.html",
-        {"groups": GroupManager.get_all_by_user_id(request.session["id"])},
+        {
+            "login": UserManager.get(user_id=request.session["id"]).login, 
+            "groups": GroupManager.get_all_by_user_id(request.session["id"])
+        },
     )
 
 
@@ -46,7 +49,7 @@ def login(request):
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = UserManager.get(user_login).id
+    request.session["id"] = UserManager.get(login=user_login).id
 
     return redirect("home")
 

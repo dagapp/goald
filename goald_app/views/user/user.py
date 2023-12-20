@@ -1,11 +1,13 @@
 """
-File for defining handlers for user in Django notation
+File for defining handlers for group in Django notation
 """
 
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 from goald_app.managers.user import UserManager
+from goald_app.managers.goal import GoalManager
 
 
 def change(request):
@@ -28,9 +30,7 @@ def change(request):
         return redirect("home")
 
     # Call UserManager.change to change user"s password
-    UserManager.change_password(
-        request.session["id"], request.POST["password"]
-    )
+    UserManager.change_password(request.session["id"], request.POST["password"])
 
     return redirect("home")
 
@@ -54,3 +54,20 @@ def delete(request):
     request.session.pop("id")
 
     return redirect("login")
+
+
+def summary(request):
+    """
+    Handler to serialize user to json
+    """
+    return JsonResponse(
+        {
+            "goals": [
+                {
+                    "name": goal.name,
+                }
+                for goal in GoalManager.get_all(user_id=request.session["id"])
+            ],
+            "events": [],
+        }
+    )

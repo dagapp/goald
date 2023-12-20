@@ -25,14 +25,29 @@ class UserManager:
         return User.objects.all()
 
     @staticmethod
-    def get(login: str) -> any:
+    def get(*args, **kwds) -> any:
         """
         Get a users with given login from the table
         """
-        try:
-            return User.objects.get(login=login)
-        except User.DoesNotExist as e:
-            raise DoesNotExist from e
+        if "user_id" in kwds:
+            if "login" in kwds:
+                try:
+                    return User.objects.get(id=kwds["user_id"], login=kwds["login"])
+                except User.DoesNotExist as e:
+                    raise DoesNotExist from e
+
+            try:
+                return User.objects.get(id=kwds["user_id"])
+            except User.DoesNotExist as e:
+                raise DoesNotExist from e
+
+        if "login" in kwds:
+            try:
+                return User.objects.get(login=kwds["login"])
+            except User.DoesNotExist as e:
+                raise DoesNotExist from e
+
+        raise IncorrectData
 
     @staticmethod
     def exists(*args, **kwds) -> bool:

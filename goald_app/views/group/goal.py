@@ -2,12 +2,12 @@
 File for defining handlers for group in Django notation
 """
 
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from goald_app.managers.common import AlreadyExists, DoesNotExist
+import json
 
+from django.http import JsonResponse
+
+from goald_app.managers.common import AlreadyExists, DoesNotExist
 from goald_app.managers.goal import GoalManager
-from goald_app.managers.group import GroupManager
 
 
 def add(request, group_id):
@@ -15,22 +15,17 @@ def add(request, group_id):
     Handler to add a goal to a group
     """
     if not request.POST:
-        return redirect(request.META.get("HTTP_REFERER"))
+        return JsonResponse({"Result": "Bad", "msg": "not POST"})
 
-    if not "name" in request.POST:
-        return redirect(request.META.get("HTTP_REFERER"))
+    data = json.loads(request.body)
+    if not "name" in data:
+        return JsonResponse({"Result": "Bad", "msg": "name does not exist in request"})
 
     try:
-        GoalManager.create(name=request.POST["name"], group_id=group_id)
+        GoalManager.create(name=data["name"], group_id=group_id)
     except DoesNotExist:
-        messages.error(request, "Group doesn't exist")
-        return redirect(request.META.get("HTTP_REFERER"))
+        return JsonResponse({"Result": "Bad", "msg": "Group doesn't exist"})
     except AlreadyExists:
-        messages.error(request, "Goal already exists")
-        return redirect(request.META.get("HTTP_REFERER"))
+        return JsonResponse({"Result": "Bad", "msg": "Goal already exists"})
 
-    return render(
-        request,
-        "group.html",
-        {"group": GroupManager.get(group_id=group_id)},
-    )
+    return JsonResponse({"Result": "Ok"})
