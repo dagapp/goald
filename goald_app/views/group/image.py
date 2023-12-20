@@ -1,26 +1,26 @@
 """
 File for defining handlers for group.image in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from goald_app.managers.group import GroupManager
-from goald_app.managers.image import ImageManager
+from goald_app.manager.manager import Manager
 
 
 def update(request, group_id):
     """
     Handler to update a group image
     """
-    if not GroupManager.exists(group_id=group_id):
-        messages.error(request, "Group doesn't exist")
+    if not Manager.group_exists(group_id=group_id):
+        messages.error(request, f"Group with such id [{group_id}] doesn't exist")
         return redirect(request.META.get("HTTP_REFERER"))
 
-    group = GroupManager.get(group_id=group_id)
+    group = Manager.get_group(group_id=group_id)
 
-    if request.method == "POST" and request.FILES.get("image"):
-        image = ImageManager.store(request.FILES["group_avatar"])
+    image_file = request.FILES.get("image")
+    if request.method == "POST" and image_file is not None:
+        group_avatar = request.FILES["group_avatar"]
+        image = Manager.store_image(image=group_avatar)
 
         group.image = image
         group.save()

@@ -1,13 +1,11 @@
 """
 File for defining handlers for common pages in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from goald_app.managers.common import IncorrectData, DoesNotExist, AlreadyExists
-from goald_app.managers.group import GroupManager
-from goald_app.managers.user import UserManager
+from goald_app.manager.exceptions import IncorrectData, DoesNotExist, AlreadyExists
+from goald_app.manager.manager import Manager
 
 
 def home(request):
@@ -18,8 +16,8 @@ def home(request):
         request,
         "home.html",
         {
-            "login": UserManager.get(user_id=request.session["id"]).login, 
-            "groups": GroupManager.get_all_by_user_id(request.session["id"])
+            "login": Manager.get_user(user_id=request.session["id"]).login,
+            "groups": Manager.get_user_groups(request.session["id"])
         },
     )
 
@@ -43,13 +41,13 @@ def login(request):
     user_password = request.POST["password"]
 
     try:
-        UserManager.auth(user_login, user_password)
-    except (DoesNotExist, IncorrectData):
-        messages.error(request, "Incorrect login or password")
+        Manager.auth_user(user_login, user_password)
+    except (DoesNotExist, IncorrectData) as e:
+        messages.error(request, e)
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = UserManager.get(login=user_login).id
+    request.session["id"] = Manager.get_user(login=user_login).id
 
     return redirect("home")
 
@@ -76,11 +74,13 @@ def register(request):
         messages.error(request, "Passwords dont match!")
         return redirect("register")
 
-    # Call UserManager.create to create a user
     try:
-        UserManager.create(request.POST["login"], request.POST["password"])
-    except AlreadyExists:
-        messages.error(request, "User with such login already exists")
+        user_login = request.POST["login"]
+        user_password = request.POST["password"]
+
+        Manager.create_user(user_login, user_password)
+    except AlreadyExists as e:
+        messages.error(request, e)
         return redirect("register")
 
     return redirect("login")
