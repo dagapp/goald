@@ -10,6 +10,8 @@ $(document).ready(function () {
     $(".logo").on("click", () => {
         init();
     });
+
+    $("body").fadeIn("slow");
 });
 
 var Group = function (group) {
@@ -55,50 +57,61 @@ var GroupList = function () {
     var self = this;
 
     self.init = function (create) {
-        $("#group-create").on("click", function () {
+        $("#create-group-button").on("click", function () {
             create().then(r => self.update());
         });
     };
 
     self.update = async function (get, action) {
         clear();
-        get().then(groups => 
-            groups.forEach(group => {
-                addGroup(group, action);
-            })
-        );
+        get().then(groups => {
+            if (groups) {
+                groups.forEach(group => {
+                    addGroup(group, action);
+                })
+            } else {
+                addNoGroup();
+            }
+        });
     };
 
     function addGroup (group, action) {
-        $(".group-title")
-            .after(
-                element(group, action)
-            );
+        $("#group-list-content").append(element(group, action));
+    }
+
+    function addNoGroup () {
+        $("group-list-content").append(no_element());
     }
 
     function clear() {
-        $(".group-list-element").remove();
+        $("#group-list-content .list-element").remove();
     }
 
     function element (group, action) {
         return $("<div>")
-            .addClass("shadow group-list-element")
+            .addClass("list-element button shadow")
             .html(`
                 </li>
-                    <a class="group-card">
-                        <div class="avatar">
-                            <img src="${group.image}" alt="avatar">
-                        </div>
-                        <div class="group-info">
-                            <h2>${group.name}</h2>
-                            <p>${group.tag}</p>
-                        </div>
-                    </a>
+                    <div class="group-list-image">
+                        <img src="${group.image}" alt="group-image">
+                    </div>
+                    <div class="group-list-info">
+                        <h2>${group.name}</h2>
+                        <p>${group.tag}</p>
+                    </div>
                 </li>
             `)
             .bind("click", function () {
                 return action(group.id)
             });
+    };
+
+    function no_element () {
+        return $("<div>")
+            .addClass("list-element no-element")
+            .html(`
+                <h2 class="title">Нет групп</h2>
+            `)
     };
 };
 
@@ -115,12 +128,19 @@ var GroupProfile = function() {
     };
 
     function showGroup (group) {
-        if ($('#group-info-container').css('display') == 'none') {
-            $('#group-info-container').slideDown();
+        var showContent = function () {
+            $("#entity-info-image").attr("src", group.image);
+            $("#entity-info-title").text(group.name + " " + group.tag);
+            //$("#entity").fadeIn();
+        };
+
+        if ($('#entity').css('display') == 'none') {
+            $('#entity').slideDown("fast", showContent);
+        } else {
+            //$("#entity").fadeOut("fast", showContent);
         }
-        $("#group-info-image").attr("src", group.image);
-        $(".group-info-tag").text(group.tag);
-        $(".group-info-name").text(group.name);
+
+        showContent();
     }
 
     function showGoals (goals) {
@@ -133,26 +153,46 @@ var GoalsList = function() {
 
     self.update = function (goals) {
         clear();
-        goals.forEach(goal => addGoal(goal));
+        if (goals.length) {
+            goals.forEach(goal => addGoal(goal));
+        } else {
+            addNoGoal();
+        }
     };
 
     function addGoal (goal) {
-        $(".goals-container").append(element(goal));
+        $("#goal-list-content").append(element(goal));
+    }
+
+    function addNoGoal () {
+        $("#goal-list-content").append(no_element());
     }
 
     function clear () {
-        $(".goals-card").remove();
+        $("#goal-list-content .list-element").remove();
     }
 
     function element (goal) {
         return $("<div>")
-            .addClass("goals-card")
+            .addClass("list-element button shadow")
             .html(`
-                <h2>${goal.name}</h2>
-                <span class="active-status"></span>
-                <p>${goal.is_active ? "активна" : "не активна"} до ${goal.deadline}</p>
+                <div class="goal-list-title">
+                    <h2 class="title">${goal.name}</h2>
+                </div>
+                <div class="goal-list-status">
+                    <span class="${goal.is_active ? "active-status" : "notactive-status" }"></span>
+                    <p>${goal.is_active ? "активна" : "не активна"}</p>
+                </div>
             `);
     };
+
+    function no_element () {
+        return $("<div>")
+            .addClass("list-element no-element")
+            .html(`
+                <h2 class="title">Нет целей</h2>
+            `)
+    }
 }
 
 var API = function () {
