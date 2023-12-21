@@ -471,7 +471,7 @@ class Manager():
         Delegate a duty to someone
         """
         try:
-            group = Goal.get(id=goal_id).group
+            group = Goal.objects.get(id=goal_id).group
             if leader_id != group.leader.id:
                 return
             
