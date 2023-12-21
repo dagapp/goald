@@ -120,6 +120,10 @@ body {
   height: 50px;
 }
 
+.list-element-chosen {
+  background-color: silver;
+}
+
 .no-element {
   display: block;
   text-align: center;
