@@ -40,6 +40,14 @@ function acceptDeleteGoal() {
     closeModal('deleteGoalWindow');
 }
 
+function acceptInviteMember() {
+    closeModal('inviteMemberWindow');
+}
+
+function acceptDeleteMember() {
+    closeModal('deleteMemberWindow');
+}
+
 function pay() {
     closeModal('payWindow');
 }

@@ -86,8 +86,8 @@
                         <div class="title">
                             <h2 class="title-text">Участники</h2>
                             <div class="buttons">
-                                <h2 class="alter-button grey-button">+</h2>
-                                <h2 class="alter-button grey-button">-</h2>
+                                <h2 class="alter-button grey-button" onclick="openModal('inviteMemberWindow')">+</h2>
+                                <h2 class="alter-button grey-button" onclick="openModal('deleteMemberWindow')">-</h2>
                             </div>
                         </div>
                         <div id="list-content-container">
@@ -223,6 +223,29 @@
         <form>
             <input type="text" id="pay-sum" class="lineedit form-control" placeholder="Сумма"/>
             <input id="payButton" class="form-button"  onclick="pay()" value="Перевести" />
+        </form>
+    </div>
+
+    <!--invite member window-->
+    <div id="inviteMemberWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('inviteMemberWindow')">&times;</button>
+        </div>
+        <h4>Добавить участника</h4>
+        <form>
+            <input type="text" id="jointogroup-login" class="lineedit form-control" placeholder="Логин"/>
+            <input id="inviteMemberButton" class="form-button"  onclick="acceptInviteMember()" value="Добавить"/>
+        </form>
+    </div>
+
+    <!--delete member window-->
+    <div id="deleteMemberWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('deleteMemberWindow')">&times;</button>
+        </div>
+        <h4>Вы действительно хотите удалить участника?</h4>
+        <form>
+            <input id="deleteMemberButton" class="form-button"  onclick="acceptDeleteMember()" value="Да" />
         </form>
     </div>
             
