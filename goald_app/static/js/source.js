@@ -46,16 +46,15 @@ class List {
         };
 
         self.init = function () {
-            add_btn.on("click", () => add());
-            del_btn.on("click", () => del());
+            if (add_btn && add) add_btn.on("click", () => add());
+            if (del_btn && del) del_btn.on("click", () => del());
             self.update();
         };
 
         self.update = function (params) {
             clear();
             get(params).then(els => {
-                console.log(els);
-                if (els.length) {
+                if (els && els.length) {
                     els.forEach((el, index) => {
                         elements.push(el)
                         add_element(el, index);
@@ -80,52 +79,64 @@ class List {
     }
 }
 
-class User {
-    constructor (user) {
+class Group {
+    constructor(group) {
         var self = this;
+
+        self.id    = group.id;
+        self.tag   = group.tag;
+        self.name  = group.name;
+        self.image = group.image;
+
+        self.users = [];
+        group.users.forEach(u => {
+            self.users.push(new User(u));
+        });
+
+        self.goals = [];
+        group.goals.forEach(g => {
+            self.goals.push(new Goal(g));
+        });
     }
 }
 
-class UserListType {
-    constructor(api) {
+class GroupListType {
+    constructor(get, add, del, action) {
         var self = this;
 
-        self.get     = api.get_user_list;
-        self.add     = api.add_user;
-        self.add_btn = $("#add-user-button");
-        self.del     = api.del_user;
-        self.del_btn = $("#del-user-button");
-        self.parent  = $("#user-list .list-content");
+        self.get     = get;
+        self.add     = add;
+        self.add_btn = $("#add-group-button");
+        self.del     = del;
+        self.del_btn = $("#del-group-button");
+        self.parent  = $("#group-list .list-content");
 
-        self.get_element_html = function (goal) {
+        self.get_element_html = function (group) {
             return $("<div>")
                 .addClass("list-element button shadow")
                 .html(`
-                    <div class="goal-list-title">
-                        <h2 class="title">${goal.name}</h2>
-                        <h4 class="title" style="float: right; color: grey;">@group</h4>
+                    <div class="list-image">
+                        <img src="${group.image}" alt="group-image">
                     </div>
-                    <div class="goal-list-status">
-                        <span class="${goal.is_active ? "active-status" : "notactive-status"}"></span>
-                        <p>${goal.is_active ? "активна" : "не активна"}</p>
+                    <div class="list-info">
+                        <h2>${group.name}</h2>
+                        <p>${group.tag}</p>
                     </div>
-                `);
+                `)
+                .bind("click", function () {
+                    self.parent.find(".list-element-chosen").removeClass("list-element-chosen");
+                    $(this).addClass("list-element-chosen");
+                    return action(group.id);
+                });
         };
 
         self.get_no_element_html = function () {
             return $("<div>")
                 .addClass("list-element no-element")
                 .html(`
-                    <h2 class="title">Нет целей</h2>
+                    <h2 class="title">Нет групп</h2>
                 `);
         };
-
-    }
-}
-
-class Report {
-    constructor(report) {
-        var self = this;
     }
 }
 
@@ -186,62 +197,88 @@ class GoalListType {
     }
 }
 
-class Group {
-    constructor(group) {
+class User {
+    constructor (user) {
         var self = this;
 
-        self.id    = group.id;
-        self.tag   = group.tag;
-        self.name  = group.name;
-        self.image = group.image;
-
-        self.users = [];
-        group.users.forEach(u => {
-            self.users.push(new User(u));
-        });
-
-        self.goals = [];
-        group.goals.forEach(g => {
-            self.goals.push(new Goal(g));
-        });
+        self.login       = user.login;
+        self.name        = user.name;
+        self.second_name = user.second_name;
     }
 }
 
-class GroupListType {
+class UserListType {
     constructor(get, add, del, action) {
         var self = this;
 
         self.get     = get;
         self.add     = add;
-        self.add_btn = $("#add-group-button");
+        self.add_btn = $("#add-user-button");
         self.del     = del;
-        self.del_btn = $("#del-group-button");
-        self.parent  = $("#group-list .list-content");
+        self.del_btn = $("#del-user-button");
+        self.parent  = $("#user-list .list-content");
 
-        self.get_element_html = function (group) {
+        self.get_element_html = function (user) {
             return $("<div>")
                 .addClass("list-element button shadow")
                 .html(`
-                    <div class="group-list-image">
-                        <img src="${group.image}" alt="group-image">
+                    <div class="list-image">
+                        <img src="/media/group/default.jpg" alt="user-image">
                     </div>
-                    <div class="group-list-info">
-                        <h2>${group.name}</h2>
-                        <p>${group.tag}</p>
+                    <div class="list-info">
+                        <h2>${user.login}</h2>
+                        <p>${user.name}</p>
                     </div>
-                `)
-                .bind("click", function () {
-                    self.parent.find(".list-element-chosen").removeClass("list-element-chosen");
-                    $(this).addClass("list-element-chosen");
-                    return action(group.id);
-                });
+                `);
         };
 
         self.get_no_element_html = function () {
             return $("<div>")
                 .addClass("list-element no-element")
                 .html(`
-                    <h2 class="title">Нет групп</h2>
+                    <h2 class="title-text">Нет целей</h2>
+                `);
+        };
+    }
+}
+
+class Event {
+    constructor(event) {
+        var self = this;
+
+        self.type = event.type;
+        self.text = event.text;
+        self.timestamp = event.timestamp;
+    }
+}
+
+class EventListType {
+    constructor(get) {
+        var self = this;
+
+        self.get     = get;
+        self.add     = null;
+        self.add_btn = null;
+        self.del     = null;
+        self.del_btn = null;
+        self.parent  = $("#event-list .list-content");
+
+        self.get_element_html = function (event) {
+            return $("<div>")
+                .addClass("list-element button shadow")
+                .html(`
+                    <div class="goal-list-title">
+                        <h2 class="title-text">${event.text}</h2>
+                        <h4 class="title-text" style="float: right; color: grey;">${event.timestamp}</h4>
+                    </div>
+                `);
+        };
+
+        self.get_no_element_html = function () {
+            return $("<div>")
+                .addClass("list-element no-element")
+                .html(`
+                    <h2 class="title-text">Нет событий</h2>
                 `);
         };
     }
@@ -259,6 +296,9 @@ class Manager {
             api.del_group, 
             function action (group) { 
                 goal_list.update(group);
+                user_list.update(group);
+                event_list.update(group);
+                profile.update();
             }
         ));
 
@@ -290,32 +330,85 @@ class Manager {
             }
         ));
 
-        var user_list = new List(new UserListType(api, function (user_id) {
+        var user_list = new List(new UserListType(
+            function get () {
+                return new Promise(resolve => {
+                    var chosen_group = group_list.get_chosen_element();
+                    if (chosen_group) {
+                        resolve(chosen_group.users);
+                    } else {
+                        resolve(null);
+                    }
+                });
+            },
+            function add () {
 
-        }));
+            },
+            function del () {
+
+            },
+            function action (user) {
+
+            }
+        ));
+
+        var event_list = new List(new EventListType(
+            function get() {
+                return new Promise(resolve => {
+                    var chosen_group = group_list.get_chosen_element();
+                    if (chosen_group) {
+                        resolve(chosen_group.events);
+                    } else {
+                        var events = [];
+                        group_list.get_elements().forEach(el => {
+                            el.events.forEach(el_g => {
+                                events.push(el_g);
+                            });
+                        });
+                        resolve(events);
+                    }
+                });
+            }
+        ));
+
+        var profile = new Profile(function () {
+            return new Promise(resolve => resolve(group_list.get_chosen_element(), goal_list.get_chosen_element()));
+        });
 
         self.init = function () {
             group_list.init();
             goal_list.init();
+            user_list.init();
+            event_list.init();
         };
 
         self.update = function () {
             group_list.update();
             goal_list.update();
+            user_list.update();
+            event_list.update();
+            profile.update();
         };
     }
 }
-/*
-class GroupProfile {
-    constructor() {
+
+class Profile {
+    constructor(get) {
         var self = this;
 
-        var goals_list = new GoalListType();
+        self.update = async function () {
+            get().then((group, goal) => {
+                //hideGroup();
+                //hideGoal();
 
-        self.update = async function (get, group_id) {
-            get(group_id).then(result => {
-                showGroup(result["group"]);
-                showGoals(result["goals"]);
+                if (goal != null) {
+                    showGoal(goal);
+                } else if (group != null) {
+                    showGroup(group);
+                } else {
+                    hideGroup();
+                    hideGoal();
+                }
             });
         };
 
@@ -332,16 +425,10 @@ class GroupProfile {
             } else {
                 //$("#entity").fadeOut("fast", showContent);
             }
-
-            showContent();
-        }
-
-        function showGoals(goals) {
-            goals_list.update(goals);
         }
     }
 }
-*/
+
 class API {
     constructor() {
         var self = this;
