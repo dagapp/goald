@@ -9,7 +9,7 @@ function removeBlackout() {
 }
 
 function openModal() {
-    var modal = document.getElementById('groupPlusPressed');
+    var modal = document.getElementById('groupActionWindow');
     modal.style.display = 'block';
     setBlackout();
 }
@@ -21,8 +21,7 @@ function closeModal(modalId) {
 }
 
 function openCreateGroupWindow() {
-    closeModal('groupPlusPressed');
-    document.getElementById('groupPlusPressed').style.display = 'none';
+    closeModal('groupActionWindow');
     var modal = document.getElementById('createGroupWindow');
     modal.style.display = 'block';
     setBlackout();
@@ -30,4 +29,15 @@ function openCreateGroupWindow() {
 
 function createGroupButtonPressed() {
     closeModal('createGroupWindow');
+}
+
+function openJoinToGroupWindow() {
+    closeModal('groupActionWindow');
+    var modal = document.getElementById('joinToGroupWindow');
+    modal.style.display = 'block';
+    setBlackout();
+}
+
+function joinToGroupButtonPressed() {
+    closeModal('joinToGroupWindow');
 }

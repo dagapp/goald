@@ -268,7 +268,6 @@ select {
   width: 100%;
 }
 
-/* /////////////// */
 .select-file-button {
   width: 100%; /* Устанавливаем максимальную ширину с учетом отступов */
   margin-bottom: 10px;
@@ -288,7 +287,6 @@ select {
   color: #9c9b9b;
   cursor: pointer;
 }
-/* /////////////// */
 
 .select:hover, .select:focus, .select:active {
   box-shadow: none;
@@ -308,12 +306,11 @@ select {
   margin: auto;
   margin-top: 1em;
   text-align: center;
-
+  cursor: pointer;
 }
 
 .form-button:hover {
   background:  #04AA6D;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   color: #fff;
-  cursor: pointer;
 }
