@@ -74,6 +74,7 @@ class List {
         }
 
         function clear() {
+            elements = [];
             parent.empty();
         }
     }
@@ -151,6 +152,12 @@ class Goal {
         self.is_active    = goal.is_active;
         self.deadline     = goal.deadline;
         self.alert_period = goal.alert_period;
+
+        self.current_value = goal.current_value;
+        self.final_value   = goal.final_value;
+
+        self.user_current_value = goal.user_current_value;
+        self.user_final_value = goal.user_final_value;
 
         self.events = [];
         goal.events.forEach(e => {
@@ -240,6 +247,13 @@ class UserListType {
                         <h2>${user.login}</h2>
                         <p>${user.name} ${user.second_name}</p>
                     </div>
+                    <!--
+                    <div style="display: inline-block">
+                        <h3 style="display: inline-block">0</h3>
+                        <h3 style="display: inline-block">/</h3>
+                        <h3 style="display: inline-block">0</h3>
+                    </div>
+                    -->
                     <div class="buttons">
                         <h2 class="alter-button grey-button" onclick="openModal('createGoalWindow')">+</h2>
                         <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
@@ -340,6 +354,12 @@ class Profile {
 
         function showGoal (goal) {
             $("#goal-info-name").text(goal.name);
+            $("#goal-list-deadline").text(goal.deadline);
+            $("#goal-list-user-current-value").text(goal.user_current_value);
+            $("#goal-list-user-final-value").text(goal.user_final_value);
+            $("#goal-list-current-value").text(goal.current_value);
+            $("#goal-list-final-value").text(goal.final_value);
+
             $("#goal-info-container").fadeIn("fast");
         }
 
