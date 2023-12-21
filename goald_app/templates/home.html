@@ -123,18 +123,22 @@
         </div>
     </div>
     
-    <!--models windows-->
+    <!--MODELS WINDOWS-->
+    <!--background blackout-->
     <div id="blackout" class="blackout"></div>
-    <div id="groupPlusPressed" class="modal-content">
+
+    <!--select group action window-->
+    <div id="groupActionWindow" class="modal-content">
         <div class="modal-header">
-            <button class="close" onclick="closeModal('groupPlusPressed')">&times;</button>
+            <button class="close" onclick="closeModal('groupActionWindow')">&times;</button>
         </div>
         <form>
             <input class="form-button"  value="Создать группу" onclick="openCreateGroupWindow()" />
-            <input class="form-button"  value="Вступить в группу" />
+            <input class="form-button"  value="Вступить в группу" onclick="openJoinToGroupWindow()"  />
         </form>
     </div>
 
+    <!--create group window-->
     <div id="createGroupWindow" class="modal-content">
         <div class="modal-header">
             <button class="close" onclick="closeModal('createGroupWindow')">&times;</button>
@@ -157,4 +161,17 @@
             <input id="createGroupButton" class="form-button"  onclick="createGroupButtonPressed()" value="Создать группу" />
         </form>
     </div>
+
+    <!--join to group window-->
+    <div id="joinToGroupWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('joinToGroupWindow')">&times;</button>
+        </div>
+        <h4>Вступить в группу</h4>
+        <form>
+            <input type="text" id="jointogroup-tag" class="lineedit form-control" placeholder="Тэг"/>
+            <input id="joinToGroupButton" class="form-button"  onclick="joinToGroupButtonPressed()" value="Вступить" />
+        </form>
+    </div>
+            
 </body>
