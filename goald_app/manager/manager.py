@@ -44,11 +44,15 @@ class UserResult:
     login: str
     name: str
     second_name: str
+    duties_current_value: int
+    duties_final_value: int
 
     def __init__(self, user: User):
         self.login = user.login
         self.name = user.name
         self.second_name = user.second_name
+        self.duties_current_value = sum([duty.current_value for duty in user.duties_user.all()])
+        self.duties_final_value = sum([duty.final_value for duty in user.duties_user.all()])
 
 
 @dataclass
@@ -88,6 +92,8 @@ class GoalResult:
     is_active: bool
     deadline: str
     alert_period: str
+    duties_current_value: int
+    duties_final_value: int
     events: List[EventResult]
     reports: List[ReportResult]
 
@@ -96,8 +102,11 @@ class GoalResult:
         self.is_active = goal.is_active
         self.deadline = str(goal.deadline)
         self.alert_period = str(goal.alert_period)
+        self.duties_current_value = sum([duty.current_value for duty in goal.duties_goal.all()])
+        self.duties_final_value = sum([duty.final_value for duty in goal.duties_goal.all()])
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
+
 
 @dataclass
 class DutyResult:
@@ -114,6 +123,7 @@ class DutyResult:
         self.current_value = duty.current_value
         self.deadline = str(duty.deadline)
         self.alert_period = str(duty.alert_period)
+
 
 @dataclass
 class GroupResult:
@@ -489,7 +499,7 @@ class Manager():
             group = Goal.objects.get(id=goal_id).group
             if leader_id != group.leader.id:
                 return
-            
+
             if not group.users.filter(id=delegate_id).exists():
                 raise DoesNotExist(f"user with such id [{delegate_id}] "
                                    f"is not a member of the group")
