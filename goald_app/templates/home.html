@@ -141,10 +141,10 @@
         </div>
         <h4>Создание группы</h4>
         <form>
-            <input type="text" name="name" class="lineedit form-control" placeholder="Название группы"/>
-            <input type="text" name="tag" class="lineedit form-control" placeholder="Тэг"/>
-            <input type="text" name="description" class="lineedit form-control" placeholder="Описание группы"/>
-            <select name="pets" id="pet-select">
+            <input type="text" id="creategroup-name" class="lineedit form-control" placeholder="Название группы"/>
+            <input type="text" id="creategroup-tag" class="lineedit form-control" placeholder="Тэг"/>
+            <input type="text" id="creategroup-description" class="lineedit form-control" placeholder="Описание группы"/>
+            <select name="mode" id="creategroup-mode">
                 <option value="mode">Приватность</option>
                 <option value="public">Публичная</option>
                 <option value="private">Приватная</option>
@@ -152,7 +152,7 @@
             <label for="avatar" class="select-file-button" style="font-weight: normal; font-size: 0.9rem;">
                Выберите аватар
             </label>
-            <input id="avatar" type="file" style="display: none;">
+            <input id="creategroup-avatar" type="file" style="display: none;">
             {% comment %} <input type="password" name="password" class="lineedit form-control" placeholder="Парооль"/> {% endcomment %}
             <input id="createGroupButton" class="form-button"  onclick="createGroupButtonPressed()" value="Создать группу" />
         </form>
