@@ -14,7 +14,7 @@
             <div id="logo">
                 <img src="/static/img/logo.jpg" alt="logo">
             </div>
-            <div id="my-account" class="button shadow">
+            <div id="my-account" class="button shadow" onclick="openModal('exitWindow')">
                 <img src="/static/img/person.png" alt="icon">
                 <span>{{ login }}</span>
             </div>
@@ -246,6 +246,17 @@
         <h4>Вы действительно хотите удалить участника?</h4>
         <form>
             <input id="deleteMemberButton" class="form-button"  onclick="acceptDeleteMember()" value="Да" />
+        </form>
+    </div>
+
+    <!--check exit window-->
+    <div id="exitWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('exitWindow')">&times;</button>
+        </div>
+        <h4>Вы действительно хотите выйти?</h4>
+        <form>
+            <input id="exitButton" class="form-button"  onclick="acceptExit()" value="Да" />
         </form>
     </div>
             

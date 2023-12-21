@@ -48,6 +48,10 @@ function acceptDeleteMember() {
     closeModal('deleteMemberWindow');
 }
 
+function acceptExit() {
+    closeModal('exitWindow');
+}
+
 function pay() {
     closeModal('payWindow');
 }
