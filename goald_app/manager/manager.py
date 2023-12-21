@@ -126,7 +126,7 @@ class GroupResult:
                        group.events_group.all()]
 
 
-def get_report(report_id: int) -> Report:
+def get_report_record(report_id: int) -> Report:
     """
     Get a report with given report_id
     """
@@ -136,7 +136,7 @@ def get_report(report_id: int) -> Report:
         raise DoesNotExist(f"report with such id [{report_id}] does not exist") from e
 
 
-def get_group(group_id: int) -> Group:
+def get_group_record(group_id: int) -> Group:
     """
     Get a group with given name from the table
     """
@@ -146,7 +146,7 @@ def get_group(group_id: int) -> Group:
         raise DoesNotExist(f"group with such id [{group_id}] does not exist") from e
 
 
-def get_user(user_id: int = None, login: str = None) -> User:
+def get_user_record(user_id: int = None, login: str = None) -> User:
     """
     Get a users with given login from the table
     """
@@ -197,7 +197,7 @@ class Manager():
         Auth a user with given login and password
         """
         try:
-            user = get_user(login=login)
+            user = get_user_record(login=login)
         except DoesNotExist as e:
             raise DoesNotExist(f"failed to get user: {e}") from e
 
@@ -225,7 +225,7 @@ class Manager():
         """
         Change a user's password with given login and new password
         """
-        user = get_user(user_id=user_id)
+        user = get_user_record(user_id=user_id)
         user.password = hashpw(
             bytes(password, "utf-8"), user.password[:LENGTH_SALT]
         )
@@ -236,7 +236,7 @@ class Manager():
         """
         Delete the user with given id
         """
-        user = get_user(user_id=user_id)
+        user = get_user_record(user_id=user_id)
         user.delete()
 
     # ->groups
@@ -253,7 +253,7 @@ class Manager():
         """
         Add user to a group
         """
-        get_group(group_id=group_id).users.add(get_user(login=login))
+        get_group_record(group_id=group_id).users.add(get_user_record(login=login))
 
     @staticmethod
     def create_group(
@@ -288,7 +288,7 @@ class Manager():
         )
 
         Manager.add_user_to_group(group_id=group.id,
-                                  login=get_user(user_id=leader_id).login)
+                                  login=get_user_record(user_id=leader_id).login)
 
     @staticmethod
     def get_user_group(user_id: int, group_id: int) -> GroupResult:
@@ -296,14 +296,14 @@ class Manager():
         Get a group with given id for the user from the table
         """
         try:
-            return GroupResult(get_group(group_id=group_id).filter(users__id=user_id))
+            return GroupResult(get_group_record(group_id=group_id).get(users__id=user_id))
         except Group.DoesNotExist as e:
             raise DoesNotExist(f"user with id [{user_id}]"
                                f" has no groups with id [{group_id}]") from e
 
     # ->goals
     @staticmethod
-    def get_user_goals(user_id: int) -> any:
+    def get_user_goals(user_id: int) -> List[GoalResult]:
         """
         Get all goals for given user_id
         """
@@ -311,7 +311,7 @@ class Manager():
             result = []
             groups = Group.objects.filter(users__id=user_id)
             for group in groups:
-                result += Goal.objects.filter(group_id=group)
+                result += GoalResult(Goal.objects.get(group_id=group.id))
 
             return result
 
@@ -383,7 +383,7 @@ class Manager():
         """
         Manager.report_exists(report_id=report_id)
 
-        report = get_report(report_id=report_id)
+        report = get_report_record(report_id=report_id)
 
         if text is not None:
             report.text = text
@@ -398,7 +398,7 @@ class Manager():
         """
         Manager.report_exists(report_id=report_id)
 
-        report = get_report(report_id=report_id)
+        report = get_report_record(report_id=report_id)
 
         if proof is not None:
             report.proof = proof
