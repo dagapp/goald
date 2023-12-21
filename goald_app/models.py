@@ -68,9 +68,6 @@ class Goal(models.Model):
     group = models.ForeignKey(
         "Group", null=False, on_delete=models.CASCADE, related_name="goals_group"
     )
-    report = models.ForeignKey(
-        "Report", null=True, on_delete=models.CASCADE, related_name="goals_report"
-    )
 
     supergoal = models.ForeignKey(
         "self", null=True, on_delete=models.CASCADE, related_name="goals_supergoal"
@@ -106,10 +103,10 @@ class Event(models.Model):
     timestamp = models.DateTimeField(null=False, default=datetime.datetime.now)
 
     group = models.ForeignKey(
-        "Group", null=False, on_delete=models.CASCADE, related_name="events_group"
+        "Group", null=True, on_delete=models.CASCADE, related_name="events_group"
     )
     goal = models.ForeignKey(
-        "Goal", null=False, on_delete=models.CASCADE, related_name="events_goal"
+        "Goal", null=True, on_delete=models.CASCADE, related_name="events_goal"
     )
 
 

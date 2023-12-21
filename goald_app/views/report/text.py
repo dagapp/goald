@@ -1,24 +1,25 @@
 """
 File for defining handlers for group.image in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from goald_app.managers.common import DoesNotExist
-from goald_app.managers.report import ReportManager
+from goald_app.manager.exceptions import DoesNotExist
+from goald_app.manager.manager import Manager
 
 
 def update(request, report_id):
     """
     Handler to update a text
     """
-    if request.method == "POST" and request.FILES.get("proof"):
+    text = request.FILES["text"]
+
+    if request.method == "POST" and text is not None:
         try:
-            ReportManager.text(report_id=report_id, text=request.FILES["text"])
+            Manager.update_report_text(report_id=report_id, text=text)
         except DoesNotExist:
-            messages.error(request, "Report doesn't exist")
+            messages.error(request, "report does not exist")
     else:
-        messages.error(request, "Wrong HTTP method for updating the text")
+        messages.error(request, "Wrong HTTP method, expected POST")
 
     return redirect(request.META.get("HTTP_REFERER"))
