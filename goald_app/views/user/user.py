@@ -1,13 +1,12 @@
 """
 File for defining handlers for group in Django notation
 """
+from django.http import JsonResponse
 from django.shortcuts import redirect
-from django.http import JsonResponse
 
-from goald_app.manager.manager import Manager
 from goald_app.manager.exceptions import DoesNotExist
+from goald_app.manager.manager import Manager
 
-from django.http import JsonResponse
 
 
 def change(request):

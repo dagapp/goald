@@ -1,17 +1,12 @@
 """
 File for defining handlers for group in Django notation
 """
-
-from goald_app.manager.manager import Manager
-from goald_app.manager.exceptions import DoesNotExist
-
-from django.http import JsonResponse
 import json
 
 from django.http import JsonResponse
 
-from goald_app.managers.common import DoesNotExist
-from goald_app.managers.group import GroupManager
+from goald_app.manager.exceptions import DoesNotExist
+from goald_app.manager.manager import Manager
 
 
 def add(request, group_id):

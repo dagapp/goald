@@ -1,7 +1,6 @@
 """
 File for defining handlers for common pages in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
@@ -76,10 +75,10 @@ def register(request):
         return redirect("register")
 
     try:
-        login = request.POST["login"]
-        password = request.POST["password"]
+        user_login = request.POST["login"]
+        user_password = request.POST["password"]
 
-        Manager.create_user(login, password)
+        Manager.create_user(user_login, user_password)
     except AlreadyExists as e:
         messages.error(request, e)
         return redirect("register")

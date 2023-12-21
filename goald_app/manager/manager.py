@@ -2,29 +2,34 @@
 Module for handling interaction with db
 """
 
+import dataclasses
+import datetime
+import json
+import os
+import random
+import string
+
+from dataclasses import dataclass
+from typing import List
 from bcrypt import gensalt, hashpw
 
 from django.core.files.uploadedfile import UploadedFile
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-import os
-import datetime
-import string
-import random
 
 from goald_app.manager.exceptions import DoesNotExist, AlreadyExists, IncorrectData
+from goald_app.models import User, Group, Goal, Event, Report, Duty
 
-from goald_app.models import User, Group, Goal, Event, Report
-
-import dataclasses
-import json
-from dataclasses import dataclass
 
 LENGTH_SALT = 29
 LENGTH_HASH = 60
 
 
-class dataclass_encoder(json.JSONEncoder):
+class DataclassEncoder(json.JSONEncoder):
+    """
+    class for encoding dataclasses in json
+    """
+
     def default(self, o):
         if dataclasses.is_dataclass(o):
             return dataclasses.asdict(o)
@@ -33,6 +38,9 @@ class dataclass_encoder(json.JSONEncoder):
 
 @dataclass
 class UserResult:
+    """
+    dataclass for holding user record data
+    """
     login: str
     name: str
     second_name: str
@@ -45,6 +53,9 @@ class UserResult:
 
 @dataclass
 class EventResult:
+    """
+    dataclass for holding event record data
+    """
     type: int
     text: str
     timestamp: str
@@ -57,6 +68,9 @@ class EventResult:
 
 @dataclass
 class ReportResult:
+    """
+    dataclass for holding report record data
+    """
     proof: str
     text: str
 
@@ -67,12 +81,15 @@ class ReportResult:
 
 @dataclass
 class GoalResult:
+    """
+    dataclass for holding goal record data
+    """
     name: str
     is_active: bool
     deadline: str
     alert_period: str
-    events: list[EventResult]
-    reports: list[ReportResult]
+    events: List[EventResult]
+    reports: List[ReportResult]
 
     def __init__(self, goal: Goal):
         self.name = goal.name
@@ -85,13 +102,16 @@ class GoalResult:
 
 @dataclass
 class GroupResult:
+    """
+    dataclass for holding group record data
+    """
     id: int
     tag: str
     name: str
     image: str
-    users: list[UserResult]
-    goals: list[GoalResult]
-    events: list[EventResult]
+    users: List[UserResult]
+    goals: List[GoalResult]
+    events: List[EventResult]
 
     def __init__(self, group: Group):
         self.id = group.id
@@ -99,8 +119,58 @@ class GroupResult:
         self.name = group.name
         self.image = group.image.url
         self.users = [UserResult(user) for user in group.users.all()]
-        self.goals = [GoalResult(goal) for goal in group.goals_group.all().prefetch_related('events_goal', 'reports_goal')]
-        self.events = [EventResult(event) for event in group.events_group.all()]
+        self.goals = [GoalResult(goal) for goal in
+                      group.goals_group.all().prefetch_related('events_goal',
+                                                               'reports_goal')]
+        self.events = [EventResult(event) for event in
+                       group.events_group.all()]
+
+
+def get_report(report_id: int) -> Report:
+    """
+    Get a report with given report_id
+    """
+    try:
+        return Report.objects.get(id=report_id)
+    except Report.DoesNotExist as e:
+        raise DoesNotExist(f"report with such id [{report_id}] does not exist") from e
+
+
+def get_group(group_id: int) -> Group:
+    """
+    Get a group with given name from the table
+    """
+    try:
+        return Group.objects.get(id=group_id)
+    except Group.DoesNotExist as e:
+        raise DoesNotExist(f"group with such id [{group_id}] does not exist") from e
+
+
+def get_user(user_id: int = None, login: str = None) -> User:
+    """
+    Get a users with given login from the table
+    """
+    if user_id is not None:
+        if login is not None:
+            try:
+                return User.objects.get(id=user_id, login=login)
+            except User.DoesNotExist as e:
+                raise DoesNotExist(f"user with such id [{id}] "
+                                   f"and login [{login}] does not exist") from e
+
+    if user_id is not None:
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist as e:
+            raise DoesNotExist(f"user with such id [{id}] does not exist") from e
+
+    if login is not None:
+        try:
+            return User.objects.get(login=login)
+        except User.DoesNotExist as e:
+            raise DoesNotExist(f"user with such login [{login}] does not exist") from e
+
+    return None
 
 
 class Manager():
@@ -110,37 +180,13 @@ class Manager():
 
     # ->users
     @staticmethod
-    def get_user(user_id: int = None, login: str = None) -> any:
-        """
-        Get a users with given login from the table
-        """
-        if user_id is not None:
-            if login is not None:
-                try:
-                    return User.objects.get(id=user_id, login=login)
-                except User.DoesNotExist as e:
-                    raise DoesNotExist(f"user with such id [{id}] "
-                                       f"and login [{login}] does not exist") from e
-
-        if user_id is not None:
-            try:
-                return User.objects.get(id=user_id)
-            except User.DoesNotExist as e:
-                raise DoesNotExist(f"user with such id [{id}] does not exist") from e
-
-        if login is not None:
-            try:
-                return User.objects.get(login=login)
-            except User.DoesNotExist as e:
-                raise DoesNotExist(f"user with such login [{login}] does not exist") from e
-
-    @staticmethod
-    def get_user_groups(user_id: int) -> list[GroupResult]:
+    def get_user_groups(user_id: int) -> List[GroupResult]:
         """
         Get all groups by given user_id
         """
         try:
-            groups = User.objects.get(id=user_id).groups.all().prefetch_related('users', 'goals_group', 'events_group')
+            groups = User.objects.get(id=user_id).groups.all()\
+                    .prefetch_related('users', 'goals_group', 'events_group')
             return [GroupResult(group) for group in groups]
         except Group.DoesNotExist as e:
             raise DoesNotExist(f"groups for current user [{user_id}] does not exist") from e
@@ -151,7 +197,7 @@ class Manager():
         Auth a user with given login and password
         """
         try:
-            user = Manager.get_user(login=login)
+            user = get_user(login=login)
         except DoesNotExist as e:
             raise DoesNotExist(f"failed to get user: {e}") from e
 
@@ -179,7 +225,7 @@ class Manager():
         """
         Change a user's password with given login and new password
         """
-        user = Manager.get_user(user_id=user_id)
+        user = get_user(user_id=user_id)
         user.password = hashpw(
             bytes(password, "utf-8"), user.password[:LENGTH_SALT]
         )
@@ -190,7 +236,7 @@ class Manager():
         """
         Delete the user with given id
         """
-        user = Manager.get_user(user_id=user_id)
+        user = get_user(user_id=user_id)
         user.delete()
 
     # ->groups
@@ -201,22 +247,13 @@ class Manager():
         """
         return Group.objects.filter(id=group_id).exists()
 
-    @staticmethod
-    def get_group(group_id: int) -> any:
-        """
-        Get a group with given name from the table
-        """
-        try:
-            return Group.objects.get(id=group_id)
-        except Group.DoesNotExist as e:
-            raise DoesNotExist(f"group with such id [{group_id}] does not exist") from e
 
     @staticmethod
     def add_user_to_group(group_id: int, login: str) -> None:
         """
         Add user to a group
         """
-        Manager.get_group(group_id=group_id).users.add(Manager.get_user(login=login))
+        get_group(group_id=group_id).users.add(get_user(login=login))
 
     @staticmethod
     def create_group(
@@ -250,24 +287,19 @@ class Manager():
             leader=User.objects.get(id=leader_id),
         )
 
-        Manager.add_user_to_group(id=leader_id)
+        Manager.add_user_to_group(group_id=group.id,
+                                  login=get_user(user_id=leader_id).login)
 
     @staticmethod
-    def get_user_groups(user_id: int) -> any:
-        """
-        Get all groups for given user_id
-        """
-        try:
-            return Group.objects.filter(users__id=user_id)
-        except Group.DoesNotExist as e:
-            raise DoesNotExist("user has no groups") from e
-
-    @staticmethod
-    def get_user_group(user_id: int, group_id: int) -> any:
+    def get_user_group(user_id: int, group_id: int) -> GroupResult:
         """
         Get a group with given id for the user from the table
         """
-        return Manager.get_user_groups(user_id=user_id).filter(id=group_id)
+        try:
+            return GroupResult(get_group(group_id=group_id).filter(users__id=user_id))
+        except Group.DoesNotExist as e:
+            raise DoesNotExist(f"user with id [{user_id}]"
+                               f" has no groups with id [{group_id}]") from e
 
     # ->goals
     @staticmethod
@@ -300,7 +332,7 @@ class Manager():
         """
         Create a goal and start it
         """
-        if not Manager.group_exists(id=group_id):
+        if not Manager.group_exists(group_id=group_id):
             raise DoesNotExist("group with such id [{group_id}] does not exist")
 
         group = Group.objects.get(id=group_id)
@@ -343,22 +375,15 @@ class Manager():
         """
         return Report.objects.filter(report_id=report_id).exists()
 
-    @staticmethod
-    def get_report(report_id: int) -> any:
-        """
-        Get a report with given report_id
-        """
-        try:
-            return Report.objects.get(id=report_id)
-        except Report.DoesNotExist as e:
-            raise DoesNotExist(f"report with such id [{report_id}] does not exist") from e
 
     @staticmethod
-    def report_text(report_id: int, text: str = None) -> str:
+    def update_report_text(report_id: int, text: str = None) -> str:
         """
         Set/get a text value
         """
-        report = Manager.ger_report(report_id=report_id)
+        Manager.report_exists(report_id=report_id)
+
+        report = get_report(report_id=report_id)
 
         if text is not None:
             report.text = text
@@ -366,15 +391,15 @@ class Manager():
 
         return report.text
 
-    # ->proof
     @staticmethod
-    def update_proof(report_id: int, proof: str = None) -> str:
+    def update_report_proof(report_id: int, proof: str = None) -> str:
         """
         Set/get a proof value
         """
         Manager.report_exists(report_id=report_id)
 
-        report = Manager.get_report(report_id=report_id)
+        report = get_report(report_id=report_id)
+
         if proof is not None:
             report.proof = proof
             report.save()

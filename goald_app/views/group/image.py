@@ -1,7 +1,6 @@
 """
 File for defining handlers for group.image in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
@@ -21,7 +20,7 @@ def update(request, group_id):
     image_file = request.FILES.get("image")
     if request.method == "POST" and image_file is not None:
         group_avatar = request.FILES["group_avatar"]
-        image = Manager.store_image(img=group_avatar)
+        image = Manager.store_image(image=group_avatar)
 
         group.image = image
         group.save()

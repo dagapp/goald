@@ -1,12 +1,11 @@
 """
 File for defining handlers for group in Django notation
 """
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from goald_app.manager.manager import Manager
 from goald_app.manager.exceptions import DoesNotExist
+from goald_app.manager.manager import Manager
 
 
 def create(request, goal_id: int):
@@ -22,7 +21,7 @@ def create(request, goal_id: int):
     report_text = request.POST["report_text"]
     report_proof = request.FILES["report_proof"]
 
-    proof = Manager.store_image(img=report_proof)
+    proof = Manager.store_image(image=report_proof)
 
     try:
         Manager.create_report(

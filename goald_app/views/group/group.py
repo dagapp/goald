@@ -1,14 +1,12 @@
 """
 File for defining handlers for group in Django notation
 """
-
 import json
 
 from django.http import JsonResponse
 
 from goald_app.manager.exceptions import AlreadyExists
-from goald_app.manager.manager import Manager
-from goald_app.manager.manager import dataclass_encoder
+from goald_app.manager.manager import Manager, DataclassEncoder
 
 
 def create(request):
@@ -35,7 +33,7 @@ def create(request):
 
     if data["image"] != "":
         image_file = request.FILES["image"]
-        image_path = Manager.store_image(img=image_file)
+        image_path = Manager.store_image(image=image_file)
 
     selected_privacy_mode = data["is_private"]
     is_public = False
@@ -64,7 +62,8 @@ def view(request, group_id):
     Handler to serialize group to json
     """
     group = Manager.get_user_group(user_id=request.session['id'], group_id=group_id)
-    return JsonResponse(data=group, safe=False, encoder=dataclass_encoder)
+    return JsonResponse(data=group, safe=False, encoder=DataclassEncoder)
+
 
 
 def list(request):
@@ -72,4 +71,4 @@ def list(request):
     Handler to serialize groups to json
     """
     groups = Manager.get_user_groups(user_id=request.session['id'])
-    return JsonResponse(data=groups, safe=False, encoder=dataclass_encoder)
+    return JsonResponse(data=groups, safe=False, encoder=DataclassEncoder)
