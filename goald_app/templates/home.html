@@ -259,5 +259,17 @@
             <input id="exitButton" class="form-button"  onclick="acceptExit()" value="Да" />
         </form>
     </div>
+
+    <!--get duty window-->
+    <div id="getDutyWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('getDutyWindow')">&times;</button>
+        </div>
+        <h4>Взять часть долга по цели ... у ...?</h4>
+        <form>
+            <input type="text" id="getduty-sum" class="lineedit form-control" placeholder="Сумма"/>
+            <input id="getDutyButton" class="form-button"  onclick="acceptGetDutyButton()" value="Подтвердить" />
+        </form>
+    </div>
             
 </body>

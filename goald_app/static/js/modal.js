@@ -52,6 +52,10 @@ function acceptExit() {
     closeModal('exitWindow');
 }
 
+function acceptGetDutyButton() {
+    closeModal('getDutyWindow');
+}
+
 function pay() {
     closeModal('payWindow');
 }
