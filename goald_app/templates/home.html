@@ -45,7 +45,7 @@
                             <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
                         </div>
                     </div>
-                    <div id="list-content-container">
+                    <div class="list-content-container">
                         <div class="list-content">
                             <div class="list-element no-element">
                                 <h2 class="title-text">Нет целей</h2>
@@ -56,6 +56,22 @@
             </div>
             <div id="content">
                 <div id="entity" style="display: none;">
+                    <div id="user-list" class="list shadow">
+                        <div class="title">
+                            <h2 class="title-text">Участники</h2>
+                            <div class="buttons">
+                                <h2 class="alter-button grey-button">+</h2>
+                                <h2 class="alter-button grey-button">-</h2>
+                            </div>
+                        </div>
+                        <div class="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет участников</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="entity-info" class="shadow">
                         <div class="info">
                             <div class="title">
@@ -70,6 +86,9 @@
                                     <h4 id="group-info-tag" class="title-text"></h4>
                                 </div>
                             </div>
+                            <div id="goal-info">
+
+                            </div>
                         </div>
                         <div class="info" style="display: none;">
                             <div class="title">
@@ -82,41 +101,33 @@
                             </div>
                         </div>
                     </div>
-                    <div id="participant-list" class="list shadow">
-                        <div class="title">
-                            <h2 class="title-text">Участники</h2>
-                            <div class="buttons">
-                                <h2 class="alter-button grey-button">+</h2>
-                                <h2 class="alter-button grey-button">-</h2>
-                            </div>
-                        </div>
-                        <div id="list-content-container">
-                            <div class="list-content">
-                                <div class="list-element no-element">
-                                    <h2 class="title-text">Нет участников</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div id="event-chat-report" class="shadow">
                     <div id="event-chat-report-choice" class="title">
                         <div class="event-chat-report-option grey-button" style="color: black;">
                             <h2 class="title-text">Cобытия</h2>
                         </div>
-                        <div class="event-chat-report-option grey-button">
+                        <div class="event-chat-report-option grey-button" style="display: none;">
                             <h2 class="title-text">Сообщения</h2>
                         </div>
                         <div class="event-chat-report-option grey-button">
                             <h2 class="title-text">Отчёты</h2>
                         </div>
                     </div>
-                    <div id="list-content-container">
-                        <div class="list-content">
-                            <div class="list-element no-element">
-                                <h2 class="title-text">Нет событий</h2>
+                    <div id="event-list">
+                        <div class="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет событий</h2>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="chat">
+
+                    </div>
+                    <div id="report">
+
                     </div>
                 </div>  
             </div> 
