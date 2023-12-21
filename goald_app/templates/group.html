@@ -29,16 +29,16 @@
                 <input type="file" name="image" accept="image/*" id="image-input" style="display: none;">
                 <input type="submit" value="Загрузить изображение" style="display: none;">
             </form>
-            
+
             <script>
                 const addImageButton = document.querySelector('.add-image-button');
                 const imageInput = document.getElementById('group-image');
-                
+
                 addImageButton.addEventListener('click', () => {
                     imageInput.click();
                 });
             </script>
-            
+
             <div class="group-info">
                 <div class="group-tag">{{ group.tag }}</div>
                 <div class="group-name">{{ group.name }}</div>
@@ -61,7 +61,7 @@
                 <span class="close-buttonUser">&times;</span>
                 <form action="{% url 'group/users/add' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label>Имя пользователя</label>
-                    <input type="text" name="username" required><br><br>        
+                    <input type="text" name="username" required><br><br>
                     <input type="submit" value="Добавить участника">
                 </form>
             </div>
@@ -84,7 +84,7 @@
                 <span class="close-buttonGoal">&times;</span>
                 <form action="{% url 'group/goals/add' group_id=group.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <label>Название цели</label>
-                    <input type="text" name="name" required><br><br>        
+                    <input type="text" name="name" required><br><br>
                     <input type="submit" value="Добавить цель">
                 </form>
             </div>
@@ -103,5 +103,5 @@
                 {% endfor %}
             </ul>
         </div>
-        
+
     </div>
