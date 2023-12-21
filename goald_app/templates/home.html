@@ -213,5 +213,17 @@
             <input id="deleteGoalButton" class="form-button"  onclick="acceptDeleteGoal()" value="Да" />
         </form>
     </div>
+
+    <!--pay window-->
+    <div id="payWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('payWindow')">&times;</button>
+        </div>
+        <h4>Перевести деньги для цели ...</h4>
+        <form>
+            <input type="text" id="pay-sum" class="lineedit form-control" placeholder="Сумма"/>
+            <input id="payButton" class="form-button"  onclick="pay()" value="Перевести" />
+        </form>
+    </div>
             
 </body>

@@ -39,3 +39,7 @@ function acceptDeleteGroup() {
 function acceptDeleteGoal() {
     closeModal('deleteGoalWindow');
 }
+
+function pay() {
+    closeModal('payWindow');
+}
