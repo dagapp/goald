@@ -225,5 +225,23 @@
             <input id="payButton" class="form-button"  onclick="pay()" value="Перевести" />
         </form>
     </div>
+
+    <!--сreate goal-->
+    <div id="createGoalWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('createGoalWindow')">&times;</button>
+        </div>
+        <h4>Создание цели</h4>
+        <form>
+            <select name="groups" id="creategoal-groups">
+                <option value="mode">Выберите группу</option>
+            </select>
+            <input type="text" id="creategoal-name" class="lineedit form-control" placeholder="Название цели"/>
+            <input type="text" id="creategoal-sum" class="lineedit form-control" placeholder="Сумма"/>
+            <input type="text" id="creategoal-deadline" class="lineedit form-control" placeholder="Дедлайн"/>
+            <input type="text" id="creategoal-period" class="lineedit form-control" placeholder="Период отправки уведомлений"/>
+            <input id="createGoalButton" class="form-button"  onclick="createGoalButtonPressed()" value="Создать цель" />
+        </form>
+    </div>
             
 </body>
