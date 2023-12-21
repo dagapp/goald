@@ -90,14 +90,18 @@ class Group {
         self.image = group.image;
 
         self.users = [];
-        group.users.forEach(u => {
-            self.users.push(new User(u));
-        });
+        if (group.users) {
+            group.users.forEach(u => {
+                self.users.push(new User(u));
+            });
+        }
 
         self.goals = [];
-        group.goals.forEach(g => {
-            self.goals.push(new Goal(g));
-        });
+        if (group.goals) {
+            group.goals.forEach(g => {
+                self.goals.push(new Goal(g));
+            });
+        }
     }
 }
 
@@ -517,6 +521,7 @@ class API {
         }
 
         function post(url, data) {
+            data["csrf"] = $("#createGroupWindow input[name='csrfmiddlewaretoken']").val();
             return fetch(url, {
                 method: "POST",
                 headers: { ...headers },
@@ -556,8 +561,9 @@ class API {
             return groups;
         };
 
-        self.add_group = async function (group) {
+        self.create_group = async function (group) {
             return await post("group/create", {
+                "tag": group.tag,
                 "name": group.name,
                 "image": group.image,
                 "is_private": group.is_private,
@@ -586,6 +592,13 @@ function closeModal(modalId) {
 }
 
 function createGroupButtonPressed() {
+    var api = new API();
+    api.create_group(new Group({
+        tag: $("#creategroup-tag").val(),
+        name: $("#creategroup-name").val(),
+        is_private: false
+    }));
+    $("#createGroupWindow form input")
     closeModal('createGroupWindow');
 }
 
