@@ -532,14 +532,3 @@ class Manager():
         except Duty.DoesNotExist as e:
             raise DoesNotExist(f"duty with such user_id [{user_id}] "
                                f"and goal_id [{goal_id}] does not exist") from e
-
-    @staticmethod
-    def get_duty(user_id: int, goal_id: int) -> DutyResult:
-        """
-        Get duty
-        """
-        try:
-            duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
-            return ReportResult(duty)
-        except DoesNotExist:
-            return ReportResult(None)

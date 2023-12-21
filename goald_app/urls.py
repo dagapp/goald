@@ -52,4 +52,8 @@ urlpatterns = [
         views.report.text.update,
         name="report/text/update"
     ),
+
+    # duty handlers
+    path("goal/duty/pay",      views.duty.duty.pay,         name="goal/duty/pay"     ),
+    path("goal/duty/delegate", views.duty.duty.delegate,    name="goal/duty/delegate"),
 ]
