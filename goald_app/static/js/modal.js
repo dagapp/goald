@@ -9,15 +9,16 @@ function removeBlackout() {
 }
 
 function openGroupModal(modalId) {
-    if (document.getElementById('groupActionWindow').display === 'block')
-        closeModal('groupActionWindow');
-
     var modal = document.getElementById(modalId);
     modal.style.display = 'block';
     setBlackout();
 }
 
 function closeModal(modalId) {
+    var groupActionWindow = document.getElementById('groupActionWindow');
+    if (groupActionWindow.style.display === 'block')
+        groupActionWindow.style.display = 'none';
+
     var modal = document.getElementById(modalId);
     modal.style.display = 'none';
     removeBlackout();
