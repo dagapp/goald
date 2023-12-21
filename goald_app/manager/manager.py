@@ -181,12 +181,27 @@ class Manager():
     # ->users
     @staticmethod
     def get_user(user_id: int) -> UserResult:
+        """
+        Get user
+        """
         try:
             user = get_user_record(user_id=user_id)
         except DoesNotExist:
             return UserResult(None)
 
         return UserResult(user)
+
+    @staticmethod
+    def get_user_id(login: str) -> int:
+        """
+        Get user id by login
+        """
+        try:
+            user = get_user_record(login=login)
+        except DoesNotExist:
+            return -1
+
+        return user.id
 
     @staticmethod
     def get_user_groups(user_id: int) -> List[GroupResult]:
@@ -256,7 +271,6 @@ class Manager():
         """
         return Group.objects.filter(id=group_id).exists()
 
-
     @staticmethod
     def add_user_to_group(group_id: int, login: str) -> None:
         """
@@ -309,6 +323,19 @@ class Manager():
         except Group.DoesNotExist as e:
             raise DoesNotExist(f"user with id [{user_id}]"
                                f" has no groups with id [{group_id}]") from e
+
+    @staticmethod
+    def update_group_image(group_id: int, image: str) -> None:
+        """
+        Update group image
+        """
+        try:
+            group = get_group_record(group_id=group_id)
+        except DoesNotExist:
+            return
+
+        group.image = image
+        group.save()
 
     # ->goals
     @staticmethod
@@ -378,12 +405,23 @@ class Manager():
         Report.objects.create(goal_id=goal_id, text=text, proof=proof)
 
     @staticmethod
+    def get_report(report_id: int) -> ReportResult:
+        """
+        Get report
+        """
+        try:
+            report = get_report_record(report_id=report_id)
+        except DoesNotExist:
+            return ReportResult(None)
+
+        return ReportResult(report)
+
+    @staticmethod
     def report_exists(report_id: int) -> bool:
         """
         Check if report exists
         """
         return Report.objects.filter(report_id=report_id).exists()
-
 
     @staticmethod
     def update_report_text(report_id: int, text: str = None) -> str:

@@ -37,10 +37,12 @@ def view(request, report_id):
     """
     Handler of a reports page
     """
-    if not Manager.report_exists(report_id=report_id):
+    try:
+        report = Manager.get_report(report_id=report_id)
+    except DoesNotExist:
         messages.error(request, "Report doesn't exist")
         return redirect(request.META.get("HTTP_REFERER"))
 
     return render(
-        request, "reports.html", {"reports": Manager.get_report(report_id=report_id)}
+        request, "reports.html", {"reports": report}
     )
