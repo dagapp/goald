@@ -23,7 +23,7 @@
             <div id="group-list" class="list shadow">
                 <div>
                     <h2 class="title">Группы</h2>
-                    <h2 id="plus-button-group" class="plus-button" onclick="openModal()">+</h2>
+                    <h2 id="plus-button-group" class="plus-button" onclick="openGroupModal('groupActionWindow')">+</h2>
                 </div>
                 <div id="group-list-content">
                     <div class="list-element no-element">
@@ -96,8 +96,8 @@
             <button class="close" onclick="closeModal('groupActionWindow')">&times;</button>
         </div>
         <form>
-            <input class="form-button"  value="Создать группу" onclick="openCreateGroupWindow()" />
-            <input class="form-button"  value="Вступить в группу" onclick="openJoinToGroupWindow()"  />
+            <input class="form-button"  value="Создать группу" onclick="openGroupModal('createGroupWindow')" />
+            <input class="form-button"  value="Вступить в группу" onclick="openGroupModal('joinToGroupWindow')"  />
         </form>
     </div>
 

@@ -8,8 +8,11 @@ function removeBlackout() {
     blackout.style.display = 'none';
 }
 
-function openModal() {
-    var modal = document.getElementById('groupActionWindow');
+function openGroupModal(modalId) {
+    if (document.getElementById('groupActionWindow').display === 'block')
+        closeModal('groupActionWindow');
+
+    var modal = document.getElementById(modalId);
     modal.style.display = 'block';
     setBlackout();
 }
@@ -20,22 +23,8 @@ function closeModal(modalId) {
     removeBlackout();
 }
 
-function openCreateGroupWindow() {
-    closeModal('groupActionWindow');
-    var modal = document.getElementById('createGroupWindow');
-    modal.style.display = 'block';
-    setBlackout();
-}
-
 function createGroupButtonPressed() {
     closeModal('createGroupWindow');
-}
-
-function openJoinToGroupWindow() {
-    closeModal('groupActionWindow');
-    var modal = document.getElementById('joinToGroupWindow');
-    modal.style.display = 'block';
-    setBlackout();
 }
 
 function joinToGroupButtonPressed() {
