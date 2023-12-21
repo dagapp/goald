@@ -180,6 +180,13 @@ class Manager():
 
     # ->users
     @staticmethod
+    def user_exists(user_id: int) -> bool:
+        """
+        Check if user exists
+        """
+        return User.objects.filter(id=user_id).exists()
+
+    @staticmethod
     def get_user(user_id: int) -> UserResult:
         """
         Get user

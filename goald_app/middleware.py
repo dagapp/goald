@@ -3,6 +3,7 @@ File for defining middleware classes
 """
 
 from django.shortcuts import redirect
+from goald_app.manager.manager import Manager
 
 
 class AuthorizationMiddleware:
@@ -30,6 +31,9 @@ class AuthorizationMiddleware:
                 response = self.get_response(request)
                 return response
 
+            return redirect("login")
+
+        if not Manager.user_exists(user_id=session["id"]):
             return redirect("login")
 
         if path in self.permitted_wo_id:
