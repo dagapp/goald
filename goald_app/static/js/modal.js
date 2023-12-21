@@ -1,19 +1,45 @@
-function setupModal(modalId, openModalId, closeButtonClass) {
-    let modal = document.getElementById(modalId);
-    let btn = document.getElementById(openModalId);
-    let span = document.querySelector('.' + closeButtonClass);
+function setBlackout() {
+    var blackout = document.getElementById('blackout');
+    blackout.style.display = 'block';
+}
 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+function removeBlackout() {
+    var blackout = document.getElementById('blackout');
+    blackout.style.display = 'none';
+}
 
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
+function openModal(moadalId) {
+    var modal = document.getElementById(moadalId);
+    modal.style.display = 'block';
+    setBlackout();
+}
 
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+function closeModal(modalId) {
+    var groupActionWindow = document.getElementById('groupActionWindow');
+    if (groupActionWindow.style.display === 'block')
+        groupActionWindow.style.display = 'none';
+
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+    removeBlackout();
+}
+
+function createGroupButtonPressed() {
+    closeModal('createGroupWindow');
+}
+
+function joinToGroupButtonPressed() {
+    closeModal('joinToGroupWindow');
+}
+
+function acceptDeleteGroup() {
+    closeModal('deleteGroupWindow');
+}
+
+function acceptDeleteGoal() {
+    closeModal('deleteGoalWindow');
+}
+
+function pay() {
+    closeModal('payWindow');
 }
