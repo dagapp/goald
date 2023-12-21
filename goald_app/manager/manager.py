@@ -10,7 +10,7 @@ import random
 import string
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict, Tuple
 from bcrypt import gensalt, hashpw
 
 from django.core.files.uploadedfile import UploadedFile
@@ -44,15 +44,16 @@ class UserResult:
     login: str
     name: str
     second_name: str
-    duties_current_value: int
-    duties_final_value: int
+    duties: Dict[int, Tuple[int, int]]
 
     def __init__(self, user: User):
         self.login = user.login
         self.name = user.name
         self.second_name = user.second_name
-        self.duties_current_value = sum([duty.current_value for duty in user.duties_user.all()])
-        self.duties_final_value = sum([duty.final_value for duty in user.duties_user.all()])
+        self.duties = {
+                        duty.goal: (duty.current_value, duty.final_value)
+                        for duty in user.duties_user.all()
+                      }
 
 
 @dataclass
@@ -92,8 +93,8 @@ class GoalResult:
     is_active: bool
     deadline: str
     alert_period: str
-    duties_current_value: int
-    duties_final_value: int
+    users_duties_current_value: int
+    users_duties_final_value: int
     events: List[EventResult]
     reports: List[ReportResult]
 
@@ -102,8 +103,8 @@ class GoalResult:
         self.is_active = goal.is_active
         self.deadline = str(goal.deadline)
         self.alert_period = str(goal.alert_period)
-        self.duties_current_value = sum([duty.current_value for duty in goal.duties_goal.all()])
-        self.duties_final_value = sum([duty.final_value for duty in goal.duties_goal.all()])
+        self.users_duties_current_value = sum([duty.current_value for duty in goal.duties_goal.all()])
+        self.users_duties_final_value = sum([duty.final_value for duty in goal.duties_goal.all()])
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
 
