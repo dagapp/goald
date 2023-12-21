@@ -180,6 +180,15 @@ class Manager():
 
     # ->users
     @staticmethod
+    def get_user(user_id: int) -> UserResult:
+        try:
+            user = get_user_record(user_id=user_id)
+        except DoesNotExist:
+            return UserResult(None)
+
+        return UserResult(user)
+
+    @staticmethod
     def get_user_groups(user_id: int) -> List[GroupResult]:
         """
         Get all groups by given user_id
