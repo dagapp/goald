@@ -41,3 +41,9 @@ function openJoinToGroupWindow() {
 function joinToGroupButtonPressed() {
     closeModal('joinToGroupWindow');
 }
+
+function openCreateGoalWindow() {
+    var modal = document.getElementById('createGoalWindow');
+    modal.style.display = 'block';
+    setBlackout();
+}
