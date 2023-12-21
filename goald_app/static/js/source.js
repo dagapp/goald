@@ -240,6 +240,10 @@ class UserListType {
                         <h2>${user.login}</h2>
                         <p>${user.name} ${user.second_name}</p>
                     </div>
+                    <div class="buttons">
+                        <h2 class="alter-button grey-button" onclick="openModal('createGoalWindow')">+</h2>
+                        <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
+                    </div>
                 `);
         };
 
@@ -351,22 +355,22 @@ class Manager {
 
         var api = new API();
 
-        var group_list = new List(new GroupListType(
+        self.group_list = new List(new GroupListType(
             api.get_group_list,
             api.add_group,
             api.del_group, 
             function action (group) { 
-                goal_list.update(group);
-                user_list.update(group);
-                event_list.update(group);
-                profile.update();
+                self.goal_list.update(group);
+                self.user_list.update(group);
+                self.event_list.update(group);
+                self.profile.update();
             }
         ));
 
-        var goal_list = new List(new GoalListType( 
+        self.goal_list = new List(new GoalListType( 
             function get () {
                 return new Promise(resolve => {
-                    var chosen_group = group_list.get_chosen_element();
+                    var chosen_group = self.group_list.get_chosen_element();
                     if (chosen_group) {
                         var goals = chosen_group.goals;
                         if (goals) {
@@ -376,7 +380,7 @@ class Manager {
                         }
                     } else {
                         var goals = [];
-                        group_list.get_elements().forEach(el => {
+                        self.group_list.get_elements().forEach(el => {
                             el.goals.forEach(el_g => {
                                 goals.push(el_g);
                             });
@@ -388,15 +392,15 @@ class Manager {
             function add () { }, 
             function del () { }, 
             function action (goal) {
-                event_list.update(goal);
-                profile.update();
+                self.event_list.update(goal);
+                self.profile.update();
             }
         ));
 
-        var user_list = new List(new UserListType(
+        self.user_list = new List(new UserListType(
             function get () {
                 return new Promise(resolve => {
-                    var chosen_group = group_list.get_chosen_element();
+                    var chosen_group = self.group_list.get_chosen_element();
                     if (chosen_group) {
                         resolve(chosen_group.users);
                     } else {
@@ -415,15 +419,15 @@ class Manager {
             }
         ));
 
-        var event_list = new List(new EventListType(
+        self.event_list = new List(new EventListType(
             function get() {
                 return new Promise(resolve => {
-                    var chosen_group = group_list.get_chosen_element();
+                    var chosen_group = self.group_list.get_chosen_element();
                     if (chosen_group) {
                         resolve(chosen_group.events);
                     } else {
                         var events = [];
-                        group_list.get_elements().forEach(el => {
+                        self.group_list.get_elements().forEach(el => {
                             el.events.forEach(el_g => {
                                 events.push(el_g);
                             });
@@ -434,23 +438,23 @@ class Manager {
             }
         ));
 
-        var profile = new Profile(function () {
-            return new Promise(resolve => resolve({group: group_list.get_chosen_element(), goal: goal_list.get_chosen_element()}));
+        self.profile = new Profile(function () {
+            return new Promise(resolve => resolve({group: self.group_list.get_chosen_element(), goal: self.goal_list.get_chosen_element()}));
         });
 
         self.init = function () {
-            group_list.init();
-            goal_list.init();
-            user_list.init();
-            event_list.init();
+            self.group_list.init();
+            self.goal_list.init();
+            self.user_list.init();
+            self.event_list.init();
         };
 
         self.update = function () {
-            group_list.update();
-            goal_list.update();
-            user_list.update();
-            event_list.update();
-            profile.update();
+            self.group_list.update();
+            self.goal_list.update();
+            self.user_list.update();
+            self.event_list.update();
+            self.profile.update();
         };
     }
 }
