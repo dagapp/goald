@@ -199,6 +199,15 @@ body {
   color: grey;
 }
 
+#goal-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#goal-pay {
+  padding: 10px;
+}
+
 .active-status {
   display: inline-block;
   height: 11px;
