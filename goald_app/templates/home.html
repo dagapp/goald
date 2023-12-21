@@ -25,8 +25,8 @@
                     <div class="title">
                         <h2 class="title-text">Группы</h2>
                         <div class="buttons">
-                            <h2 class="alter-button grey-button" onclick="openGroupModal('groupActionWindow')">+</h2>
-                            <h2 class="alter-button grey-button">-</h2>
+                            <h2 class="alter-button grey-button" onclick="openModal('groupActionWindow')">+</h2>
+                            <h2 class="alter-button grey-button" onclick="openModal('deleteGroupWindow')">-</h2>
                         </div>
                     </div>
                     <div class="list-content-container">
@@ -41,8 +41,8 @@
                     <div class="title">
                         <h2 class="title-text">Цели</h2>
                         <div class="buttons">
-                            <h2 class="alter-button grey-button"  onclick="openGroupModal('createGoalWindow')">+</h2>
-                            <h2 class="alter-button grey-button">-</h2>
+                            <h2 class="alter-button grey-button" onclick="openModal('createGoalWindow')">+</h2>
+                            <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
                         </div>
                     </div>
                     <div id="list-content-container">
@@ -133,8 +133,8 @@
             <button class="close" onclick="closeModal('groupActionWindow')">&times;</button>
         </div>
         <form>
-            <input class="form-button"  value="Создать группу" onclick="openGroupModal('createGroupWindow')" />
-            <input class="form-button"  value="Вступить в группу" onclick="openGroupModal('joinToGroupWindow')"  />
+            <input class="form-button"  value="Создать группу" onclick="openModal('createGroupWindow')" />
+            <input class="form-button"  value="Вступить в группу" onclick="openModal('joinToGroupWindow')"  />
         </form>
     </div>
 
@@ -189,6 +189,28 @@
             <input type="text" id="creategoal-deadline" class="lineedit form-control" placeholder="Дедлайн"/>
             <input type="text" id="creategoal-period" class="lineedit form-control" placeholder="Период отправки уведомлений"/>
             <input id="createGoalButton" class="form-button"  onclick="createGoalButtonPressed()" value="Создать цель" />
+        </form>
+    </div>
+
+    <!--delete group-->
+    <div id="deleteGroupWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('deleteGroupWindow')">&times;</button>
+        </div>
+        <h4>Вы действительно хотите удалить группу?</h4>
+        <form>
+            <input id="deleteGroupButton" class="form-button"  onclick="acceptDeleteGroup()" value="Да" />
+        </form>
+    </div>
+
+    <!--delete goal-->
+    <div id="deleteGoalWindow" class="modal-content">
+        <div class="modal-header">
+            <button class="close" onclick="closeModal('deleteGoalWindow')">&times;</button>
+        </div>
+        <h4>Вы действительно хотите удалить цель?</h4>
+        <form>
+            <input id="deleteGoalButton" class="form-button"  onclick="acceptDeleteGoal()" value="Да" />
         </form>
     </div>
             
