@@ -41,13 +41,13 @@ def login(request):
     user_password = request.POST["password"]
 
     try:
-        Manager.auth_user(user_login, user_password)
+        user_id = Manager.auth_user(user_login, user_password)
     except (DoesNotExist, IncorrectData) as e:
         messages.error(request, e)
         return redirect("login")
 
     # Set a session for further user authorizing
-    request.session["id"] = Manager.get_user_id(login=user_login)
+    request.session["id"] = user_id
 
     return redirect("home")
 
