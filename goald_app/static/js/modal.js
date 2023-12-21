@@ -8,8 +8,8 @@ function removeBlackout() {
     blackout.style.display = 'none';
 }
 
-function openGroupModal(modalId) {
-    var modal = document.getElementById(modalId);
+function openModal(moadalId) {
+    var modal = document.getElementById(moadalId);
     modal.style.display = 'block';
     setBlackout();
 }
@@ -32,8 +32,10 @@ function joinToGroupButtonPressed() {
     closeModal('joinToGroupWindow');
 }
 
-function openCreateGoalWindow() {
-    var modal = document.getElementById('createGoalWindow');
-    modal.style.display = 'block';
-    setBlackout();
+function acceptDeleteGroup() {
+    closeModal('deleteGroupWindow');
+}
+
+function acceptDeleteGoal() {
+    closeModal('deleteGoalWindow');
 }
