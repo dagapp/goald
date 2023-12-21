@@ -180,13 +180,6 @@ class Manager():
 
     # ->users
     @staticmethod
-    def user_exists(user_id: int) -> bool:
-        """
-        Check if user exists
-        """
-        return User.objects.filter(id=user_id).exists()
-
-    @staticmethod
     def get_user(user_id: int) -> UserResult:
         """
         Get user
@@ -197,6 +190,18 @@ class Manager():
             return UserResult(None)
 
         return UserResult(user)
+
+    @staticmethod
+    def get_user_id(login: str) -> int:
+        """
+        Get user id by login
+        """
+        try:
+            user = get_user_record(login=login)
+        except DoesNotExist:
+            return -1
+
+        return user.id
 
     @staticmethod
     def get_user_groups(user_id: int) -> List[GroupResult]:
@@ -211,7 +216,7 @@ class Manager():
             raise DoesNotExist(f"groups for current user [{user_id}] does not exist") from e
 
     @staticmethod
-    def auth_user(login: str, password: str) -> int:
+    def auth_user(login: str, password: str) -> None:
         """
         Auth a user with given login and password
         """
@@ -225,8 +230,6 @@ class Manager():
 
         if salted_hash != user.password:
             raise IncorrectData("wrong password")
-
-        return user.id
 
     @staticmethod
     def create_user(login: str, password: str) -> None:
@@ -462,3 +465,56 @@ class Manager():
         image_path = "group/images/" + image.name
 
         return image_path
+
+    @staticmethod
+    def delegate_duty(
+        leader_id: int, goal_id: int, delegate_id: int, value: int
+    ) -> None:
+        """
+        Delegate a duty to someone
+        """
+        try:
+            group = Goal.objects.get(id=goal_id).group
+            if leader_id != group.leader.id:
+                return
+            
+            if not group.users.filter(id=delegate_id).exists():
+                raise DoesNotExist(f"user with such id [{delegate_id}] "
+                                   f"is not a member of the group")
+
+        except Goal.DoesNotExist as e:
+            raise DoesNotExist("goal with such id [{goal_id}] does not exist") from e
+
+        try:
+            duty = Duty.objects.get(user_id=leader_id, goal_id=goal_id)
+            if duty.final_value < value:
+                return
+
+            try:
+                Duty.objects.get(
+                    user_id=delegate_id, goal_id=goal_id
+                ).final_value += value
+            except Duty.DoesNotExist:
+                Duty.objects.create(
+                    user_id=delegate_id, goal_id=goal_id, final_value=value
+                )
+
+        except Duty.DoesNotExist as e:
+            raise DoesNotExist(f"duty with such user_id [{leader_id}] "
+                               f"and goal_id [{goal_id}] does not exist") from e
+
+    @staticmethod
+    def pay_duty(user_id: int, goal_id: int, value: int) -> None:
+        """
+        Pay a some value
+        """
+        try:
+            duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
+            duty.current_value += value
+
+            if duty.current_value >= duty.final_value:
+                Duty.objects.delete(duty.id)
+
+        except Duty.DoesNotExist as e:
+            raise DoesNotExist(f"duty with such user_id [{user_id}] "
+                               f"and goal_id [{goal_id}] does not exist") from e
