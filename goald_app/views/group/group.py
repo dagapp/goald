@@ -2,15 +2,13 @@
 File for defining handlers for group in Django notation
 """
 
+import json
 
-from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+
 from goald_app.managers.common import AlreadyExists
-
 from goald_app.managers.group import GroupManager
 from goald_app.managers.image import ImageManager
-from django.http import JsonResponse
-import json
 
 
 def create(request):

@@ -2,7 +2,6 @@
 Module for handling user records in db
 """
 
-from genericpath import exists
 from bcrypt import gensalt, hashpw
 
 from goald_app.managers.common import DoesNotExist, AlreadyExists, IncorrectData

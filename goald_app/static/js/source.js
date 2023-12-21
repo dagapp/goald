@@ -76,15 +76,15 @@ var GroupList = function () {
     };
 
     function addGroup (group, action) {
-        $("#group-list-content").append(element(group, action));
+        $("#group-list .list-content").append(element(group, action));
     }
 
     function addNoGroup () {
-        $("group-list-content").append(no_element());
+        $("#group-list .list-content").append(no_element());
     }
 
     function clear() {
-        $("#group-list-content .list-element").remove();
+        $("#group-list .list-content .list-element").remove();
     }
 
     function element (group, action) {
@@ -129,8 +129,9 @@ var GroupProfile = function() {
 
     function showGroup (group) {
         var showContent = function () {
-            $("#entity-info-image").attr("src", group.image);
-            $("#entity-info-title").text(group.name + " " + group.tag);
+            $("#group-info-image").attr("src", group.image);
+            $("#group-info-name").text(group.name);
+            $("#group-info-tag").text(group.tag);
             //$("#entity").fadeIn();
         };
 
