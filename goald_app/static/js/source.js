@@ -124,9 +124,12 @@ class GroupListType {
                     </div>
                 `)
                 .bind("click", function () {
+                    var do_turn_on = !$(this).hasClass("list-element-chosen");
+
                     self.parent.find(".list-element-chosen").removeClass("list-element-chosen");
-                    $(this).addClass("list-element-chosen");
-                    return action(group.id);
+                    if (do_turn_on) $(this).addClass("list-element-chosen");
+
+                    action(group);
                 });
         };
 
@@ -184,7 +187,15 @@ class GoalListType {
                         <span class="${goal.is_active ? "active-status" : "notactive-status"}"></span>
                         <p>${goal.is_active ? "активна" : "не активна"}</p>
                     </div>
-                `);
+                `)
+                .bind("click", function () {
+                    var do_turn_on = !$(this).hasClass("list-element-chosen");
+
+                    self.parent.find(".list-element-chosen").removeClass("list-element-chosen");
+                    if (do_turn_on) $(this).addClass("list-element-chosen");
+
+                    action(goal);
+                });
         };
 
         self.get_no_element_html = function () {
@@ -227,7 +238,7 @@ class UserListType {
                     </div>
                     <div class="list-info">
                         <h2>${user.login}</h2>
-                        <p>${user.name}</p>
+                        <p>${user.name} ${user.second_name}</p>
                     </div>
                 `);
         };
@@ -284,6 +295,56 @@ class EventListType {
     }
 }
 
+class Profile {
+    constructor(get) {
+        var self = this;
+
+        self.group = null;
+        self.goal = null;
+
+        self.update = async function () {
+            get().then(params => {
+                self.group = params.group;
+                self.goal = params.goal;
+
+                hideGroup();
+                hideGoal();
+
+                console.log(self.group, self.goal);
+
+                $("#entity").slideDown("fast");
+                if (self.goal != null) {
+                    showGoal(self.goal);
+                } else if (self.group != null) {
+                    showGroup(self.group);
+                } else {
+                    $("#entity").slideUp("fast");
+                }
+            });
+        };
+
+        function showGroup (group) {
+            $("#group-info-image").attr("src", group.image);
+            $("#group-info-name").text(group.name);
+            $("#group-info-tag").text(group.tag);
+            $("#group-info-container").fadeIn("fast");
+        }
+
+        function hideGroup () {
+            $("#group-info-container").fadeOut("fast");
+        }
+
+        function showGoal (goal) {
+            $("#goal-info-name").text(goal.name);
+            $("#goal-info-container").fadeIn("fast");
+        }
+
+        function hideGoal () {
+            $("#goal-info-container").fadeOut("fast");
+        }
+    }
+}
+
 class Manager {
     constructor() {
         var self = this;
@@ -327,6 +388,8 @@ class Manager {
             function add () { }, 
             function del () { }, 
             function action (goal) {
+                event_list.update(goal);
+                profile.update();
             }
         ));
 
@@ -372,7 +435,7 @@ class Manager {
         ));
 
         var profile = new Profile(function () {
-            return new Promise(resolve => resolve(group_list.get_chosen_element(), goal_list.get_chosen_element()));
+            return new Promise(resolve => resolve({group: group_list.get_chosen_element(), goal: goal_list.get_chosen_element()}));
         });
 
         self.init = function () {
@@ -392,40 +455,17 @@ class Manager {
     }
 }
 
-class Profile {
-    constructor(get) {
+class Modal {
+    constructor() {
         var self = this;
 
-        self.update = async function () {
-            get().then((group, goal) => {
-                //hideGroup();
-                //hideGoal();
-
-                if (goal != null) {
-                    showGoal(goal);
-                } else if (group != null) {
-                    showGroup(group);
-                } else {
-                    hideGroup();
-                    hideGoal();
-                }
-            });
+        self.open = function () {
+            $("#blackout").fadeIn("fast");
         };
 
-        function showGroup(group) {
-            var showContent = function () {
-                $("#group-info-image").attr("src", group.image);
-                $("#group-info-name").text(group.name);
-                $("#group-info-tag").text(group.tag);
-                //$("#entity").fadeIn();
-            };
-
-            if ($('#entity').css('display') == 'none') {
-                $('#entity').slideDown("fast", showContent);
-            } else {
-                //$("#entity").fadeOut("fast", showContent);
-            }
-        }
+        self.close = function () {
+            $("#blackout").fadeOut("fast");
+        };
     }
 }
 
@@ -492,20 +532,6 @@ class API {
             return groups;
         };
 
-        self.get_group_info = async function (group_id) {
-            let result = await get(`group/${group_id}`)
-                .then(
-                    r => {
-                        var goals = [];
-                        r.goals.forEach(g => {
-                            goals.push(new Goal(g));
-                        });
-                        return { "group": new Group(r.group), "goals": goals };
-                    }
-                );
-            return result;
-        };
-
         self.add_group = async function (group) {
             return await post("group/create", {
                 "name": group.name,
@@ -513,9 +539,44 @@ class API {
                 "is_private": group.is_private,
             });
         };
-
-        self.get_goal_list = async function (group_id) {
-
-        };
     }
+}
+
+function setBlackout() {
+    $("#blackout").fadeIn("fast");
+}
+
+function removeBlackout() {
+    $("#blackout").fadeOut("fast");
+}
+
+function openModal(modalId) {
+    $("#" + modalId).fadeIn("fast");
+    setBlackout();
+}
+
+function closeModal(modalId) {
+    $("#groupActionWindow").fadeOut("fast");
+    $("#" + modalId).fadeOut();
+    removeBlackout();
+}
+
+function createGroupButtonPressed() {
+    closeModal('createGroupWindow');
+}
+
+function joinToGroupButtonPressed() {
+    closeModal('joinToGroupWindow');
+}
+
+function acceptDeleteGroup() {
+    closeModal('deleteGroupWindow');
+}
+
+function acceptDeleteGoal() {
+    closeModal('deleteGoalWindow');
+}
+
+function pay() {
+    closeModal('payWindow');
 }
