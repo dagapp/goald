@@ -99,6 +99,21 @@ class GoalResult:
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
 
+@dataclass
+class DutyResult:
+    """
+    dataclass for holding duty record data
+    """
+    final_value: int
+    current_value: int
+    deadline: str
+    alert_period: str
+
+    def __init__(self, duty: Duty):
+        self.final_value = duty.final_value
+        self.current_value = duty.current_value
+        self.deadline = str(duty.deadline)
+        self.alert_period = str(duty.alert_period)
 
 @dataclass
 class GroupResult:
@@ -471,7 +486,7 @@ class Manager():
         Delegate a duty to someone
         """
         try:
-            group = Goal.get(id=goal_id).group
+            group = Goal.objects.get(id=goal_id).group
             if leader_id != group.leader.id:
                 return
             
@@ -496,6 +511,8 @@ class Manager():
                     user_id=delegate_id, goal_id=goal_id, final_value=value
                 )
 
+            duty.final_value -= value
+
         except Duty.DoesNotExist as e:
             raise DoesNotExist(f"duty with such user_id [{leader_id}] "
                                f"and goal_id [{goal_id}] does not exist") from e
@@ -515,3 +532,14 @@ class Manager():
         except Duty.DoesNotExist as e:
             raise DoesNotExist(f"duty with such user_id [{user_id}] "
                                f"and goal_id [{goal_id}] does not exist") from e
+
+    @staticmethod
+    def get_duty(user_id: int, goal_id: int) -> DutyResult:
+        """
+        Get duty
+        """
+        try:
+            duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
+            return ReportResult(duty)
+        except DoesNotExist:
+            return ReportResult(None)
