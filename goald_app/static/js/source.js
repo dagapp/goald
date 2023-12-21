@@ -7,91 +7,221 @@ $(document).ready(function () {
 
     init();
 
-    $(".logo").on("click", () => {
+    $("#logo").on("click", () => {
         init();
     });
 
     $("body").fadeIn("slow");
 });
 
-var Group = function (group) {
-    var self = this;
+class List {
+    constructor(list_type) {
+        var self = this;
 
-    self.id = group.id;
-    self.tag = group.tag;
-    self.name = group.name;
-    self.image = group.image;
-    self.leader = group.leader;
-    self.is_private = group.is_private;
-};
+        var get                 = list_type.get;
+        var add                 = list_type.add;
+        var add_btn             = list_type.add_btn;
+        var del                 = list_type.del;
+        var del_btn             = list_type.del_btn;
+        var parent              = list_type.parent;
+        var get_element_html    = list_type.get_element_html;
+        var get_no_element_html = list_type.get_no_element_html;
 
-var Goal = function (goal) {
-    var self = this;
+        var elements = [];
 
-    self.name = goal;
-};
+        self.get_elements = function () {
+            return elements;
+        };
 
-var Event = function (event) {
-    var self = this;
+        self.get_chosen_element = function () {
+            var id_str = parent.find(".list-element-chosen").attr("id");
+            if (id_str)
+            {
+                var id_split = id_str.split("-");
+                var id = Number(id_split[id_split.length - 1]);
+                return elements[id];
+            } else {
+                return null;
+            }
+        };
+
+        self.init = function () {
+            add_btn.on("click", () => add());
+            del_btn.on("click", () => del());
+            self.update();
+        };
+
+        self.update = function (params) {
+            clear();
+            get(params).then(els => {
+                console.log(els);
+                if (els.length) {
+                    els.forEach((el, index) => {
+                        elements.push(el)
+                        add_element(el, index);
+                    });
+                } else {
+                    add_no_element();
+                }
+            });
+        };
+
+        function add_element(element, index) {
+            parent.append(get_element_html(element).attr("id", `list-element-${index}`));
+        }
+
+        function add_no_element() {
+            parent.append(get_no_element_html());
+        }
+
+        function clear() {
+            parent.empty();
+        }
+    }
 }
 
-var Manager = function () {
-    var self = this;
-
-    var group_list = new GroupList();
-    var group_profile = new GroupProfile();
-
-    var api = new API();
-
-    self.init = function () {
-        group_list.init(api.create_group);
-
-        group_list.update(api.get_group_list, function (group_id) {
-            group_profile.update(api.get_group_info, group_id);
-        });
-        //group_profile.update(api.get_full_info);
-    };
-};
-
-var GroupList = function () {
-    var self = this;
-
-    self.init = function (create) {
-        $("#create-group-button").on("click", function () {
-            create().then(r => self.update());
-        });
-    };
-
-    self.update = async function (get, action) {
-        clear();
-        get().then(groups => {
-            if (groups) {
-                groups.forEach(group => {
-                    addGroup(group, action);
-                })
-            } else {
-                addNoGroup();
-            }
-        });
-    };
-
-    function addGroup (group, action) {
-        $("#group-list .list-content").append(element(group, action));
+class User {
+    constructor (user) {
+        var self = this;
     }
+}
 
-    function addNoGroup () {
-        $("#group-list .list-content").append(no_element());
+class UserListType {
+    constructor(api) {
+        var self = this;
+
+        self.get     = api.get_user_list;
+        self.add     = api.add_user;
+        self.add_btn = $("#add-user-button");
+        self.del     = api.del_user;
+        self.del_btn = $("#del-user-button");
+        self.parent  = $("#user-list .list-content");
+
+        self.get_element_html = function (goal) {
+            return $("<div>")
+                .addClass("list-element button shadow")
+                .html(`
+                    <div class="goal-list-title">
+                        <h2 class="title">${goal.name}</h2>
+                        <h4 class="title" style="float: right; color: grey;">@group</h4>
+                    </div>
+                    <div class="goal-list-status">
+                        <span class="${goal.is_active ? "active-status" : "notactive-status"}"></span>
+                        <p>${goal.is_active ? "активна" : "не активна"}</p>
+                    </div>
+                `);
+        };
+
+        self.get_no_element_html = function () {
+            return $("<div>")
+                .addClass("list-element no-element")
+                .html(`
+                    <h2 class="title">Нет целей</h2>
+                `);
+        };
+
     }
+}
 
-    function clear() {
-        $("#group-list .list-content .list-element").remove();
+class Report {
+    constructor(report) {
+        var self = this;
     }
+}
 
-    function element (group, action) {
-        return $("<div>")
-            .addClass("list-element button shadow")
-            .html(`
-                </li>
+class Goal {
+    constructor(goal) {
+        var self = this;
+
+        self.name         = goal.name;
+        self.is_active    = goal.is_active;
+        self.deadline     = goal.deadline;
+        self.alert_period = goal.alert_period;
+
+        self.events = [];
+        goal.events.forEach(e => {
+            self.events.push(new Event(e));
+        });
+
+        self.reports = [];
+        goal.reports.forEach(r => {
+            self.reports.push(new Report(r));
+        });
+    }
+}
+
+class GoalListType {
+    constructor(get, add, del, action) {
+        var self = this;
+
+        self.get     = get;
+        self.add     = add;
+        self.add_btn = $("#add-goal-button");
+        self.del     = del;
+        self.del_btn = $("#del-goal-button");
+        self.parent  = $("#goal-list .list-content");
+
+        self.get_element_html = function (goal) {
+            return $("<div>")
+                .addClass("list-element button shadow")
+                .html(`
+                    <div class="goal-list-title">
+                        <h2 class="title-text">${goal.name}</h2>
+                        <h4 class="title-text" style="float: right; color: grey;">@group</h4>
+                    </div>
+                    <div class="goal-list-status">
+                        <span class="${goal.is_active ? "active-status" : "notactive-status"}"></span>
+                        <p>${goal.is_active ? "активна" : "не активна"}</p>
+                    </div>
+                `);
+        };
+
+        self.get_no_element_html = function () {
+            return $("<div>")
+                .addClass("list-element no-element")
+                .html(`
+                    <h2 class="title-text">Нет целей</h2>
+                `);
+        };
+    }
+}
+
+class Group {
+    constructor(group) {
+        var self = this;
+
+        self.id    = group.id;
+        self.tag   = group.tag;
+        self.name  = group.name;
+        self.image = group.image;
+
+        self.users = [];
+        group.users.forEach(u => {
+            self.users.push(new User(u));
+        });
+
+        self.goals = [];
+        group.goals.forEach(g => {
+            self.goals.push(new Goal(g));
+        });
+    }
+}
+
+class GroupListType {
+    constructor(get, add, del, action) {
+        var self = this;
+
+        self.get     = get;
+        self.add     = add;
+        self.add_btn = $("#add-group-button");
+        self.del     = del;
+        self.del_btn = $("#del-group-button");
+        self.parent  = $("#group-list .list-content");
+
+        self.get_element_html = function (group) {
+            return $("<div>")
+                .addClass("list-element button shadow")
+                .html(`
                     <div class="group-list-image">
                         <img src="${group.image}" alt="group-image">
                     </div>
@@ -99,189 +229,206 @@ var GroupList = function () {
                         <h2>${group.name}</h2>
                         <p>${group.tag}</p>
                     </div>
-                </li>
-            `)
-            .bind("click", function () {
-                return action(group.id)
-            });
-    };
-
-    function no_element () {
-        return $("<div>")
-            .addClass("list-element no-element")
-            .html(`
-                <h2 class="title">Нет групп</h2>
-            `)
-    };
-};
-
-var GroupProfile = function() {
-    var self = this;
-
-    var goals_list = new GoalsList();
-
-    self.update = async function (get, group_id) {
-        get(group_id).then(result => {
-            showGroup(result["group"]);
-            showGoals(result["goals"]);
-        });
-    };
-
-    function showGroup (group) {
-        var showContent = function () {
-            $("#group-info-image").attr("src", group.image);
-            $("#group-info-name").text(group.name);
-            $("#group-info-tag").text(group.tag);
-            //$("#entity").fadeIn();
+                `)
+                .bind("click", function () {
+                    self.parent.find(".list-element-chosen").removeClass("list-element-chosen");
+                    $(this).addClass("list-element-chosen");
+                    return action(group.id);
+                });
         };
 
-        if ($('#entity').css('display') == 'none') {
-            $('#entity').slideDown("fast", showContent);
-        } else {
-            //$("#entity").fadeOut("fast", showContent);
-        }
-
-        showContent();
-    }
-
-    function showGoals (goals) {
-        goals_list.update(goals);
-    }
-};
-
-var GoalsList = function() {
-    var self = this;
-
-    self.update = function (goals) {
-        clear();
-        if (goals.length) {
-            goals.forEach(goal => addGoal(goal));
-        } else {
-            addNoGoal();
-        }
-    };
-
-    function addGoal (goal) {
-        $("#goal-list-content").append(element(goal));
-    }
-
-    function addNoGoal () {
-        $("#goal-list-content").append(no_element());
-    }
-
-    function clear () {
-        $("#goal-list-content .list-element").remove();
-    }
-
-    function element (goal) {
-        return $("<div>")
-            .addClass("list-element button shadow")
-            .html(`
-                <div class="goal-list-title">
-                    <h2 class="title">${goal.name}</h2>
-                    <h4 class="title" style="float: right; color: grey;">@group</h4>
-                </div>
-                <div class="goal-list-status">
-                    <span class="${goal.is_active ? "active-status" : "notactive-status" }"></span>
-                    <p>${goal.is_active ? "активна" : "не активна"}</p>
-                </div>
-            `);
-    };
-
-    function no_element () {
-        return $("<div>")
-            .addClass("list-element no-element")
-            .html(`
-                <h2 class="title">Нет целей</h2>
-            `)
+        self.get_no_element_html = function () {
+            return $("<div>")
+                .addClass("list-element no-element")
+                .html(`
+                    <h2 class="title">Нет групп</h2>
+                `);
+        };
     }
 }
 
-var API = function () {
-    var self = this;
-    var headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    };
+class Manager {
+    constructor() {
+        var self = this;
 
-    function get(url) {
-        return fetch(url, {
-            method: "GET",
-            headers: {
-                "Accept": "application/json",
-            },
-        }).then(r => {
+        var api = new API();
+
+        var group_list = new List(new GroupListType(
+            api.get_group_list,
+            api.add_group,
+            api.del_group, 
+            function action (group) { 
+                goal_list.update(group);
+            }
+        ));
+
+        var goal_list = new List(new GoalListType( 
+            function get () {
+                return new Promise(resolve => {
+                    var chosen_group = group_list.get_chosen_element();
+                    if (chosen_group) {
+                        var goals = chosen_group.goals;
+                        if (goals) {
+                            resolve(goals);
+                        } else {
+                            resolve();
+                        }
+                    } else {
+                        var goals = [];
+                        group_list.get_elements().forEach(el => {
+                            el.goals.forEach(el_g => {
+                                goals.push(el_g);
+                            });
+                        });
+                        resolve(goals);
+                    }
+                })
+            }, 
+            function add () { }, 
+            function del () { }, 
+            function action (goal) {
+            }
+        ));
+
+        var user_list = new List(new UserListType(api, function (user_id) {
+
+        }));
+
+        self.init = function () {
+            group_list.init();
+            goal_list.init();
+        };
+
+        self.update = function () {
+            group_list.update();
+            goal_list.update();
+        };
+    }
+}
+/*
+class GroupProfile {
+    constructor() {
+        var self = this;
+
+        var goals_list = new GoalListType();
+
+        self.update = async function (get, group_id) {
+            get(group_id).then(result => {
+                showGroup(result["group"]);
+                showGoals(result["goals"]);
+            });
+        };
+
+        function showGroup(group) {
+            var showContent = function () {
+                $("#group-info-image").attr("src", group.image);
+                $("#group-info-name").text(group.name);
+                $("#group-info-tag").text(group.tag);
+                //$("#entity").fadeIn();
+            };
+
+            if ($('#entity').css('display') == 'none') {
+                $('#entity').slideDown("fast", showContent);
+            } else {
+                //$("#entity").fadeOut("fast", showContent);
+            }
+
+            showContent();
+        }
+
+        function showGoals(goals) {
+            goals_list.update(goals);
+        }
+    }
+}
+*/
+class API {
+    constructor() {
+        var self = this;
+        var headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        };
+
+        function get(url) {
+            return fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+            }).then(r => {
                 if (r.ok) {
                     return r.json();
                 } else {
                     throw new Error(`Bad response: ${r.status} ${r.statusText}`);
                 }
             });
-    }
+        }
 
-    function post(url, data) {
-        return fetch(url, {
-            method: "POST",
-            headers: {...headers},
-            body: JSON.stringify(data)
-        }).then(r => {
-            if (r.ok) {
-                return r.json();
-            } else {
-                return r.json().then(err => {
-                    if ("error" in err) {
-                        throw new Error(`Bad response: ${err.error}`);
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    return err;
-                }).then((err) => {
-                    if (err == null) {
-                        throw new Error(`Bad response: ${r.status} ${r.statusText}`);
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    return err;
-                })
-            }
-        });
-    }
-
-    self.get_group_list = async function () {
-        let groups = await get("group/list")
-            .then(g => {
-                group_list = [];
-                g.forEach(group => {
-                    group_list.push(new Group(group));
-                })
-                return group_list;
-            });
-        return groups;
-    };
-
-    self.get_full_info = async function () {
-        return await get("")
-    };
-
-    self.get_group_info = async function (group_id) {
-        let result = await get(`group/${group_id}`)
-            .then(
-                r => {
-                    var goals = []
-                    r.goals.forEach(g => {
-                        goals.push(new Goal(g));
+        function post(url, data) {
+            return fetch(url, {
+                method: "POST",
+                headers: { ...headers },
+                body: JSON.stringify(data)
+            }).then(r => {
+                if (r.ok) {
+                    return r.json();
+                } else {
+                    return r.json().then(err => {
+                        if ("error" in err) {
+                            throw new Error(`Bad response: ${err.error}`);
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                        return err;
+                    }).then((err) => {
+                        if (err == null) {
+                            throw new Error(`Bad response: ${r.status} ${r.statusText}`);
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                        return err;
                     });
-                    return {"group": new Group(r.group), "goals": goals};
                 }
-            );
-        return result;
-    };
+            });
+        }
 
-    self.create_group = async function (group) {
-        return await post("group/create", {
-            "name": group.name,
-            "image": group.image,
-            "is_private": group.is_private,
-        });
-    };
-};
+        self.get_group_list = async function () {
+            let groups = await get("group/list")
+                .then(g => {
+                    var result = [];
+                    g.forEach(group => {
+                        result.push(new Group(group));
+                    });
+                    return result;
+                });
+            return groups;
+        };
+
+        self.get_group_info = async function (group_id) {
+            let result = await get(`group/${group_id}`)
+                .then(
+                    r => {
+                        var goals = [];
+                        r.goals.forEach(g => {
+                            goals.push(new Goal(g));
+                        });
+                        return { "group": new Group(r.group), "goals": goals };
+                    }
+                );
+            return result;
+        };
+
+        self.add_group = async function (group) {
+            return await post("group/create", {
+                "name": group.name,
+                "image": group.image,
+                "is_private": group.is_private,
+            });
+        };
+
+        self.get_goal_list = async function (group_id) {
+
+        };
+    }
+}
