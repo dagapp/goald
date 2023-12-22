@@ -576,7 +576,7 @@ class API {
         };
 
         self.join_group = async function (group_tag) {
-            return await post("group/join", {
+            return await post("group/users/add", {
                 "tag": group_tag
             });
         };
