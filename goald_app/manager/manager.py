@@ -534,7 +534,7 @@ class Manager:
             duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
             if duty.final_value < value:
                 return
-            
+
             duty.final_value -= value
             duty.save()
 
