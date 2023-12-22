@@ -84,10 +84,11 @@ class Group {
     constructor(group) {
         var self = this;
 
-        self.id    = group.id;
-        self.tag   = group.tag;
-        self.name  = group.name;
-        self.image = group.image;
+        self.id         = group.id;
+        self.tag        = group.tag;
+        self.name       = group.name;
+        self.image      = group.image;
+        self.is_private = group.is_private;
 
         self.users = [];
         if (group.users) {
@@ -164,14 +165,18 @@ class Goal {
         self.user_final_value = goal.user_final_value;
 
         self.events = [];
-        goal.events.forEach(e => {
-            self.events.push(new Event(e));
-        });
+        if (goal.events) {
+            goal.events.forEach(e => {
+                self.events.push(new Event(e));
+            });
+        }
 
         self.reports = [];
-        goal.reports.forEach(r => {
-            self.reports.push(new Report(r));
-        });
+        if (goal.reports) {
+            goal.reports.forEach(r => {
+                self.reports.push(new Report(r));
+            });
+        }
     }
 }
 
@@ -502,7 +507,7 @@ class API {
         var self = this;
         var headers = {
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         };
 
         function get(url) {
@@ -521,11 +526,11 @@ class API {
         }
 
         function post(url, data) {
-            data["csrf"] = $("#createGroupWindow input[name='csrfmiddlewaretoken']").val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
             return fetch(url, {
                 method: "POST",
                 headers: { ...headers },
-                body: JSON.stringify(data)
+                body: `csrfmiddlewaretoken=${csrfmiddlewaretoken}&data=${JSON.stringify(data)}`
             }).then(r => {
                 if (r.ok) {
                     return r.json();
@@ -566,7 +571,30 @@ class API {
                 "tag": group.tag,
                 "name": group.name,
                 "image": group.image,
-                "is_private": group.is_private,
+                "is_private": group.is_private
+            });
+        };
+
+        self.join_group = async function (group_tag) {
+            return await post("group/join", {
+                "tag": group_tag
+            });
+        };
+
+        self.create_goal = async function (group_id, goal) {
+            return await post("goal/create", {
+                "group_id": group_id,
+                "name": goal.name,
+                "deadline": goal.deadline,
+                "alert_period": goal.alert_period,
+                "final_value": goal.final_value
+            });
+        };
+
+        self.pay = async function (goal_id, value) {
+            return await post("goal/pay", {
+                "goal_id": goal_id,
+                "value": value
             });
         };
     }
@@ -598,12 +626,24 @@ function createGroupButtonPressed() {
         name: $("#creategroup-name").val(),
         is_private: false
     }));
-    $("#createGroupWindow form input")
-    closeModal('createGroupWindow');
+    closeModal("createGroupWindow");
 }
 
-function joinToGroupButtonPressed() {
-    closeModal('joinToGroupWindow');
+function joinGroupButtonPressed() {
+    var api = new API();
+    api.join_group($("#joingroup-tag").val());
+    closeModal('joinGroupWindow');
+}
+
+function createGoalButtonPressed() {
+    var api = new API();
+    api.create_goal(0, new Goal({
+        name: $("#creategoal-name").val(),
+        deadline: $("#creategoal-deadline").val(),
+        final_value: $("#creategoal-sum").val(),
+        alert_period: $("#creategoal-period").val()
+    }));
+    closeModal("createGoalWindow");
 }
 
 function acceptDeleteGroup() {
@@ -615,5 +655,7 @@ function acceptDeleteGoal() {
 }
 
 function pay() {
+    var api = new API();
+    api.pay(0, $("#pay-sum").val());
     closeModal('payWindow');
 }
