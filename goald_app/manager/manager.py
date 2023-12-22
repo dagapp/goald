@@ -346,7 +346,7 @@ class Manager:
         )
 
         Manager.add_user_to_group(
-            group_id=group.id, login=get_user_record(user_id=leader_id).login
+            group_id=group.id, user_id=leader_id
         )
 
     @staticmethod
