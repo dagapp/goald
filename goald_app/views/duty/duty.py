@@ -43,6 +43,7 @@ def pay(request):
 
     return JsonResponse({"result": "Ok"})
 
+
 def delegate(request):
     """
     Handler to pay duty
@@ -56,10 +57,11 @@ def delegate(request):
 
     data = json.loads(request.body)
 
-    if ("goal_id" not in data or 
-        "value" not in data or 
-        "delegate_id" not in data
-        ):
+    if (
+       "goal_id" not in data or
+       "value" not in data or
+       "delegate_id" not in data
+       ):
         return JsonResponse(
             {
                 "result": "Bad",

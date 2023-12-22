@@ -93,8 +93,8 @@ class GoalResult:
     is_active: bool
     deadline: str
     alert_period: str
-    users_duties_current_value: int
-    users_duties_final_value: int
+    current_value: int
+    final_value: int
     events: List[EventResult]
     reports: List[ReportResult]
 
@@ -103,8 +103,9 @@ class GoalResult:
         self.is_active = goal.is_active
         self.deadline = str(goal.deadline)
         self.alert_period = str(goal.alert_period)
-        self.users_duties_current_value = sum([duty.current_value for duty in goal.duties_goal.all()])
-        self.users_duties_final_value = sum([duty.final_value for duty in goal.duties_goal.all()])
+        self.current_value = sum(duty.current_value
+                                 for duty in goal.duties_goal.all())
+        self.final_value = sum(duty.final_value for duty in goal.duties_goal.all())
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
 
@@ -491,14 +492,14 @@ class Manager():
 
     @staticmethod
     def delegate_duty(
-        leader_id: int, goal_id: int, delegate_id: int, value: int
+        user_id: int, goal_id: int, delegate_id: int, value: int
     ) -> None:
         """
         Delegate a duty to someone
         """
         try:
             group = Goal.objects.get(id=goal_id).group
-            if leader_id != group.leader.id:
+            if user_id != group.leader.id:
                 return
 
             if not group.users.filter(id=delegate_id).exists():
@@ -509,7 +510,7 @@ class Manager():
             raise DoesNotExist("goal with such id [{goal_id}] does not exist") from e
 
         try:
-            duty = Duty.objects.get(user_id=leader_id, goal_id=goal_id)
+            duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
             if duty.final_value < value:
                 return
 
@@ -525,7 +526,7 @@ class Manager():
             duty.final_value -= value
 
         except Duty.DoesNotExist as e:
-            raise DoesNotExist(f"duty with such user_id [{leader_id}] "
+            raise DoesNotExist(f"duty with such user_id [{user_id}] "
                                f"and goal_id [{goal_id}] does not exist") from e
 
     @staticmethod
