@@ -143,7 +143,7 @@ class GroupListType {
             return $("<div>")
                 .addClass("list-element no-element")
                 .html(`
-                    <h2 class="title">Нет групп</h2>
+                    <h2 class="title-text">Нет групп</h2>
                 `);
         };
     }
@@ -576,7 +576,7 @@ class API {
         };
 
         self.join_group = async function (group_tag) {
-            return await post("group/join", {
+            return await post("group/users/add", {
                 "tag": group_tag
             });
         };

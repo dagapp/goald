@@ -31,7 +31,7 @@ def create(request):
 
     image_path = "group/default.jpg"
 
-    if data["image"] != "":
+    if "image" in data:
         image_file = request.FILES["image"]
         image_path = Manager.store_image(image=image_file)
 

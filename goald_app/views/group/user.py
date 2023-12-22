@@ -9,7 +9,7 @@ from goald_app.manager.exceptions import DoesNotExist
 from goald_app.manager.manager import Manager
 
 
-def add(request, group_id):
+def add(request):
     """
     Handler to add a user to a group
     """
@@ -20,18 +20,18 @@ def add(request, group_id):
                 "msg": "Wrong HTTP method, expected POST"
             })
 
-    data = json.load(request.POST["data"])
+    data = json.loads(request.POST["data"])
 
-    if "user_name" not in data:
+    if "tag" not in data:
         return JsonResponse(
             {
                 "Result": "Bad request",
-                "msg": "user_name parameter does not exist in the POST request"
+                "msg": "group_id parameter does not exist in the POST request"
             })
 
-    login = data["username"]
+    group_tag = data["tag"]
     try:
-        Manager.add_user_to_group(group_id=group_id, login=login)
+        Manager.add_user_to_group(group_tag=group_tag, user_id=request.session["id"])
     except DoesNotExist as e:
         return JsonResponse(
             {
