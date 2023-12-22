@@ -10,7 +10,7 @@ import random
 import string
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict, Tuple
 from bcrypt import gensalt, hashpw
 
 from django.core.files.uploadedfile import UploadedFile
@@ -45,11 +45,16 @@ class UserResult:
     login: str
     name: str
     second_name: str
+    duties: Dict[int, Tuple[int, int]]
 
     def __init__(self, user: User):
         self.login = user.login
         self.name = user.name
         self.second_name = user.second_name
+        self.duties = {
+                        duty.goal: (duty.current_value, duty.final_value)
+                        for duty in user.duties_user.all()
+                      }
 
 
 @dataclass
@@ -92,6 +97,8 @@ class GoalResult:
     is_active: bool
     deadline: str
     alert_period: str
+    current_value: int
+    final_value: int
     events: List[EventResult]
     reports: List[ReportResult]
 
@@ -100,8 +107,28 @@ class GoalResult:
         self.is_active = goal.is_active
         self.deadline = str(goal.deadline)
         self.alert_period = str(goal.alert_period)
+        self.current_value = sum(duty.current_value
+                                 for duty in goal.duties_goal.all())
+        self.final_value = sum(duty.final_value for duty in goal.duties_goal.all())
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
+
+
+@dataclass
+class DutyResult:
+    """
+    dataclass for holding duty record data
+    """
+    final_value: int
+    current_value: int
+    deadline: str
+    alert_period: str
+
+    def __init__(self, duty: Duty):
+        self.final_value = duty.final_value
+        self.current_value = duty.current_value
+        self.deadline = str(duty.deadline)
+        self.alert_period = str(duty.alert_period)
 
 
 @dataclass
@@ -480,27 +507,25 @@ class Manager:
 
     @staticmethod
     def delegate_duty(
-        leader_id: int, goal_id: int, delegate_id: int, value: int
+        user_id: int, goal_id: int, delegate_id: int, value: int
     ) -> None:
         """
         Delegate a duty to someone
         """
         try:
             group = Goal.objects.get(id=goal_id).group
-            if leader_id != group.leader.id:
+            if user_id != group.leader.id:
                 return
 
             if not group.users.filter(id=delegate_id).exists():
-                raise DoesNotExist(
-                    f"user with such id [{delegate_id}] "
-                    f"is not a member of the group"
-                )
+                raise DoesNotExist(f"user with such id [{delegate_id}] "
+                                   f"is not a member of the group")
 
         except Goal.DoesNotExist as e:
             raise DoesNotExist("goal with such id [{goal_id}] does not exist") from e
 
         try:
-            duty = Duty.objects.get(user_id=leader_id, goal_id=goal_id)
+            duty = Duty.objects.get(user_id=user_id, goal_id=goal_id)
             if duty.final_value < value:
                 return
 
@@ -513,11 +538,11 @@ class Manager:
                     user_id=delegate_id, goal_id=goal_id, final_value=value
                 )
 
+            duty.final_value -= value
+
         except Duty.DoesNotExist as e:
-            raise DoesNotExist(
-                f"duty with such user_id [{leader_id}] "
-                f"and goal_id [{goal_id}] does not exist"
-            ) from e
+            raise DoesNotExist(f"duty with such user_id [{user_id}] "
+                               f"and goal_id [{goal_id}] does not exist") from e
 
     @staticmethod
     def pay_duty(user_id: int, goal_id: int, value: int) -> None:
@@ -532,7 +557,5 @@ class Manager:
                 Duty.objects.delete(duty.id)
 
         except Duty.DoesNotExist as e:
-            raise DoesNotExist(
-                f"duty with such user_id [{user_id}] "
-                f"and goal_id [{goal_id}] does not exist"
-            ) from e
+            raise DoesNotExist(f"duty with such user_id [{user_id}] "
+                               f"and goal_id [{goal_id}] does not exist") from e

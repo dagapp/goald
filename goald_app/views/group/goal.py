@@ -20,7 +20,8 @@ def add(request, group_id):
                 "msg": "Wrong HTTP method, expected POST"
             })
 
-    data = json.loads(request.body)
+    data = json.loads(request.POST["data"])
+
     if "name" not in data:
         return JsonResponse(
             {
@@ -33,7 +34,7 @@ def add(request, group_id):
     except AlreadyExists as e:
         return JsonResponse(
             {
-                "Result": "Bad", 
+                "Result": "Bad",
                 "msg": f"Failed to create goal: {e}"}
             )
 
