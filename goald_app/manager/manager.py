@@ -16,10 +16,10 @@ from bcrypt import gensalt, hashpw
 from django.core.files.uploadedfile import UploadedFile
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.db import transaction
 
 from goald_app.manager.exceptions import DoesNotExist, AlreadyExists, IncorrectData
 from goald_app.models import User, Group, Goal, Event, Report, Duty
-from django.db import transaction
 
 
 LENGTH_SALT = 29
