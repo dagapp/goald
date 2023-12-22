@@ -467,19 +467,19 @@ class Manager:
 
     @staticmethod
     @transaction.atomic
-    def update_report_text(report_id: int, text: str = None) -> str:
+    def update_report_text(user_id: int, report_id: int, text: str = None) -> str:
         """
         Set/get a text value
         """
-        Manager.report_exists(report_id=report_id)
-
-        report = get_report_record(report_id=report_id)
-
-        if text is not None:
+        try:
+            report = User.objects.get(id=user_id).goals.get(report__id=report_id)
             report.text = text
             report.save()
-
-        return report.text
+            return report.text
+        except User.DoesNotExist:
+            raise DoesNotExist(f"User doesn't exist")
+        except Report.DoesNotExist:
+            raise DoesNotExist(f"Report doesn't exist")
 
     @staticmethod
     @transaction.atomic
