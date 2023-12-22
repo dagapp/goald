@@ -143,7 +143,7 @@ class GroupListType {
             return $("<div>")
                 .addClass("list-element no-element")
                 .html(`
-                    <h2 class="title">Нет групп</h2>
+                    <h2 class="title-text">Нет групп</h2>
                 `);
         };
     }
