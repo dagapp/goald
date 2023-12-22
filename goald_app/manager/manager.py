@@ -307,11 +307,12 @@ class Manager:
         return Group.objects.filter(id=group_id).exists()
 
     @staticmethod
-    def add_user_to_group(user_id: int, group_id: int) -> None:
+    def add_user_to_group(user_id: int, group_tag: str) -> None:
         """
         Add user to a group
         """
-        get_group_record(group_id=group_id).users.add(get_user_record(user_id=user_id))
+        Group.objects.get(tag=group_tag).users.add(get_user_record(user_id=user_id))
+        # get_group_record(group_id=group_id).users.add(get_user_record(user_id=user_id))
 
     @staticmethod
     def create_group(
