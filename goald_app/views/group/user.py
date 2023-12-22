@@ -20,7 +20,7 @@ def add(request, group_id):
                 "msg": "Wrong HTTP method, expected POST"
             })
 
-    data = json.load(request.body)
+    data = json.load(request.POST["data"])
 
     if "user_name" not in data:
         return JsonResponse(

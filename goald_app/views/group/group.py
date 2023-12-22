@@ -20,7 +20,7 @@ def create(request):
                 "message": "wrong HTTP method, expected POST"
             })
 
-    data = json.loads(request.body)
+    data = json.loads(request.POST["data"])
 
     if "name" not in data or "is_private" not in data:
         return JsonResponse(
