@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# NOTE:
+# shell check
+# launch with another user rights (no from user launch deploy.sh)
+# service <name> restart (init.d it is not portable)
+# fix uwsgi and nginx starts
+# start uwsgi as service
+
 PROJECT_DIR=$PWD
 
 echo "+--------------------------------------------------------+"
@@ -33,8 +40,8 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py collectstatic
 
-sudo mkdir -p /var/www/goald_deployment
-sudo ln -s $PROJECT_DIR /var/www/goald_deployment
+sudo mkdir -p /var/www/goald
+sudo ln -s $PROJECT_DIR /var/www/goald
 sudo ln -s $PROJECT_DIR/goald_site/nginx.conf /etc/nginx/sites-enabled/goald_nginx.conf
 
 echo
