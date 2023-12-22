@@ -355,9 +355,9 @@ class Manager:
         Get a group with given id for the user from the table
         """
         try:
-            return GroupResult(
-                get_group_record(group_id=group_id).get(users__id=user_id)
-            )
+            return GroupResult(User.objects.get(id=user_id).groups.get(id=group_id))
+        except User.DoesNotExist as e:
+            raise DoesNotExist(f"user with id [{user_id}] does not exist") from e
         except Group.DoesNotExist as e:
             raise DoesNotExist(
                 f"user with id [{user_id}]" f" has no groups with id [{group_id}]"
