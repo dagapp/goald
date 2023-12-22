@@ -52,7 +52,7 @@ class UserResult:
         self.name = user.name
         self.second_name = user.second_name
         self.duties = {
-                        duty.goal: (duty.current_value, duty.final_value)
+                        duty.goal.id: (duty.current_value, duty.final_value)
                         for duty in user.duties_user.all()
                       }
 
