@@ -180,6 +180,13 @@ class Manager():
 
     # ->users
     @staticmethod
+    def user_exists(user_id: int) -> bool:
+        """
+        Check if user exists
+        """
+        return User.objects.filter(id=user_id).exists()
+
+    @staticmethod
     def get_user(user_id: int) -> UserResult:
         """
         Get user
@@ -190,18 +197,6 @@ class Manager():
             return UserResult(None)
 
         return UserResult(user)
-
-    @staticmethod
-    def get_user_id(login: str) -> int:
-        """
-        Get user id by login
-        """
-        try:
-            user = get_user_record(login=login)
-        except DoesNotExist:
-            return -1
-
-        return user.id
 
     @staticmethod
     def get_user_groups(user_id: int) -> List[GroupResult]:
@@ -216,7 +211,7 @@ class Manager():
             raise DoesNotExist(f"groups for current user [{user_id}] does not exist") from e
 
     @staticmethod
-    def auth_user(login: str, password: str) -> None:
+    def auth_user(login: str, password: str) -> int:
         """
         Auth a user with given login and password
         """
@@ -230,6 +225,8 @@ class Manager():
 
         if salted_hash != user.password:
             raise IncorrectData("wrong password")
+
+        return user.id
 
     @staticmethod
     def create_user(login: str, password: str) -> None:
