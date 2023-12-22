@@ -91,6 +91,6 @@ def logout(request):
     Handler for logging out a user
     """
     # Deleting session
-    request.session.pop("id")
+    request.session.flush()
 
     return redirect("login")
