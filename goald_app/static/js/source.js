@@ -264,8 +264,8 @@ class UserListType {
                     </div>
                     -->
                     <div class="buttons">
-                        <h2 class="alter-button grey-button" onclick="openModal('createGoalWindow')">+</h2>
-                        <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
+                        <h2 class="alter-button grey-button">+</h2>
+                        <h2 class="alter-button grey-button">-</h2>
                     </div>
                 `);
         };
