@@ -368,17 +368,16 @@ class Manager:
 
     @staticmethod
     @transaction.atomic
-    def update_group_image(group_id: int, image: str) -> None:
+    def update_group_image(user_id: int, group_id: int, image: str) -> None:
         """
         Update group image
         """
         try:
-            group = get_group_record(group_id=group_id)
-        except DoesNotExist:
-            return
-
-        group.image = image
-        group.save()
+            group = User.objects.get(id=user_id).groups.get(id=group_id)
+            group.image = image
+            group.save()
+        except Group.DoesNotExist as e:
+            raise DoesNotExist(f"group with such id [{group_id}] does not exist") from e
 
     # ->goals
     @staticmethod
