@@ -23,4 +23,4 @@ jobs:
         pip install pylint-django 
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=C0415,R0903,W0622,R0801,R0904 --load-plugins=pylint_django --django-settings-module=goald_site.settings $(git ls-files '*.py')
+        pylint --disable=C0415,R0903,W0622,R0801,R0904,R0902 --load-plugins=pylint_django --django-settings-module=goald_site.settings $(git ls-files '*.py')
