@@ -35,7 +35,7 @@ def delete(request):
     Manager.delete_user(request.session["id"])
 
     # Deleting session
-    request.session.pop("id")
+    request.session.flush()
 
     return redirect("login")
 
