@@ -539,9 +539,9 @@ class Manager:
             duty.save()
 
             try:
-                Duty.objects.get(
-                    user_id=delegate_id, goal_id=goal_id
-                ).final_value += value
+                delegate_duty = Duty.objects.get(user_id=delegate_id, goal_id=goal_id)
+                delegate_duty.final_value += value
+                delegate_duty.save()
             except Duty.DoesNotExist:
                 Duty.objects.create(
                     user_id=delegate_id, goal_id=goal_id, final_value=value
