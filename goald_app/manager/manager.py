@@ -10,6 +10,7 @@ import random
 import string
 
 from dataclasses import dataclass
+from tempfile import TemporaryFile
 from typing import List, Dict, Tuple
 from bcrypt import gensalt, hashpw
 
@@ -476,25 +477,24 @@ class Manager:
             report.save()
             return report.text
         except User.DoesNotExist:
-            raise DoesNotExist(f"User doesn't exist")
+            raise DoesNotExist("User doesn't exist")
         except Report.DoesNotExist:
-            raise DoesNotExist(f"Report doesn't exist")
+            raise DoesNotExist("Report doesn't exist")
 
     @staticmethod
     @transaction.atomic
-    def update_report_proof(report_id: int, proof: str = None) -> str:
+    def update_report_proof(user_id: int, report_id: int, proof: str = None) -> str:
         """
         Set/get a proof value
         """
-        Manager.report_exists(report_id=report_id)
-
-        report = get_report_record(report_id=report_id)
-
-        if proof is not None:
+        try:
+            report = User.objects.get(id=user_id).goals.get(report__id=report_id)
             report.proof = proof
             report.save()
-
-        return report.proof
+        except User.DoesNotExist as e:
+            raise DoesNotExist("User doesn't exist") from e
+        except Report.DoesNotExist as e: 
+            raise DoesNotExist("Report doesn't exist") from e
 
     # ->images
     @staticmethod
