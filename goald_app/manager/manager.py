@@ -452,11 +452,10 @@ class Manager:
         Get report
         """
         try:
-            report = get_report_record(report_id=report_id)
-        except DoesNotExist:
-            return ReportResult(None)
-
-        return ReportResult(report)
+            report = Report.objects.get(report_id=report_id)
+            return ReportResult(report)
+        except Report.DoesNotExist as e:
+            raise DoesNotExist("Report doesn't exist") from e
 
     @staticmethod
     def report_exists(report_id: int) -> bool:
