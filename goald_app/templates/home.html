@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{% load static %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{% static 'js/source.js' %}"></script>
-    <script src="{% static 'js/modal.js' %}"></script>
 </head>
 
 <body>
@@ -45,7 +44,7 @@
                             <h2 class="alter-button grey-button" onclick="openModal('deleteGoalWindow')">-</h2>
                         </div>
                     </div>
-                    <div id="list-content-container">
+                    <div class="list-content-container">
                         <div class="list-content">
                             <div class="list-element no-element">
                                 <h2 class="title-text">Нет целей</h2>
@@ -56,8 +55,24 @@
             </div>
             <div id="content">
                 <div id="entity" style="display: none;">
+                    <div id="user-list" class="list shadow">
+                        <div class="title">
+                            <h2 class="title-text">Участники</h2>
+                            <div class="buttons">
+                                <h2 class="alter-button grey-button">+</h2>
+                                <h2 class="alter-button grey-button">-</h2>
+                            </div>
+                        </div>
+                        <div class="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет участников</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="entity-info" class="shadow">
-                        <div class="info">
+                        <div id="group-info-container" class="info">
                             <div class="title">
                                 <h2 class="title-text">Группа</h2>
                             </div>
@@ -71,29 +86,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="info" style="display: none;">
+                        <div id="goal-info-container" class="info" style="display: none;">
                             <div class="title">
                                 <h2 class="title-text">Цель</h2>
                             </div>
-                            <div>
+                            <div id="goal-info">
                                 <div id="goal-info-name-container">
-                                    <h2 id="goal-info-name" class="title-text">goal</h2>
+                                    <h1 id="goal-info-name" class="title-text"></h1>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="participant-list" class="list shadow">
-                        <div class="title">
-                            <h2 class="title-text">Участники</h2>
-                            <div class="buttons">
-                                <h2 class="alter-button grey-button">+</h2>
-                                <h2 class="alter-button grey-button">-</h2>
-                            </div>
-                        </div>
-                        <div id="list-content-container">
-                            <div class="list-content">
-                                <div class="list-element no-element">
-                                    <h2 class="title-text">Нет участников</h2>
+                                <div class="goal-list-status">
+                                    <span class="active-status"></span>
+                                    <p>активна</p>
+                                </div>
+                                <div id="goal-list-deadline-container">
+                                    <span>До: </span>
+                                    <span id="goal-list-deadline">завтра</span>
+                                </div>
+                                <div id="goal-list-user-value-container">
+                                    <span>Заплачено: </span>
+                                    <span id="goal-list-user-current-value"></span>
+                                    <span>/</span>
+                                    <span id="goal-list-user-final-value"></span>
+                                </div>
+                                <div id="goal-list-value-container">
+                                    <span>Всего собрано: </span>
+                                    <span id="goal-list-current-value"></span>
+                                    <span>/</span>
+                                    <span id="goal-list-final-value"></span>
+                                </div>
+                                <div id="goal-pay" class="shadow button" onclick="openModal('payWindow')">
+                                    <span>Заплатить</span>
                                 </div>
                             </div>
                         </div>
@@ -104,25 +126,33 @@
                         <div class="event-chat-report-option grey-button" style="color: black;">
                             <h2 class="title-text">Cобытия</h2>
                         </div>
-                        <div class="event-chat-report-option grey-button">
+                        <div class="event-chat-report-option grey-button" style="display: none;">
                             <h2 class="title-text">Сообщения</h2>
                         </div>
                         <div class="event-chat-report-option grey-button">
                             <h2 class="title-text">Отчёты</h2>
                         </div>
                     </div>
-                    <div id="list-content-container">
-                        <div class="list-content">
-                            <div class="list-element no-element">
-                                <h2 class="title-text">Нет событий</h2>
+                    <div id="event-list">
+                        <div class="list-content-container">
+                            <div class="list-content">
+                                <div class="list-element no-element">
+                                    <h2 class="title-text">Нет событий</h2>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="chat">
+
+                    </div>
+                    <div id="report">
+
                     </div>
                 </div>  
             </div> 
         </div>
     </div>
-   
+    
     <!--MODELS WINDOWS-->
     <!--background blackout-->
     <div id="blackout" class="blackout"></div>
@@ -132,9 +162,9 @@
         <div class="modal-header">
             <button class="close" onclick="closeModal('groupActionWindow')">&times;</button>
         </div>
-        <form>
+        <form>{% csrf_token %}
             <input class="form-button"  value="Создать группу" onclick="openModal('createGroupWindow')" />
-            <input class="form-button"  value="Вступить в группу" onclick="openModal('joinToGroupWindow')"  />
+            <input class="form-button"  value="Вступить в группу" onclick="openModal('joinGroupWindow')"  />
         </form>
     </div>
 
@@ -144,7 +174,7 @@
             <button class="close" onclick="closeModal('createGroupWindow')">&times;</button>
         </div>
         <h4>Создание группы</h4>
-        <form>
+        <form>{% csrf_token %}
             <input type="text" id="creategroup-name" class="lineedit form-control" placeholder="Название группы"/>
             <input type="text" id="creategroup-tag" class="lineedit form-control" placeholder="Тэг"/>
             <input type="text" id="creategroup-description" class="lineedit form-control" placeholder="Описание группы"/>
@@ -162,15 +192,15 @@
         </form>
     </div>
 
-    <!--join to group window-->
-    <div id="joinToGroupWindow" class="modal-content">
+    <!--join group window-->
+    <div id="joinGroupWindow" class="modal-content">
         <div class="modal-header">
-            <button class="close" onclick="closeModal('joinToGroupWindow')">&times;</button>
+            <button class="close" onclick="closeModal('joinGroupWindow')">&times;</button>
         </div>
         <h4>Вступить в группу</h4>
-        <form>
-            <input type="text" id="jointogroup-tag" class="lineedit form-control" placeholder="Тэг"/>
-            <input id="joinToGroupButton" class="form-button"  onclick="joinToGroupButtonPressed()" value="Вступить" />
+        <form>{% csrf_token %}
+            <input type="text" id="joingroup-tag" class="lineedit form-control" placeholder="Тэг"/>
+            <input id="joinGroupButton" class="form-button"  onclick="joinGroupButtonPressed()" value="Вступить" />
         </form>
     </div>
 
@@ -180,7 +210,7 @@
             <button class="close" onclick="closeModal('createGoalWindow')">&times;</button>
         </div>
         <h4>Создание цели</h4>
-        <form>
+        <form>{% csrf_token %}
             <select name="groups" id="creategoal-groups">
                 <option value="mode">Выберите группу</option>
             </select>
@@ -198,7 +228,7 @@
             <button class="close" onclick="closeModal('deleteGroupWindow')">&times;</button>
         </div>
         <h4>Вы действительно хотите удалить группу?</h4>
-        <form>
+        <form>{% csrf_token %}
             <input id="deleteGroupButton" class="form-button"  onclick="acceptDeleteGroup()" value="Да" />
         </form>
     </div>
@@ -209,7 +239,7 @@
             <button class="close" onclick="closeModal('deleteGoalWindow')">&times;</button>
         </div>
         <h4>Вы действительно хотите удалить цель?</h4>
-        <form>
+        <form>{% csrf_token %}
             <input id="deleteGoalButton" class="form-button"  onclick="acceptDeleteGoal()" value="Да" />
         </form>
     </div>
@@ -220,7 +250,7 @@
             <button class="close" onclick="closeModal('payWindow')">&times;</button>
         </div>
         <h4>Перевести деньги для цели ...</h4>
-        <form>
+        <form>{% csrf_token %}
             <input type="text" id="pay-sum" class="lineedit form-control" placeholder="Сумма"/>
             <input id="payButton" class="form-button"  onclick="pay()" value="Перевести" />
         </form>

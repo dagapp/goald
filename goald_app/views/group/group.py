@@ -65,6 +65,7 @@ def view(request, group_id):
     return JsonResponse(data=group, safe=False, encoder=DataclassEncoder)
 
 
+
 def list(request):
     """
     Handler to serialize groups to json

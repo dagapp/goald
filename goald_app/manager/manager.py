@@ -41,6 +41,7 @@ class UserResult:
     """
     dataclass for holding user record data
     """
+
     login: str
     name: str
     second_name: str
@@ -61,6 +62,7 @@ class EventResult:
     """
     dataclass for holding event record data
     """
+
     type: int
     text: str
     timestamp: str
@@ -76,6 +78,7 @@ class ReportResult:
     """
     dataclass for holding report record data
     """
+
     proof: str
     text: str
 
@@ -89,6 +92,7 @@ class GoalResult:
     """
     dataclass for holding goal record data
     """
+
     name: str
     is_active: bool
     deadline: str
@@ -132,6 +136,7 @@ class GroupResult:
     """
     dataclass for holding group record data
     """
+
     id: int
     tag: str
     name: str
@@ -146,11 +151,13 @@ class GroupResult:
         self.name = group.name
         self.image = group.image.url
         self.users = [UserResult(user) for user in group.users.all()]
-        self.goals = [GoalResult(goal) for goal in
-                      group.goals_group.all().prefetch_related('events_goal',
-                                                               'reports_goal')]
-        self.events = [EventResult(event) for event in
-                       group.events_group.all()]
+        self.goals = [
+            GoalResult(goal)
+            for goal in group.goals_group.all().prefetch_related(
+                "events_goal", "reports_goal"
+            )
+        ]
+        self.events = [EventResult(event) for event in group.events_group.all()]
 
 
 def get_report_record(report_id: int) -> Report:
@@ -182,8 +189,9 @@ def get_user_record(user_id: int = None, login: str = None) -> User:
             try:
                 return User.objects.get(id=user_id, login=login)
             except User.DoesNotExist as e:
-                raise DoesNotExist(f"user with such id [{id}] "
-                                   f"and login [{login}] does not exist") from e
+                raise DoesNotExist(
+                    f"user with such id [{id}] " f"and login [{login}] does not exist"
+                ) from e
 
     if user_id is not None:
         try:
@@ -200,7 +208,7 @@ def get_user_record(user_id: int = None, login: str = None) -> User:
     return None
 
 
-class Manager():
+class Manager:
     """
     Manager for handling interaction with db
     """
@@ -231,11 +239,16 @@ class Manager():
         Get all groups by given user_id
         """
         try:
-            groups = User.objects.get(id=user_id).groups.all()\
-                    .prefetch_related('users', 'goals_group', 'events_group')
+            groups = (
+                User.objects.get(id=user_id)
+                .groups.all()
+                .prefetch_related("users", "goals_group", "events_group")
+            )
             return [GroupResult(group) for group in groups]
         except Group.DoesNotExist as e:
-            raise DoesNotExist(f"groups for current user [{user_id}] does not exist") from e
+            raise DoesNotExist(
+                f"groups for current user [{user_id}] does not exist"
+            ) from e
 
     @staticmethod
     def auth_user(login: str, password: str) -> int:
@@ -274,9 +287,7 @@ class Manager():
         Change a user's password with given login and new password
         """
         user = get_user_record(user_id=user_id)
-        user.password = hashpw(
-            bytes(password, "utf-8"), user.password[:LENGTH_SALT]
-        )
+        user.password = hashpw(bytes(password, "utf-8"), user.password[:LENGTH_SALT])
         user.save()
 
     @staticmethod
@@ -334,8 +345,9 @@ class Manager():
             leader=User.objects.get(id=leader_id),
         )
 
-        Manager.add_user_to_group(group_id=group.id,
-                                  login=get_user_record(user_id=leader_id).login)
+        Manager.add_user_to_group(
+            group_id=group.id, login=get_user_record(user_id=leader_id).login
+        )
 
     @staticmethod
     def get_user_group(user_id: int, group_id: int) -> GroupResult:
@@ -343,10 +355,13 @@ class Manager():
         Get a group with given id for the user from the table
         """
         try:
-            return GroupResult(get_group_record(group_id=group_id).get(users__id=user_id))
+            return GroupResult(
+                get_group_record(group_id=group_id).get(users__id=user_id)
+            )
         except Group.DoesNotExist as e:
-            raise DoesNotExist(f"user with id [{user_id}]"
-                               f" has no groups with id [{group_id}]") from e
+            raise DoesNotExist(
+                f"user with id [{user_id}]" f" has no groups with id [{group_id}]"
+            ) from e
 
     @staticmethod
     def update_group_image(group_id: int, image: str) -> None:
