@@ -1,0 +1,37 @@
+//
+// This file specifies styles for components that are part of Forms.
+//
+
+// Placeholder
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    &__description {
+        color: var(--subtext-color);
+    }
+
+    &__field {
+        font-size: 16px;
+        color: var(--subtext-color);
+        background: var(--dark-color);
+        border: 2px solid var(--form-grey-color);
+        min-height: 32px;
+        border-radius: 10px;
+        padding: 10px 10px;
+    }
+}
+
+// Checkbox
+.checkbox {
+    display: flex;
+    gap: 10px;
+
+    &__button {
+    }
+
+    &__description {
+        color: var(--subtext-color);
+    }
+}
