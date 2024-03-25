@@ -41,6 +41,8 @@ button::-moz-focus-inner {
     
     --light-color: #ECE7F4;
     --dark-color: #07050C;
+
+    --subtext-color: #ece7f4cc;
     
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -49,12 +51,13 @@ button::-moz-focus-inner {
 [class*=__container] {
     max-width: 1300px;
     margin: 0px auto;
-    padding: 0 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 body {
     font-family: "Montserrat", sans-serif;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     background-color: var(--dark-color);
     color: var(--light-color);
@@ -62,8 +65,11 @@ body {
 
 
 // Custom Buttons
-.gradient_button {
+.gradient__button {
     background: linear-gradient(#7638e0, #9000c8);
+    color: var(--light-color);
     border-radius: 25px;
-    padding: 10px 40px 10px 40px
+    padding: 15px 40px 15px 40px;
+    font-size: 16px;
+    font-weight: 700;
 }
