@@ -18,7 +18,7 @@ export default function Header() {
                 </nav> */}
                 <div className="header__buttons">
                     <button className="header__button">Войти</button>
-                    <button className="header__button gradient__button">Регистрация</button>
+                    <button className="header__button gradient__button round__button">Регистрация</button>
                 </div>
             </div>
         </div>

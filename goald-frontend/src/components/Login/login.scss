@@ -1,0 +1,46 @@
+.login {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+        width: 450px;
+        gap: 20px;
+
+        padding-top: 20vh;
+        padding-bottom: 20vh;
+    }
+
+    &__title {
+    }
+    
+    &__support {
+        display: flex;
+        justify-content: space-between;
+
+        &_remember {
+            display: flex;
+            gap: 10px;
+        }
+
+        // &_checkbox { 
+        //     background-color: var(--accent-color);   
+        // }
+
+        &_forgot {  
+            color: var(--accent-color);  
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &_field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;  
+        }
+    }
+}

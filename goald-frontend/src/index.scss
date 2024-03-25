@@ -35,14 +35,16 @@ button::-moz-focus-inner {
 
 // General style settings
 :root {
-    --primary-color: #f9f9f9;
-    --secondary-color: #f9f9f9;
-    --accent-color: #f9f9f9;
+    --primary-color: #5510cc;
+    --secondary-color: #451e88;
+    --accent-color: #7638e0;
+    --gradient-color: #9000c8;
     
     --light-color: #ECE7F4;
     --dark-color: #07050C;
 
     --subtext-color: #ece7f4cc;
+    --form-grey-color: #ece7f480;
     
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -63,13 +65,40 @@ body {
     color: var(--light-color);
 }
 
+// Forms 
+.field {
+    &__description {
+        color: var(--subtext-color);
+    }   
+
+    &__placeholder {
+        font-size: 16px;
+        color: var(--subtext-color);
+        background: var(--dark-color);
+        border: 2px solid var(--form-grey-color);
+        min-height: 32px;
+        border-radius: 10px;
+        padding: 10px 10px;
+    }
+}
 
 // Custom Buttons
 .gradient__button {
-    background: linear-gradient(#7638e0, #9000c8);
+    background: linear-gradient(var(--accent-color), var(--gradient-color));
     color: var(--light-color);
-    border-radius: 25px;
     padding: 15px 40px 15px 40px;
     font-size: 16px;
     font-weight: 700;
 }
+
+.round__button {
+    border-radius: 25px;
+}
+
+.rectangle__button {
+    border-radius: 10px;
+}
+
+// CheckBox
+
+// Will be updated

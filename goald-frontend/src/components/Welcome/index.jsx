@@ -14,7 +14,7 @@ export default function Login() {
             <span className="welcome__description">
                 Платформа предоставляет возможность организовывать кампании по сбору средств на различные нужды и проекты
             </span>
-            <button className="welcome__button gradient__button">Создать проект</button>
+            <button className="welcome__button gradient__button round__button">Создать проект</button>
         </div>
 
         <img src={pinoeerPng} alt="pretty_girl" />
