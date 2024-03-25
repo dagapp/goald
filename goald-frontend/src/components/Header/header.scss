@@ -1,0 +1,56 @@
+header {
+    padding: 10px 0;
+}
+
+.header {
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    &__logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 2em;
+    }
+    
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: var(--light-color);
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+    }
+}
+
+// .menu {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+
+//     &__body {
+//         display: flex;
+//         font-weight: 700;
+//         gap: 2em;
+//     }
+// }
