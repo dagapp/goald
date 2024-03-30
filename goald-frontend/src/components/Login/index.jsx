@@ -1,35 +1,36 @@
 import React from 'react'
 
+import Placeholder from '../Forms/Placeholder' 
+import Checkbox from '../Forms/Checkbox'
+
+import pinoeerPng from '../../assets/pioneer.png'
 import './login.scss'
 
 export default function Login() {
-  return (
-    <div className="login__container">
-        <h2 className="login__title">Войдите в свой аккаунт</h2>
-        
-        <div className="login__form">
-            <div className="login__form_field">
-                <span className="field__description">Электронная почта</span>
-                <input type="text" className='field__placeholder' required />
-            </div>
-            
-            <div className="login__form_field">
-                <span className="field__description">Пароль</span>
-                <input type="password" className='field__placeholder' required />
-            </div>
-
-            <div className="login__support">
-                <div className="login__support_remember">
-                    <input type="checkbox" className='login__support_checkbox'/>
-                    <span className='field__description'>Запомнить меня</span>
+    return (
+        <div className="login__container">
+            <div className="login__card">
+                <form className="login__form">
+                    <h2 className="login__title">Войдите в свой аккаунт</h2>
+                    
+                    <Placeholder description="Электронная почта" />
+                    <Placeholder description="Пароль" isPassword={true} />
+                    
+                    <div className="login__support">
+                        <Checkbox description="Запомнить меня" />
+                        <a href='#'><span className="login__support_forgot">Забыли пароль?</span></a>
+                    </div>
+                    
+                    <button className="button_gradient button_rect">Войти</button>
+                    <div className="login__no-account">
+                        <span className="login__no-account_description">Нет аккаунта? </span>
+                        <a href='#'><span className="login__no-account_register">Зарегистрируйтесь</span></a>
+                    </div>
+                </form>
+                <div className="login__image">
+                    <img src={pinoeerPng} alt="loginImage" />
                 </div>
-                <a href='#'>
-                    <span className="login__support_forgot">Забыли пароль?</span>
-                </a>
             </div>
-
-            <button className="gradient__button rectangle__button">Войти</button>
         </div>
-    </div>
-  )
+    )
 }
