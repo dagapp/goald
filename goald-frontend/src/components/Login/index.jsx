@@ -18,15 +18,16 @@ export default function Login() {
                     
                     <div className="login__support">
                         <Checkbox description="Запомнить меня" />
-                        <a href='#'><span className="login__support_forgot">Забыли пароль?</span></a>
+                        <a href='#' className="login__support_forgot">Забыли пароль?</a>
                     </div>
                     
                     <button className="button_gradient button_rect">Войти</button>
                     <div className="login__no-account">
                         <span className="login__no-account_description">Нет аккаунта? </span>
-                        <a href='#'><span className="login__no-account_register">Зарегистрируйтесь</span></a>
+                        <a href='#' className="login__no-account_register">Зарегистрируйтесь</a>
                     </div>
                 </form>
+                
                 <div className="login__image">
                     <img src={pinoeerPng} alt="loginImage" />
                 </div>

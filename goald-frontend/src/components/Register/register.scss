@@ -1,4 +1,4 @@
-.login {
+.register {
     &__container {
         display: flex;
         flex-direction: column;
@@ -12,42 +12,41 @@
         align-items: center;
         border-radius: 40px;
         background-color: var(--dark-color-card);
-        padding: 5vh 15vh;
+        padding: 8vh 15vh;
     }
 
     &__form {
         display: flex;
         flex-direction: column;
-        min-width: 400px;
+        width: 400px;
         gap: 20px;
     }
 
     &__title {
-        display: flex;
-        justify-content: left;
         font-size: 30px;
         padding-bottom: 10px;
     }
 
-    &__support {
+    &__name {
         display: flex;
         justify-content: space-between;
-        margin-top: -10px;
-        margin-bottom: 20px;
-
-        &_forgot {  
-            color: var(--accent-color);
+        align-items: center;
+        
+        .placeholder {
+            width: 195px
         }
     }
 
-    &__no-account {
-        margin-top: -10px;
-        
-        &_description {
-            color: var(--subtext-color)
-        }
+    &__button {
+        margin-top: 15px;
+    }
 
-        &_register {
+    &__agreement {
+        margin-top: -10px;
+        padding-bottom: 10px;
+        color: var(--subtext-color);
+
+        &_link {
             color: var(--accent-color);
         }
     }
