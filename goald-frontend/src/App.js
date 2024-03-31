@@ -1,14 +1,14 @@
 import React, {Fragment} from 'react';
 
-import Header  from './components/Header'
-import Welcome from './components/Welcome'
-import Login   from './components/Login';
+import Header   from './components/Header'
+import Login    from './components/Login';
+import Register from './components/Register';
 
 function App() {
     return (
         <Fragment>
             <Header />
-            <Login />
+            <Register />
         </Fragment>
     );
 }
