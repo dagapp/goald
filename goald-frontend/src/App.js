@@ -8,7 +8,7 @@ function App() {
     return (
         <Fragment>
             <Header />
-            <Register />
+            <Login />
         </Fragment>
     );
 }

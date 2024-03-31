@@ -7,30 +7,27 @@
     // Hiding original checkbox
     &__input {
         position: absolute;
-        width: 1.5em;
-        height: 1.5em;
-        z-index: 10;
+        width: 16px;
+        height: 16px;
+        z-index: 1;
         opacity: 0;
     }
     
     // Making pseudo-checkbox
     &__button {
         position: absolute;
-        height: 1em;
-        width: 1em;
-        border: 2px solid var(--form-grey-color);
+        height: 14px;
+        width: 14px;
+        border: 1.5px solid var(--form-grey-color);
         border-radius: 5px;
         cursor: pointer;
     }
 
     // Handling checkbox states
     &__input:checked + &__button {
-        background-repeat: no-repeat;
-        background-position: center;
-     
         border-color: var(--accent-color);
-        background-color: var(--accent-color);
-        background-image: url(../../../assets/checkbox/check.svg);
+        background: url(../../../assets/checkbox/check.svg) var(--accent-color) no-repeat center;
+        background-size: 14px 14px;
     }
     
     // There should be `disabled` checkbox handling, but
@@ -38,7 +35,7 @@
 
     &__label {
         color: var(--subtext-color);
-        margin-left: 1.5em;
+        margin-left: 1.8em;
         cursor: pointer;
     }
 }

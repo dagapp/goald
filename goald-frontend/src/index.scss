@@ -45,6 +45,8 @@ img {
 
 // General style settings
 :root {
+
+    // Main Colors
     --primary-color: #5510cc;
     --secondary-color: #451e88;
     --accent-color: #7638e0;
@@ -57,9 +59,11 @@ img {
 
     --subtext-color: #ece7f4cc;
     --form-grey-color: #ece7f480;
-    
+        
+    // For browsers
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 [class*=__container] {
@@ -71,7 +75,7 @@ img {
 
 body {
     font-family: "Montserrat", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     background-color: var(--dark-color);
     color: var(--light-color);
@@ -79,13 +83,25 @@ body {
 
 // Custom Buttons
 .button {
-    &_gradient {
-        background: linear-gradient(var(--accent-color), var(--gradient-color));
-        color: var(--light-color);
+    &_gradient {        
+        color: var(--subtext-color);
         
+        border: 2px solid transparent;
+        background-image: 
+            linear-gradient(var(--dark-color-card), var(--dark-color-card)), 
+            radial-gradient(circle at left top, var(--accent-color), var(--gradient-color));
+        
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
         font-size: 16px;
-        font-weight: 700;
+        font-weight: 400;
         padding: 15px 40px;
+
+        transition: .2s;
+
+        &:hover {
+            box-shadow: 0px 0px 15px var(--primary-color);
+        }
     }
 
     &_round {
