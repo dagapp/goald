@@ -20,9 +20,10 @@
     }
 
     &__theme {
+        height: 24px;
         img {
             aspect-ratio: 1;
-            height: 24px;
+            height: 100%;
         }
     }
 }

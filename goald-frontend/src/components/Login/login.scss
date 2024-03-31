@@ -1,9 +1,12 @@
 .login {
     &__container {
         display: flex;
-        flex-direction: column;
         justify-content: center;
         padding-top: 2vh;
+
+        @media(min-width: 1105px) {
+            flex-direction: column;
+        }
     }
 
     &__card {
@@ -13,6 +16,12 @@
         border-radius: 40px;
         background-color: var(--dark-color-card);
         padding: 5vh 15vh;
+
+        @media(max-width: 1100px) {
+            justify-content: center;
+            height: 500px;
+            padding: 5vh 8vh;
+        }
     }
 
     &__form {
@@ -53,9 +62,14 @@
     }
 
     &__image {
+        padding: 0 20px;
         img {
             aspect-ratio: auto;
             width: 380px;
+        }
+
+        @media(max-width: 1100px) {
+            display: none;
         }
     }
 }
