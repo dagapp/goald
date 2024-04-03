@@ -1,21 +1,78 @@
 .sidebar {
-    width: 300px;
+    min-width: 300px;
     height: 100vh;
     background-color: var(--dark-color-card);
     border-right: 1px solid var(--dark-color-action);
     
     &__logo {
-        padding: 20px;
-
-        img {
-            height: 24px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 20px 0px 30px;
+        margin: 0 20px;
+        
+        &_icon {
+            height: 40px;
+        }
+        
+        &_text {
+            height: 25px;
         }
     }
 
-    &__list {
-        display: flex;
-        flex-direction: column;
+    &__search {
+        margin: 0px 20px 40px;
+        position: relative;
+
+        &_icon {
+            position: absolute;
+            height: 20px;
+            fill: var(--form-grey-color);
+            top: 10px;
+            left: 10px
+        }
+        
+        &_input {
+            color: var(--form-grey-color);
+            background-color: var(--dark-color-action);
+            padding: 12.5px 20px 12.5px 40px;
+            
+            width: 100%;
+            box-sizing: border-box;
+
+            border: none;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        &_input:focus {
+            background-color: var(--dark-color-shade-2);
+            outline: none;
+        }
     }
+    
+    // If we wanna add description on section
+    // &__list {
+    //     display: flex;
+    //     flex-direction: column;
+
+    //     &_description {
+    //         color: var(--light-color);
+    //         font-size: 14px;
+    //         font-weight: 700;
+    //         padding: 0 20px 10px 20px;
+    //     }
+        
+    //     &_divider {
+    //         width: 260px;
+    //         height: 1px;
+            
+    //         background-color: var(--divider-grey-color);
+    //         border: none;
+            
+    //         margin: 10px auto;
+    //     }
+    // }
     
     &__element {
         display: flex;
@@ -24,9 +81,9 @@
         
         position: relative;
         
-        gap: 10px;
-        padding: 10px;
-        margin: 0 10px;
+        gap: 20px;
+        padding: 15px 20px;
+        margin: 0 20px;
         
         border-radius: 10px;
         transition: .3s;
@@ -39,16 +96,21 @@
         }
     
         &_title {
-            color: var(--light-color);
+            color: var(--subtext-color);
             font-size: 16px;
-            font-weight: 700;
         }
 
         &_icon {
-            height: 24px;
-            img {
-                aspect-ratio: 1;
-                height: 100%;
+            width: 20px;
+            height: 20px;
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            svg path {
+                stroke: var(--subtext-color);
             }
         }
     }

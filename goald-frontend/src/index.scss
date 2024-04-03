@@ -55,10 +55,13 @@ img {
     --light-color: #ECE7F4;
     --dark-color: #07050C;
 
-    --dark-color-card: #101010;
+    --dark-color-card: #101010; //should be replaced with dark-80 or dark-1, etc
+    --dark-color-action: #1e1e1e;
+    --dark-color-shade-2: #2e2e2e;
 
-    --subtext-color: #ece7f4cc;
+    --subtext-color: #ece7f4cc;  //should be replaced with grey-80 or grey-1, etc
     --form-grey-color: #ece7f480;
+    --divider-grey-color: rgba(236, 231, 244, 5%);
         
     // For browsers
     -webkit-font-smoothing: antialiased;
