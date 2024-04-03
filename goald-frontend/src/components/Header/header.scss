@@ -1,29 +1,22 @@
 .header {
-    &__container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    
+    height: 40px;
+    width: 100%;
+
+    margin: 0px auto;
+    padding: 20px;
+
+    &__user {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-    
-    &__logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        gap: 10px;
         
-        img {
-            aspect-ratio: auto;
-            height: 24px;
-        }
-    }
-
-    &__theme {
-        height: 24px;
-        img {
-            aspect-ratio: 1;
-            height: 100%;
+        &_avatar {
+            height: 40px;
         }
     }
 }
