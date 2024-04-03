@@ -2,9 +2,11 @@
     &__container {
         display: flex;
         justify-content: center;
-        padding-top: 2vh;
+        align-items: center;
+        
+        height: 100vh;
 
-        @media(min-width: 1105px) {
+        @media(min-width: 1100px) {
             flex-direction: column;
         }
     }
@@ -13,7 +15,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        border: 1px solid var(--dark-color-action);
         border-radius: 40px;
+        
         background-color: var(--dark-color-card);
         padding: 5vh 15vh;
 

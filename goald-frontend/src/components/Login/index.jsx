@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Placeholder from '../Forms/Placeholder' 
-import Checkbox from '../Forms/Checkbox'
+import Placeholder from '../Utils/Placeholder' 
+import Checkbox from '../Utils/Checkbox'
 
 import pinoeerPng from '../../assets/pioneer.png'
 import './login.scss'
