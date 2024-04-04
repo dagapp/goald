@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import Menu from '../Utils/Menu'
+import Menu from '@components/Utils/Menu'
 
-import standardAvatar from "../../assets/icons/user/standardAvatar.svg"
-import arrowDown from "../../assets/icons/utils/arrow.svg"
+import standardAvatar from "@assets/icons/user/standardAvatar.svg"
+import arrowDown from "@assets/icons/utils/arrow.svg"
 
 import { userOptions } from './userOptions'
 import './header.scss'

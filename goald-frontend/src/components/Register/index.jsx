@@ -1,9 +1,8 @@
 import React from 'react'
 
-import Placeholder from '../Forms/Placeholder'
-import Checkbox from '../Forms/Checkbox'
+import Placeholder from '@components/Utils/Placeholder'
 
-import pinoeerPng from '../../assets/pioneer.png'
+import pinoeerPng from '@assets/pioneer.png'
 import './register.scss'
 
 export default function Register() {

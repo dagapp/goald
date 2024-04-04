@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Placeholder from '../Utils/Placeholder' 
-import Checkbox from '../Utils/Checkbox'
+import Placeholder from '@components/Utils/Placeholder' 
+import Checkbox from '@components/Utils/Checkbox'
 
-import pinoeerPng from '../../assets/pioneer.png'
+import pinoeerPng from '@assets/pioneer.png'
 import './login.scss'
 
 export default function Login() {

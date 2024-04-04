@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Menu   from '../Utils/Menu'
-import Search from '../Utils/Search'
+import Menu   from '@components/Utils/Menu'
+import Search from '@components/Utils/Search'
 
-import logoSvg from "../../assets/logo/logo.svg"
-import miniLogoSvg from "../../assets/logo/mini-logo.svg"
+import logoSvg from "@assets/logo/logo.svg"
+import miniLogoSvg from "@assets/logo/mini-logo.svg"
 
 import { sidebarElements } from './sidebarElements'
 import './sidebar.scss'

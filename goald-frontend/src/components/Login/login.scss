@@ -20,7 +20,9 @@
         border-radius: 40px;
         
         background-color: var(--dark-color-card);
-        padding: 5vh 15vh;
+        padding: 5vh 10vh;
+
+        gap: 40px;
 
         @media(max-width: 1100px) {
             justify-content: center;
