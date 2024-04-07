@@ -7,9 +7,11 @@ export default function Menu({elements}) {
         <ul className='menu'>
             {elements.map(element => {
                 return (
-                    <li key={element.title} className="menu__element">
-                        <div className="menu__element_icon">{element.icon}</div>
-                        <a href="#"><div className='menu__element_title'>{element.title}</div></a>
+                    <li key={element.title}>
+                        <a href="#" className="menu__element">
+                            <img src={element.icon} className='menu__element_icon' />
+                            <div className='menu__element_title'>{element.title}</div>
+                        </a>
                     </li>
                 );
             })}

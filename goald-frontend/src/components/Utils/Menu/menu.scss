@@ -4,32 +4,26 @@
         justify-content: left;
         align-items: center;
         
-        position: relative;
+        overflow: hidden;
         
-        gap: 20px;
-        padding: 15px 20px;
+        gap: 16px;
+        padding: 12px;
         
         border-radius: 10px;
         transition: .3s;
 
+
         &_title {
             color: var(--subtext-color);
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 700;
         }
 
         &_icon {
-            align-items: center;
-            width: 20px;
-            height: 20px;
-
-            svg {
-                width: 20px;
-                height: 20px;
-            }
-
-            svg path {
-                stroke: var(--subtext-color);
-            }
+            width: 24px;
+            height: 24px;
+            
+            user-select: none;
         }
     }
 

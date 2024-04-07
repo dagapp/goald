@@ -3,10 +3,15 @@
     justify-content: right;
     align-items: flex-start;
     
-    width: 100%;
-    height: auto;
+    height: 40px;
     margin: 0px auto;
     padding: 20px;
+
+    &__search {
+        margin-right: -120px;
+        width: 500px;
+        z-index: 1;
+    }
 
     &__user {
         display: flex;
@@ -23,7 +28,12 @@
                 justify-content: right;
                 gap: 10px;
 
+                user-select: none;
                 z-index: 1;
+
+                &:hover {
+                    opacity: 0.7;
+                }
             }
 
             &-avatar {
@@ -36,18 +46,17 @@
                 
                 position: relative;
 
-                img {
+                svg {
                     position: absolute;
                     top: 16px;
-                    transition: .2s;
+                    transition: .3s;
                 }
 
-                &.active img {
-                    
+                &.active svg {
                     top: 20px;
                 }
 
-                &.inactive img {
+                &.inactive svg {
                     top: 16px;
                 }
             }
@@ -71,15 +80,13 @@
 
     &.active {
         opacity: 1;
-        visibility: visible;
         transform: translateY(0px);
-        transition: .2s ease;
+        transition: .3s ease;
     }
 
     &.inactive {
         opacity: 0;
-        visibility: visible;
         transform: translateY(-40px);
-        transition: .2s ease;
+        transition: .3s ease;
     }
 }

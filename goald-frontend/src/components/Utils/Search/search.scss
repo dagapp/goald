@@ -5,18 +5,18 @@
         position: absolute;
         height: 22px;
         fill: var(--form-grey-color);
-        top: 11px;
+        top: 9px;
         left: 10px
     }
     
     &_input {
         font-family: "Montserrat", sans-serif;
-        font-size: 16px;
+        font-size: 14px;
 
         color: var(--subtext-color);
         background-color: var(--dark-color-action);
 
-        padding: 12.5px 20px 12.5px 40px;
+        padding: 11px 20px 11px 40px;
         width: 100%;
         box-sizing: border-box;
 
