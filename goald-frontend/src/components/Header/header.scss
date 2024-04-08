@@ -10,7 +10,7 @@
     &__search {
         margin-right: -120px;
         width: 500px;
-        z-index: 1;
+        z-index: 3;
     }
 
     &__user {
@@ -22,6 +22,8 @@
             justify-content: right;
             align-items: center;
             gap: 10px;
+
+            z-index: 2;
 
             &-panel{
                 display: flex;
@@ -76,7 +78,8 @@
     background-color: var(--dark-color-card);;
     border: 1px solid var(--dark-color-action);
     border-radius: 10px;
-    
+
+    z-index: 1;
 
     &.active {
         opacity: 1;
