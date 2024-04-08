@@ -89,6 +89,7 @@
 
     &.inactive {
         opacity: 0;
+        pointer-events: none;
         transform: translateY(-40px);
         transition: .3s ease;
     }
