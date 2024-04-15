@@ -1,201 +1,43 @@
-.group {
+.group-content {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 20px;
+  grid-template-areas:
+    "Goals Goals Info"
+    "Actions Reports Info";
+
+  @media (min-width: 1460px) {
+    grid-template-rows: 50vh 30vh;
+  }
+
+  @media (max-width: 1460px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "Info"
+      "Goals"
+      "Actions"
+      "Reports";
+  }
+
+  &__column {
     display: flex;
-    
-    height: 84vh;
-    margin: auto 20px;
+    flex-direction: column;
+  }
 
-    &__feed {
-        width: 65%;
-        margin-right: 20px;
-        
-        &_goals {         
-            height: 50%; 
-            margin-bottom: 20px;  
-            
-            //should be in separeted .dark-card style
-            background-color: var(--dark-color-card);
-            border: 1px solid var(--dark-color-action);
-            border-radius: 10px;
-            
-            overflow-y: scroll;
-            
-            &_title {
-                position: sticky;
-                top: 0;
-                background-color: var(--dark-color-card);
-            }
+  &__goals {
+    grid-area: Goals;
+  }
 
-            &_card {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                
-                padding: 20px 40px;
-                margin: 0 20px 20px 20px;
+  &__actions {
+    grid-area: Actions;
+  }
 
-                background-color: var(--dark-color-card);
-                border: 1px solid var(--dark-color-action);
-                border-radius: 10px;
-            }
+  &__reports {
+    grid-area: Reports;
+  }
 
-            // Should be stylized in future in main styles
-            &::-webkit-scrollbar {
-                display: none;
-            }
-        }
-    
-        &_actions {
-            height: 50%; 
-            display: flex;
-
-            &_events {
-                width: 50%;
-                margin-right: 20px;
-
-                //should be in separeted .dark-card style
-                background-color: var(--dark-color-card);
-                border: 1px solid var(--dark-color-action);
-                border-radius: 10px;
-            }
-
-            &_reports {
-                width: 50%;
-                //should be in separeted .dark-card style
-                background-color: var(--dark-color-card);
-                border: 1px solid var(--dark-color-action);
-                border-radius: 10px;
-            }
-        }
-    }
-
-    &__info {
-        width: 35%;
-        height: 100%;
-        
-        &_about {
-            height: 80%;
-            margin-bottom: 20px;
-            padding: 0px 5px;
-
-            display: flex;
-            
-            //should be in separeted .dark-card style
-            background-color: var(--dark-color-card);
-            border: 1px solid var(--dark-color-action);
-            border-radius: 10px;
-        }
-
-        &_participants {
-            height: 20%;
-
-            //should be in separeted .dark-card style
-            background-color: var(--dark-color-card);
-            border: 1px solid var(--dark-color-action);
-            border-radius: 10px;
-        }
-    }
-}
-
-.card-title {
-    font-size: 20px;
-    font-weight: 700;
-
-    padding: 20px;
-    
-    color: var(--light-color);
-}
-
-.info-card {
-    position: relative;
-    
-    &_banner {
-        margin: 10px;
-        height: 125px;
-        
-        border-radius: 10px;
-        background-color: var(--dark-color-card);
-        border: 1px solid var(--dark-color-action);
-    }
-
-    &_avatar {
-        position: absolute;
-        top: 85px;
-        right: 40px;
-
-        width: 80px;
-        height: 80px;
-        
-        border-radius: 10px;
-        background-color: var(--dark-color-card);
-        border: 1px solid var(--dark-color-action);
-    }
-
-    &_title {
-        display: flex;
-        justify-content: left;
-        align-items: center;
-
-        height: 30px;
-        font-size: 20px;                
-        margin: -30px 10px 0 10px;
-
-        border-radius: 10px;
-        background-color: var(--dark-color-card);
-        border: 1px solid var(--dark-color-action);
-        
-    }
-
-    &_description {
-        display: flex;
-        justify-content: left;
-        
-        padding-top: 20px;
-        margin: 0 10px;
-        gap: 10px;
-
-        &_icon {
-            width: 20px;
-            height: 20px;
-
-            svg {
-                width: 20px;
-                height: 20px;
-            }
-        }
-
-        &_content {
-            line-height: 1.4;
-        }
-    }
-
-    &_tags {
-        display: flex;
-        align-items: center;
-        
-        padding-top: 20px;
-        margin: 0 10px;
-        
-        gap: 10px;
-        
-        &_icon {
-            height: 20px;
-            width: 20px;
-
-            svg {
-                height: 20px;
-                width: 20px;
-            }
-        }
-
-        &_content {
-            display: flex;
-            gap: 10px;
-        }
-    }
-
-    &_tag {
-        padding: 5px 15px;
-        border: 1px solid var(--dark-color-action);
-        border-radius: 50px;
-    }
+  &__info {
+    grid-area: Info;
+  }
 }

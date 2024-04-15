@@ -40,6 +40,30 @@ export const template = {
             amount: 8000,
             goal: 10000,
             percentage: 80,
+        },
+        {
+            id: 10,
+            title: "First",
+            daysLeft: 40, 
+            amount: 1000,
+            goal: 2000,
+            percentage: 50,
+        },
+        {
+            id: 20,
+            title: "Second",
+            daysLeft: 20, 
+            amount: 8000,
+            goal: 10000,
+            percentage: 80,
+        },
+        {
+            id: 30,
+            title: "Second",
+            daysLeft: 20, 
+            amount: 8000,
+            goal: 10000,
+            percentage: 80,
         }
     ],
 };
