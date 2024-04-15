@@ -2,11 +2,15 @@
     display: flex;
     flex-direction: column;
 
+    position: sticky;
+    top: 0;
+
     width: 260px;
     height: 100vh;
+    gap: 20px;
+    
     background-color: var(--dark-color-card);
     border-right: 1px solid var(--dark-color-action);
-    gap: 20px;
 
     transition: .5s;
     

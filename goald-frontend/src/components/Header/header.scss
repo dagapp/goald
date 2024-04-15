@@ -1,17 +1,11 @@
 .header {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: flex-start;
     
     height: 40px;
     margin: 0px auto;
-    padding: 20px;
-
-    &__search {
-        margin-right: -120px;
-        width: 500px;
-        z-index: 3;
-    }
+    padding: 20px 0;
 
     &__user {
         display: flex;

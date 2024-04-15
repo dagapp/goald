@@ -3,19 +3,19 @@ import groupsIcon from '@assets/sidebar/Groups.svg'
 import overviewIcon from '@assets/sidebar/Overview.svg'
 
 export const sidebarElements = [
+    // {
+    //     icon: feedIcon,
+    //     title: 'Feed',
+    //     link: '#'
+    // },
     {
-        icon: feedIcon,
-        title: 'Feed',
+        icon: overviewIcon,
+        title: 'Overview',
         link: '#'
     },
     {
         icon: groupsIcon,
         title: 'Groups',
-        link: '#'
-    },
-    {
-        icon: overviewIcon,
-        title: 'Overview',
         link: '#'
     }
 ];

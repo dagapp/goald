@@ -13,9 +13,7 @@ export default function Header() {
 
     return (
         <header className='header'>
-            <div className="header__search">
-                <Search />
-            </div>
+            <Search />
             <div className='header__user'>
                 <div className="header__user_profile">
                     <div className="header__user_profile-panel" onClick={() => setOpen(!open)}>
