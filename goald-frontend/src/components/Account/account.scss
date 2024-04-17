@@ -1,0 +1,20 @@
+.account {
+    display: flex;
+    justify-content: center;
+    
+    &__settings {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        
+        gap: 20px;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+
+        gap: 20px;
+        padding: 10px 0px;
+    }
+}
