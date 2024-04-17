@@ -29,7 +29,7 @@ export default function GroupList() {
     <div className="group-list">
       {groups.map((group, index) => {
         return (
-          <Card
+          <Card key={index} 
             children={
               <div className="group-card">
                 <Avatar image={group.Image} />
