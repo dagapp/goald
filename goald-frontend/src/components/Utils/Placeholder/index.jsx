@@ -4,7 +4,8 @@ import "./placeholder.scss";
 
 export default function Placeholder({
   description,
-  placeholder = "",
+  placeholder = null,
+  isRequired = true,
   isPassword = false,
 }) {
   return (
@@ -13,6 +14,7 @@ export default function Placeholder({
         type={isPassword ? "password" : "text"}
         className="placeholder__field"
         placeholder={placeholder}
+        required={isRequired}
       />
       <label className="placeholder__label">{description}</label>
     </div>

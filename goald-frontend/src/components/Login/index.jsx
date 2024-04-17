@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom';
 
 import Placeholder from '@components/Utils/Placeholder' 
 import Checkbox from '@components/Utils/Checkbox'
@@ -18,13 +18,14 @@ export default function Login() {
                     
                     <div className="login__support">
                         <Checkbox description="Запомнить меня" />
-                        <a href='#' className="login__support_forgot">Забыли пароль?</a>
+                        {/* Not created yet */}
+                        <a href='/forgot' className="login__support_forgot">Забыли пароль?</a>
                     </div>
                     
                     <button className="button_gradient button_rect">Войти</button>
                     <div className="login__no-account">
                         <span className="login__no-account_description">Нет аккаунта? </span>
-                        <a href='#' className="login__no-account_register">Зарегистрируйтесь</a>
+                        <Link to='/register' className="login__no-account_register">Зарегистрируйтесь</Link>
                     </div>
                 </form>
                 

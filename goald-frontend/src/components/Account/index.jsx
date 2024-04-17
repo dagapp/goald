@@ -13,8 +13,16 @@ export default function Account() {
         children={
           <div className="account__settings">
             <div className="account__field">
-              <Placeholder description={"Name"} placeholder="Ivan" />
-              <Placeholder description={"Surname"} placeholder="Ivanov" />
+              <Placeholder
+                description={"Name"}
+                placeholder="Ivan"
+                isRequired={false}
+              />
+              <Placeholder
+                description={"Surname"}
+                placeholder="Ivanov"
+                isRequired={false}
+              />
             </div>
             <button className="button_gradient button_rect">Change</button>
           </div>

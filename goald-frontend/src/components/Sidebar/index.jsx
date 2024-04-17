@@ -54,7 +54,7 @@ export default function SideBar() {
             {
               icon: groupsSvg,
               title: "Groups",
-              link: "#",
+              link: "/groups",
             },
           ]}
         />

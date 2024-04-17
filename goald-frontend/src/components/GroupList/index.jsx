@@ -1,3 +1,6 @@
+import {Link} from 'react-router-dom'
+
+
 import Card from "@components/Utils/Card";
 import Avatar from "@components/Utils/Avatar";
 import "./groupList.scss";
@@ -31,9 +34,11 @@ export default function GroupList() {
               <div className="group-card">
                 <Avatar image={group.Image} />
                 <div className="group-card__about">
-                  <a href="#">
+                  <Link to="/group"> 
+                  {/* There should be react-router too, but idk API output
+                  if can be link or just id (?). Now it's to template group*/}
                     <div className="group-card__about_title">{group.Name}</div>
-                  </a>
+                  </Link>
                   <div className="group-card__about_desc">
                     {group.Description}
                   </div>
