@@ -1,5 +1,5 @@
 import Menu from '@components/Utils/Menu'
-import Card from '../Card'
+import Card from "@components/Utils/Card";
 
 import "./Actions.scss"
 

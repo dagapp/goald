@@ -1,5 +1,5 @@
 import Progressbar from "@components/Utils/Progressbar";
-import Card from "../Card";
+import Card from "@components/Utils/Card";
 import "./Goals.scss";
 
 export default function Goals(props) {

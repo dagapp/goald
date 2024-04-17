@@ -1,6 +1,6 @@
-import Card from "../Card";
-
 import Menu from "@components/Utils/Menu"
+import Card from "@components/Utils/Card";
+
 import docIcon from "@assets/icons/utils/document.svg";
 import "./Reports.scss";
 
