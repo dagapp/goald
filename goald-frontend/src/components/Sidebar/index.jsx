@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 import Menu from "@components/Utils/Menu";
-import miniLogoSvg from "@assets/logo/mini-logo.svg";
 
-import { sidebarElements } from "./sidebarElements";
+// Import Icons
+import miniLogoSvg from "@assets/logo/mini-logo.svg";
+//import feedSvg from "@assets/sidebar/Feed.svg";
+import groupsSvg from "@assets/sidebar/Groups.svg";
+//import overviewSvg from "@assets/sidebar/Overview.svg";
+
 import "./sidebar.scss";
 
 export default function SideBar() {
@@ -46,7 +49,15 @@ export default function SideBar() {
       </div>
 
       <nav className="sidebar__menu">
-        <Menu elements={sidebarElements} />
+        <Menu
+          elements={[
+            {
+              icon: groupsSvg,
+              title: "Groups",
+              link: "#",
+            },
+          ]}
+        />
       </nav>
     </div>
   );

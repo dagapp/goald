@@ -8,17 +8,11 @@ import { template } from "./groupCards";
 import "./group.scss";
 
 export default function Group() {
-  const name = template["title"];
-  const description = template["description"];
-  
-  const goals = template["goals"];
-  const tags = template["tags"];
-
   return (
     <div className="group-content">
       <div className="group-content__goals group-content__column">
         <Goals 
-          goals={goals}
+          goals={template.goals}
         />
       </div>
 
@@ -32,9 +26,10 @@ export default function Group() {
 
       <div className="group-content__info group-content__column">
         <Info
-          name={name}
-          description={description}
-          tags={tags}
+          name={template.name}
+          image={template.image}
+          description={template.description}
+          tags={template.tags}
         />
       </div>
     </div>

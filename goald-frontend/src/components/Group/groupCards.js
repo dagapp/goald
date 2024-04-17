@@ -1,6 +1,7 @@
 export const template = {
     id: 1,
     title: "Template",
+    image: "There is Image Path?",
     description: "Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в болеенедавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.",
     tags: [
         {   

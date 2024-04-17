@@ -1,18 +1,18 @@
 import Card from "@components/Utils/Card";
-import "./Info.scss"
+import Avatar from "@components/Utils/Avatar";
+
+import "./Info.scss";
 
 export default function Info(props) {
-  const {
-    name,
-    description,
-    tags
-  } = props
+  const { name, image, description, tags } = props;
   return (
     <Card
       children={
         <div className="group-info">
           <div className="group-info_banner"></div>
-          <div className="group-info_avatar"></div>
+          <div className="group-info_avatar">
+            <Avatar image={image} />
+          </div>
 
           {/* Should this be with .toString()??? */}
           <div className="group-info_title card-title">{name}</div>
