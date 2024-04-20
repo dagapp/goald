@@ -29,8 +29,8 @@ def update(request, group_id):
 
     try:
         Manager.update_group_image(
-            user_id=request.session["id"], 
-            group_id=group_id, 
+            user_id=request.session["id"],
+            group_id=group_id,
             image=image_path
         )
     except DoesNotExist:
