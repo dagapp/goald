@@ -1,0 +1,90 @@
+.group-info {
+    position: relative;
+    
+    &_banner {
+        
+        margin: 20px 10px 10px;
+        height: 125px;
+        
+        border-radius: 10px;
+        background-color: var(--dark-color-card);
+        border: 1px solid var(--dark-color-action);
+    }
+
+    &_avatar {
+        position: absolute;
+        top: 85px;
+        right: 40px;
+    }
+
+    &_title {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        height: 30px;
+        font-size: 20px;          
+        font-weight: 700;      
+        margin: -30px 10px 0 10px;
+        padding: 20px;
+
+        border-radius: 10px;
+        background-color: var(--dark-color-card);
+        border: 1px solid var(--dark-color-action);
+        
+    }
+
+    &_description {
+        display: flex;
+        justify-content: left;
+        
+        padding-top: 20px;
+        margin: 0 10px;
+        gap: 10px;
+
+        &_icon {
+            width: 20px;
+            height: 20px;
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        &_content {
+            line-height: 1.4;
+        }
+    }
+
+    &_tags {
+        display: flex;
+        align-items: center;
+        
+        padding-top: 20px;
+        margin: 0 10px;
+        
+        gap: 10px;
+        
+        &_icon {
+            height: 20px;
+            width: 20px;
+
+            svg {
+                height: 20px;
+                width: 20px;
+            }
+        }
+
+        &_content {
+            display: flex;
+            gap: 10px;
+        }
+    }
+
+    &_tag {
+        padding: 5px 15px;
+        border: 1px solid var(--dark-color-action);
+        border-radius: 50px;
+    }
+}

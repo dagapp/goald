@@ -1,0 +1,16 @@
+.app {
+  display: grid;
+  grid-template-columns: min-content auto;
+  grid-auto-flow: column;
+  grid-template-areas:
+    "SideBar Content";
+}
+
+.sidebar {
+  grid-area: SideBar;
+}
+
+.app-content {
+  grid-area: Content;
+  padding: 0 20px;
+}

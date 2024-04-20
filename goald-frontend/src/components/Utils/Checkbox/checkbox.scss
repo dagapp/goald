@@ -1,0 +1,41 @@
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+
+    // Hiding original checkbox
+    &__input {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        z-index: 1;
+        opacity: 0;
+    }
+    
+    // Making pseudo-checkbox
+    &__button {
+        position: absolute;
+        height: 14px;
+        width: 14px;
+        border: 1.5px solid var(--form-grey-color);
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    // Handling checkbox states
+    &__input:checked + &__button {
+        border-color: var(--accent-color);
+        background: url(@assets/checkbox/check.svg) var(--accent-color) no-repeat center;
+        background-size: 14px 14px;
+    }
+    
+    // There should be `disabled` checkbox handling, but
+    // actually project has no cases with this option
+
+    &__label {
+        color: var(--subtext-color);
+        margin-left: 1.8em;
+        cursor: pointer;
+    }
+}

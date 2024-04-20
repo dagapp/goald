@@ -1,0 +1,33 @@
+.menu {
+    &__element {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        
+        overflow: hidden;
+        
+        gap: 16px;
+        padding: 12px;
+        
+        border-radius: 10px;
+        transition: .3s;
+
+
+        &_title {
+            color: var(--light-color);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        &_icon {
+            width: 24px;
+            height: 24px;
+            
+            user-select: none;
+        }
+    }
+
+    &__element:hover{
+        background-color: var(--dark-color-action);
+    }
+}

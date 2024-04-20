@@ -1,0 +1,35 @@
+.search {
+    position: relative;
+    width: 500px;
+
+    &_icon {
+        position: absolute;
+        height: 22px;
+        fill: var(--form-grey-color);
+        top: 9px;
+        left: 10px
+    }
+    
+    &_input {
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+
+        color: var(--light-color);
+        background-color: var(--dark-color-action);
+
+        padding: 11px 20px 11px 40px;
+        width: 100%;
+        box-sizing: border-box;
+
+        border-radius: 10px;
+        border: none;
+        outline: none;
+
+        transition: .3s;
+    }
+
+    &_input:focus {
+        background-color: var(--dark-color-shade-2);
+        outline: none;
+    }
+} 
