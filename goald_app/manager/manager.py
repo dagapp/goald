@@ -10,7 +10,6 @@ import random
 import string
 
 from dataclasses import dataclass
-from tempfile import TemporaryFile
 from typing import List, Dict, Tuple
 from bcrypt import gensalt, hashpw
 
@@ -476,10 +475,10 @@ class Manager:
             report.text = text
             report.save()
             return report.text
-        except User.DoesNotExist:
-            raise DoesNotExist("User doesn't exist")
-        except Report.DoesNotExist:
-            raise DoesNotExist("Report doesn't exist")
+        except User.DoesNotExist as e:
+            raise DoesNotExist("User doesn't exist") from e
+        except Report.DoesNotExist as e:
+            raise DoesNotExist("Report doesn't exist") from e
 
     @staticmethod
     @transaction.atomic
@@ -493,7 +492,7 @@ class Manager:
             report.save()
         except User.DoesNotExist as e:
             raise DoesNotExist("User doesn't exist") from e
-        except Report.DoesNotExist as e: 
+        except Report.DoesNotExist as e:
             raise DoesNotExist("Report doesn't exist") from e
 
     # ->images

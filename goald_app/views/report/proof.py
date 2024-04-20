@@ -19,7 +19,7 @@ def update(request, report_id):
             "result": "Bad request",
             "message": "Bad HTTP request, expected POST"
         })
-    
+
     data = json.loads(request.POST["data"])
 
     image_path = "group/default.jpg"
@@ -28,8 +28,12 @@ def update(request, report_id):
         image_path = Manager.store_image(image=image_file)
 
     try:
-        Manager.update_report_proof(user_id=request.session["id"], report_id=report_id, image=image_path)
-    except DoesNotExist as e:
+        Manager.update_report_proof(
+            user_id=request.session["id"],
+            report_id=report_id,
+            proof=image_path
+        )
+    except DoesNotExist:
         return JsonResponse({
             "result": "Bad",
             "message": "Report does not exist"

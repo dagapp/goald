@@ -19,7 +19,7 @@ def update(request, group_id):
             "result": "Bad request",
             "message": "Bad HTTP request, expected POST"
         })
-    
+
     data = json.loads(request.POST["data"])
 
     image_path = "group/default.jpg"
@@ -28,8 +28,12 @@ def update(request, group_id):
         image_path = Manager.store_image(image=image_file)
 
     try:
-        Manager.update_group_image(user_id=request.session["id"], group_id=group_id, image=image_path)
-    except DoesNotExist as e:
+        Manager.update_group_image(
+            user_id=request.session["id"], 
+            group_id=group_id, 
+            image=image_path
+        )
+    except DoesNotExist:
         return JsonResponse({
             "result": "Bad",
             "message": "Group does not exist"
@@ -39,4 +43,3 @@ def update(request, group_id):
         "result": "Success",
         "message": "Group image created successfully"
     })
-
