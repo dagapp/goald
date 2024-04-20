@@ -368,17 +368,16 @@ class Manager:
 
     @staticmethod
     @transaction.atomic
-    def update_group_image(group_id: int, image: str) -> None:
+    def update_group_image(user_id: int, group_id: int, image: str) -> None:
         """
         Update group image
         """
         try:
-            group = get_group_record(group_id=group_id)
-        except DoesNotExist:
-            return
-
-        group.image = image
-        group.save()
+            group = User.objects.get(id=user_id).groups.get(id=group_id)
+            group.image = image
+            group.save()
+        except Group.DoesNotExist as e:
+            raise DoesNotExist(f"group with such id [{group_id}] does not exist") from e
 
     # ->goals
     @staticmethod
@@ -453,11 +452,10 @@ class Manager:
         Get report
         """
         try:
-            report = get_report_record(report_id=report_id)
-        except DoesNotExist:
-            return ReportResult(None)
-
-        return ReportResult(report)
+            report = Report.objects.get(report_id=report_id)
+            return ReportResult(report)
+        except Report.DoesNotExist as e:
+            raise DoesNotExist("Report doesn't exist") from e
 
     @staticmethod
     def report_exists(report_id: int) -> bool:
@@ -468,35 +466,34 @@ class Manager:
 
     @staticmethod
     @transaction.atomic
-    def update_report_text(report_id: int, text: str = None) -> str:
+    def update_report_text(user_id: int, report_id: int, text: str = None) -> str:
         """
         Set/get a text value
         """
-        Manager.report_exists(report_id=report_id)
-
-        report = get_report_record(report_id=report_id)
-
-        if text is not None:
+        try:
+            report = User.objects.get(id=user_id).goals.get(report__id=report_id)
             report.text = text
             report.save()
-
-        return report.text
+            return report.text
+        except User.DoesNotExist as e:
+            raise DoesNotExist("User doesn't exist") from e
+        except Report.DoesNotExist as e:
+            raise DoesNotExist("Report doesn't exist") from e
 
     @staticmethod
     @transaction.atomic
-    def update_report_proof(report_id: int, proof: str = None) -> str:
+    def update_report_proof(user_id: int, report_id: int, proof: str = None) -> str:
         """
         Set/get a proof value
         """
-        Manager.report_exists(report_id=report_id)
-
-        report = get_report_record(report_id=report_id)
-
-        if proof is not None:
+        try:
+            report = User.objects.get(id=user_id).goals.get(report__id=report_id)
             report.proof = proof
             report.save()
-
-        return report.proof
+        except User.DoesNotExist as e:
+            raise DoesNotExist("User doesn't exist") from e
+        except Report.DoesNotExist as e:
+            raise DoesNotExist("Report doesn't exist") from e
 
     # ->images
     @staticmethod

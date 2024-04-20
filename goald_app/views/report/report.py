@@ -2,10 +2,11 @@
 File for defining handlers for group in Django notation
 """
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import redirect
 
 from goald_app.manager.exceptions import DoesNotExist
-from goald_app.manager.manager import Manager
+from goald_app.manager.manager import Manager, DataclassEncoder
 
 
 def create(request, goal_id: int):
@@ -37,12 +38,17 @@ def view(request, report_id):
     """
     Handler of a reports page
     """
+    if request.method != "POST":
+        return JsonResponse({
+            "result": "Bad request",
+            "message": "Bad HTTP request, expected POST"
+        })
+
     try:
         report = Manager.get_report(report_id=report_id)
+        return JsonResponse(data=report, safe=False, encoder=DataclassEncoder)
     except DoesNotExist:
-        messages.error(request, "Report doesn't exist")
-        return redirect(request.META.get("HTTP_REFERER"))
-
-    return render(
-        request, "reports.html", {"reports": report}
-    )
+        return JsonResponse({
+            "result": "Bad",
+            "message": "Report doesn't exist"
+        })
