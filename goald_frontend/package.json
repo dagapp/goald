@@ -22,7 +22,7 @@
     },
     "scripts": {
         "dev": "webpack --watch --mode=development ./src/index.js --output-path ./public/",
-        "srv": "webpack-dev-server --mode development --static ./public",
+        "srv": "webpack-dev-server --mode=production --static ./public",
         "build": "webpack --mode=production ./src/index.js --output-path ./public/"
     }
 }
