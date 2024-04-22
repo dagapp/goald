@@ -6,5 +6,10 @@ services:
     volumes:
       - ${DB_SOURCE:-/dev/null}:${DB_TARGET:-/dev/null}:rw
     ports:
-      - "8080:8000"
+      - "8081:8000"
     env_file: .env
+  frontend:
+    container_name: frontend-goald
+    build: goald_frontend
+    ports:
+      - "8080:8000"
