@@ -4,21 +4,21 @@ File for defining handlers for group.image in Django notation
 
 import json
 
-from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework import status
 
-from goald_app.manager.exceptions import DoesNotExist
-from goald_app.manager.manager import Manager
+from goald_app.manager import Manager
 
 
-def update(request, group_id):
+def image(request, group_id):
     """
     Handler to update a group image
     """
-    if request.method != "POST":
-        return JsonResponse({
-            "result": "Bad request",
-            "message": "Bad HTTP request, expected POST"
-        })
+    if not request.method == "POST":
+        return Response(
+            data={"detail": "Wrong method, use POST"},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED
+        )
 
     data = json.loads(request.POST["data"])
 
@@ -34,12 +34,12 @@ def update(request, group_id):
             image=image_path
         )
     except DoesNotExist:
-        return JsonResponse({
-            "result": "Bad",
+        return Response({
+            "detail": "Bad",
             "message": "Group does not exist"
         })
 
-    return JsonResponse({
-        "result": "Success",
+    return Response({
+        "detail": "Success",
         "message": "Group image created successfully"
     })
