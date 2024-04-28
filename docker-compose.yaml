@@ -19,10 +19,7 @@ services:
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=goald
-      - POSTGRES_PASSWORD=goald
-      - POSTGRES_DB=goald_db
+    env_file: db.env
 
 volumes:
   postgres_data:
