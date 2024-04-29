@@ -42,7 +42,6 @@ class DutyView(APIView):
         duty = DutySerializer(data=request.data)
 
         if Duty.objects.filter(**request.data).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("This duty already exists")
 
         if not duty.is_valid():

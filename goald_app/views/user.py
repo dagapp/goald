@@ -90,7 +90,6 @@ class UserView(APIView):
         user = UserSerializer(data=request.data)
 
         if User.objects.filter(login=request.data["login"]).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("User with this login already exists")
 
         if not user.is_valid():

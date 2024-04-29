@@ -54,7 +54,6 @@ class GroupView(APIView):
         group = GroupSerializer(data=request.data)
 
         if Group.objects.filter(tag=request.data["tag"]).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("Group with this tag already exists")
 
         if not group.is_valid():

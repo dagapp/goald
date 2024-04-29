@@ -41,7 +41,6 @@ class ReportView(APIView):
         report = ReportSerializer(data=request.data)
 
         if Report.objects.filter(**request.data).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("This report already exists")
 
         if not report.is_valid():
