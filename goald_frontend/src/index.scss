@@ -1,46 +1,11 @@
 // Importing Montserrat fonts
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-// Reseting browser styles
-*, *::before, *::after {
-    padding: 0;
-    margin: 0;
-    bottom: 0;
-    box-sizing: 0;
-    
-    list-style: none;
-    text-decoration: none;
-}
-
-a, a:visited, a:hover {
-    text-decoration: none;
-}
-
-a:focus, a:active {
-    outline: none;
-}
-
-button, input[type="submit"] { 
-    display: inline-block;
-    box-shadow: none;
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-}
-
-button::-moz-focus-inner {
-    padding: 0;
-}
-
 button {
     color: var(--light-color);
     font-family: "Montserrat", sans-serif;
     font-size: 16px;
     font-weight: 700;
-}
-
-img {
-    pointer-events: none;
 }
 
 // General style settings
