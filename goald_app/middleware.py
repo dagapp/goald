@@ -38,7 +38,7 @@ class AuthorizationMiddleware:
                 response.renderer_context = {}
                 response.render()
                 return response
-            
+
             return self.get_response(request)
 
         if not User.objects.filter(id=request.session["id"]).exists():
