@@ -22,7 +22,7 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -77,7 +77,7 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -109,7 +109,7 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
