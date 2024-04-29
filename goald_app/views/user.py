@@ -26,13 +26,13 @@ def login(request):
             data={"detail": "Either login or password parameters are empty"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     if not User.objects.filter(login=request.POST["login"]).exists():
         return Response(
             data={"detail": "User does not exist"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     user = User.objects.get(login=request.POST["login"])
 
     salt = user.password[:LENGTH_SALT]
@@ -43,7 +43,7 @@ def login(request):
             data={"detail": "Wrong password"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     request.session["id"] = user.id
 
     return Response(
@@ -56,7 +56,7 @@ def logout(request):
     """
     Handler for logging out a user
     """
-    
+
     # Deleting session
     request.session.flush()
 
@@ -67,6 +67,9 @@ def logout(request):
 
 
 class UserView(APIView):
+    """
+        Description of UserView
+    """
     def get(self, request):
         """
         Handler for reading the user info
@@ -95,15 +98,14 @@ class UserView(APIView):
                 data={"detail": "User data is not valid"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         user.password = hashpw(bytes(user.password, "utf-8"), gensalt())
-        
+
         user.save()
         return Response(
             data={"detail", f"User id: {user.data['id']}"},
             status=status.HTTP_201_CREATED
         )
-        
 
     def patch(self, request):
         """
@@ -111,7 +113,7 @@ class UserView(APIView):
         """
 
         user = UserSerializer(data=request.data)
-        
+
         User.objects.get(id=request.session["id"]).update(user)
 
         return Response(
@@ -124,7 +126,7 @@ class UserView(APIView):
         """
         Handler for deleting the user
         """
-        
+
         User.objects.filter(id=request.session["id"]).delete()
 
         request.session.flush()
