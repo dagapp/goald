@@ -23,6 +23,7 @@ jobs:
         pip install bcrypt
         pip install pylint
         pip install pylint-django
+        pip install djangorestframework
 
     - name: Analysing the code with pylint
       run: |
