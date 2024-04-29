@@ -18,7 +18,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import transaction
 
-from goald_app.manager.exceptions import DoesNotExist, AlreadyExists, IncorrectData
+from goald_app.exceptions import DoesNotExist, AlreadyExists, IncorrectData
 from goald_app.models import User, Group, Goal, Event, Report, Duty
 
 
