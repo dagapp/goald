@@ -51,20 +51,21 @@ class GroupView(APIView):
         Handler for creating a group
         """
 
-        group = GroupSerializer(data=request.data)
+        serializer = GroupSerializer(data=request.data, context={'request': request})
 
         if Group.objects.filter(tag=request.data["tag"]).exists():
             raise serializers.ValidationError("Group with this tag already exists")
 
-        if not group.is_valid():
+        if not serializer.is_valid(raise_exception=True):
             return Response(
                 data={"detail": "Group data is not valid"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        group.save()
+        serializer.save()
+
         return Response(
-            data={"detail", f"Group id: {group.data['id']}"},
+            data={"detail", f"Group id: {serializer.data}"},
             status=status.HTTP_201_CREATED
         )
 
@@ -74,26 +75,30 @@ class GroupView(APIView):
         Handler for updating the group info
         """
 
-        if "id" not in kwargs:
+        group_id = kwargs.get("id", None)
+        if not group_id:
             return Response(
                 data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not Group.objects.filter(id=request.GET["id"]).exists():
+        if not Group.objects.filter(id=group_id).exists():
             return Response(
                 data={"detail": "group with given id does not exist"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not Group.objects.filter(id=request.GET["id"],leader_id=request.session["id"]).exists():
+        if not Group.objects.filter(id=group_id,leader_id=request.session["id"]).exists():
             return Response(
                 data={"detail": "You have no permission to change group info"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        group = GroupSerializer(data=request.data)
-        Group.objects.get(id=request.GET["id"], leader_id=request.session["id"]).update(group)
+        instance = Group.objects.get(id = group_id)
+
+        serializer = GroupSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
         return Response(
             data={"detail": "Group info updated"},
@@ -106,22 +111,28 @@ class GroupView(APIView):
         Handler for deleting the group
         """
 
-        if "id" not in kwargs:
+        user_id = request.session["id"]
+        group_id = kwargs.get("id", None)
+
+        if not group_id:
             return Response(
                 data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user_id = request.session["id"]
-        group_id = request.GET["id"]
-
-        if not User.objects.filter(id=user_id).groups.filter(id=group_id).exists():
+        if not Group.objects.filter(id=group_id).exists():
             return Response(
                 data={"detail": "No group with given id found"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        User.objects.filter(id=user_id).groups.get(id=group_id).delete()
+        if not Group.objects.filter(id=group_id, leader_id=user_id).exists():
+            return Response(
+                data={"detail": "You have no permission to delete group"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        Group.objects.get(id=group_id).delete()
 
         return Response(
             data={"detail": "Group deleted"},
