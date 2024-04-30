@@ -27,7 +27,7 @@ class AuthorizationMiddleware:
         """
 
         if not request.session.has_key("id"):
-            if request.path not in ["/login", "/register"]:
+            if request.path not in ["/login", "/register", "/logout"]:
                 response = Response(
                     data={"detail": "You are not authenticated"},
                     headers={"Location": "/login"},
