@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # manually added
-    'goald_app.middleware.AuthorizationMiddleware'
+    'goald_app.middleware.AuthorizationMiddleware',
 ]
 
 ROOT_URLCONF = 'goald_site.urls'

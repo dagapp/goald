@@ -8,52 +8,45 @@ from goald_app import views
 
 
 urlpatterns = [
-    path("", views.common.home, name="home"),
+    # image handlers
+    #path("image", views.image.image, name="image"),
 
     # auth handlers
-    path("login",    views.common.login,    name="login"),
-    path("register", views.common.register, name="register"),
-    path("logout",   views.common.logout,   name="logout"),
+    path("register", views.user.UserView.post, name="register"),
+    path("login",    views.user.login,         name="login"   ),
+    path("logout",   views.user.logout,        name="logout"  ),
 
     # user handlers
-    path("user/summary", views.user.user.summary, name="user/summary"),
+    path("user/<int:id>", views.user.UserView.as_view(), name="user"),
+    path("user",          views.user.UserView.as_view(), name="user"),
 
-    path("user/change",  views.user.user.change,  name="user/change" ),
-    path("user/delete",  views.user.user.delete,  name="user/delete" ),
+    #path("user/<int:id>/goals",  views.user.goals,  name="user/goals" ),
+    #path("user/<int:id>/groups", views.user.groups, name="user/groups"),
+    #path("user/<int:id>/duties", views.user.duties, name="user/duties"),
 
     # group handlers
-    path("group/<int:group_id>",              views.group.group.view,   name="group"             ),
-    path("group/list",                        views.group.group.list,   name="group/list"        ),
+    path("group/<int:id>", views.group.GroupView.as_view(), name="group"),
+    path("group",          views.group.GroupView.as_view(), name="group"),
 
-    path("group/create",                      views.group.group.create, name="group/create"      ),
-    path("group/<int:group_id>/image/update", views.group.image.update, name="group/image/update"),
-    path("group/users/add",    views.group.user.add,     name="group/users/add"   ),
-    path("group/<int:group_id>/goals/add",    views.group.goal.add,     name="group/goals/add"   ),
+    #path("group/<int:id>/users",  views.group.users,  name="group/users" ),
+    #path("group/<int:id>/goals",  views.group.goals,  name="group/goals" ),
+    #path("group/<int:id>/duties", views.group.duties, name="group/duties"),
+
+    # goal handlers
+    #path("goal/<int:id>", views.goal.GoalView.as_view(), name="goal"),
+
+    #path("goal/<int:id>/users",   views.goal.users,   name="goal/users"  ),
+    #path("goal/<int:id>/duites",  views.goal.duties,  name="goal/duties" ),
+    #path("goal/<int:id>/reports", views.goal.reports, name="goal/reports"),
 
     # report handlers
-    path(
-        "group/<int:goal_id>/reports/create",
-        views.report.report.create,
-        name="group/report/create"
-    ),
-
-    path(
-        "report/<int:report_id>",
-        views.report.report.view,
-        name="report"
-    ),
-    path(
-        "report/<int:report_id>/proof/update",
-        views.report.proof.update,
-        name="report/proof/update"
-    ),
-    path(
-        "report/<int:report_id>/text/update",
-        views.report.text.update,
-        name="report/text/update"
-    ),
+    path("report/<int:id>", views.report.ReportView.as_view(), name="report"),
+    path("report",          views.report.ReportView.as_view(), name="report"),
 
     # duty handlers
-    path("goal/duty/pay",      views.duty.duty.pay,         name="goal/duty/pay"     ),
-    path("goal/duty/delegate", views.duty.duty.delegate,    name="goal/duty/delegate"),
+    path("duty/<int:id>", views.duty.DutyView.as_view(), name="duty"),
+    path("duty",          views.duty.DutyView.as_view(), name="duty"),
+
+    #path("duty/<int:id>/pay",      views.duty.duty.pay,      name="duty/pay"     ),
+    #path("duty/<int:id>/delegate", views.duty.duty.delegate, name="duty/delegate"),
 ]

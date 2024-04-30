@@ -18,7 +18,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import transaction
 
-from goald_app.manager.exceptions import DoesNotExist, AlreadyExists, IncorrectData
+from goald_app.exceptions import DoesNotExist, AlreadyExists, IncorrectData
 from goald_app.models import User, Group, Goal, Event, Report, Duty
 
 
@@ -98,8 +98,7 @@ class GoalResult:
     is_active: bool
     deadline: str
     alert_period: str
-    current_value: int
-    final_value: int
+    values: Tuple[int, int]
     events: List[EventResult]
     reports: List[ReportResult]
 
@@ -108,11 +107,19 @@ class GoalResult:
         self.is_active = goal.is_active
         self.deadline = str(goal.deadline)
         self.alert_period = str(goal.alert_period)
-        self.current_value = sum(duty.current_value
-                                 for duty in goal.duties_goal.all())
-        self.final_value = sum(duty.final_value for duty in goal.duties_goal.all())
+        self.values = self.calculate_values(goal)
         self.events = [EventResult(event) for event in goal.events_goal.all()]
         self.reports = [ReportResult(report) for report in goal.reports_goal.all()]
+
+    def calculate_values(self, goal: Goal) -> Tuple[int, int]:
+        """
+        Return tuple of current and final values
+        """
+        current_value = sum(duty.current_value
+                                 for duty in goal.duties_goal.all())
+        final_value = sum(duty.final_value for duty in goal.duties_goal.all())
+
+        return current_value, final_value
 
 
 @dataclass
