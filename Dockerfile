@@ -1,24 +1,28 @@
-FROM python:3.9-slim-bullseye
+FROM debian:bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /goald
 
-RUN apt update
-RUN apt install --no-install-recommends -y nginx uwsgi uwsgi-plugin-python3 vim
+RUN apt update && apt install --no-install-recommends -y \
+    uwsgi                   \
+    uwsgi-plugin-python3    \
+    python3-django          \
+    python3-pillow          \
+    python3-bcrypt          \
+    nginx                   \
+    vim                     \
+&& rm -rf /var/lib/apt/lists/*
 
-# django stuff
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt --no-cache-dir
-
-COPY . .
+COPY goald_app goald_app
+COPY goald_site goald_site
+COPY manage.py manage.py
 
 # nginx stuff
-COPY goald_site/static /var/www/goald/static
 COPY goald_site/nginx.conf /etc/nginx/sites-enabled/goald.conf
 
 # entrypoint stuff
+COPY entrypoint.sh entrypoint.sh
 RUN chmod +x /goald/entrypoint.sh
 ENTRYPOINT ["/goald/entrypoint.sh"]

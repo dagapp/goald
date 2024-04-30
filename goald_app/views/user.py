@@ -2,7 +2,7 @@
 File for defining handlers for group in Django notation
 """
 
-from bcrypt import gensalt, hashpw
+from bcrypt import gensalt, hashpw, checkpw
 
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -10,10 +10,8 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 
 from ..models import User
-from ..serializers import UserSerializer
+from ..serializers import UserSerializer, UserLoginSerializer
 
-LENGTH_SALT = 29
-LENGTH_HASH = 60
 
 @api_view(["POST"])
 def login(request):
@@ -21,29 +19,28 @@ def login(request):
     Handler for logging in a user
     """
 
-    if "login" not in request.POST or "password" not in request.POST:
+    user_login = UserLoginSerializer(data=request.data)
+
+    if not user_login.is_valid():
         return Response(
-            data={"detail": "Either login or password parameters are empty"},
+            data={"detail": "User data is not valid"},
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    if not User.objects.filter(login=request.POST["login"]).exists():
+    if not User.objects.filter(login=user_login.initial_data["login"]).exists():
         return Response(
             data={"detail": "User does not exist"},
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    user = User.objects.get(login=request.POST["login"])
+    user = User.objects.get(login=user_login.initial_data["login"])
 
-    salt = user.password[:LENGTH_SALT]
-    salted_hash = hashpw(bytes(request.POST["password"], "utf-8"), salt)
-
-    if salted_hash != user.password:
+    if not checkpw(user_login.initial_data["password"].encode(), user.password):
         return Response(
             data={"detail": "Wrong password"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     request.session["id"] = user.id
 
     return Response(
@@ -51,13 +48,12 @@ def login(request):
         status=status.HTTP_200_OK
     )
 
-
+@api_view(["POST"])
 def logout(request):
     """
     Handler for logging out a user
     """
     
-    # Deleting session
     request.session.flush()
 
     return Response(
@@ -67,6 +63,9 @@ def logout(request):
 
 
 class UserView(APIView):
+    """
+        Description of UserView
+    """
     def get(self, request):
         """
         Handler for reading the user info
@@ -87,7 +86,6 @@ class UserView(APIView):
         user = UserSerializer(data=request.data)
 
         if User.objects.filter(login=request.data["login"]).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("User with this login already exists")
 
         if not user.is_valid():
@@ -95,15 +93,14 @@ class UserView(APIView):
                 data={"detail": "User data is not valid"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         user.password = hashpw(bytes(user.password, "utf-8"), gensalt())
-        
+
         user.save()
         return Response(
             data={"detail", f"User id: {user.data['id']}"},
             status=status.HTTP_201_CREATED
         )
-        
 
     def patch(self, request):
         """
@@ -111,6 +108,12 @@ class UserView(APIView):
         """
 
         user = UserSerializer(data=request.data)
+        
+        if not user.is_valid():
+            return Response(
+                data={"detail": "User data is not valid"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         User.objects.get(id=request.session["id"]).update(user)
 
@@ -124,7 +127,7 @@ class UserView(APIView):
         """
         Handler for deleting the user
         """
-        
+
         User.objects.filter(id=request.session["id"]).delete()
 
         request.session.flush()

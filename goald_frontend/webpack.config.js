@@ -6,7 +6,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: [
-                    /node_modules/, 
+                    /node_modules/,
                     /public/
                 ],
                 use: {
@@ -39,10 +39,6 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
-        // static: {
-        //     directory: path.join(__dirname, 'public'),
-        // },
-        // compress: true,
-        // port: 9000,
+        port: 8001,
     },
 }
