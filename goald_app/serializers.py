@@ -6,7 +6,6 @@ from rest_framework import serializers
 #from django.db.models import fields
 from .models import User, Group, Goal, Duty, Event, Report
 
-
 class UserLoginSerializer(serializers.ModelSerializer):
     """
     Serializer class for login info
@@ -20,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Serializer class for User model object
     """
-    
+
     class Meta:
         model = User
         fields = ("name", "second_name")
@@ -34,6 +33,16 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("tag", "is_public", "name", "image")
+
+    def create(self, validated_data):
+        tag = validated_data.get("tag", None)
+        is_public = validated_data.get("is_public", None)
+        name = validated_data.get("name", None)
+        image = validated_data.get("image", None)
+        user_id = User.objects.get(id=self.context['request'].session.get("id"))
+
+        return Group.objects.create(leader=user_id, name=name, \
+                                    tag=tag, is_public=is_public, image=image)
 
 
 class GoalSerializer(serializers.ModelSerializer):
