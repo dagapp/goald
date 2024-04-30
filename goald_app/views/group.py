@@ -11,6 +11,10 @@ from ..serializers import GroupSerializer
 
 
 class GroupView(APIView):
+    """
+       Description of GroupView
+    """
+
     def get(self, request, **kwargs):
         """
         Handler for reading the group info
@@ -18,17 +22,18 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         if not Group.objects.filter(id=kwargs["id"]).exists():
             return Response(
                 data={"detail": "Group does not exist"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not User.objects.get(id=request.session["id"]).groups.filter(id=kwargs["id"]).exists() and not Group.objects.filter(leader_id=request.session["id"]).exists():
+        if not User.objects.get(id=request.session["id"]).groups.filter(id=kwargs["id"]).exists() \
+            and not Group.objects.filter(leader_id=request.session["id"]).exists():
             return Response(
                 data={"detail": "You have no permission to have this info"},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -49,7 +54,6 @@ class GroupView(APIView):
         group = GroupSerializer(data=request.data)
 
         if Group.objects.filter(tag=request.data["tag"]).exists():
-            #TODO: check out how it works and maybe switch "return Response" with it
             raise serializers.ValidationError("Group with this tag already exists")
 
         if not group.is_valid():
@@ -57,13 +61,13 @@ class GroupView(APIView):
                 data={"detail": "Group data is not valid"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         group.save()
         return Response(
             data={"detail", f"Group id: {group.data['id']}"},
             status=status.HTTP_201_CREATED
         )
-        
+
 
     def patch(self, request, **kwargs):
         """
@@ -72,7 +76,7 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -81,13 +85,13 @@ class GroupView(APIView):
                 data={"detail": "group with given id does not exist"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         if not Group.objects.filter(id=request.GET["id"],leader_id=request.session["id"]).exists():
             return Response(
                 data={"detail": "You have no permission to change group info"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
+
         group = GroupSerializer(data=request.data)
         Group.objects.get(id=request.GET["id"], leader_id=request.session["id"]).update(group)
 
@@ -104,17 +108,20 @@ class GroupView(APIView):
 
         if "id" not in kwargs:
             return Response(
-                data={"detail": "No id given"}, 
+                data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not User.objects.filter(id=request.session["id"]).groups.filter(id=request.GET["id"]).exists():
+        user_id = request.session["id"]
+        group_id = request.GET["id"]
+
+        if not User.objects.filter(id=user_id).groups.filter(id=group_id).exists():
             return Response(
                 data={"detail": "No group with given id found"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
-        User.objects.filter(id=request.session["id"]).groups.get(id=request.GET["id"]).delete()
+
+        User.objects.filter(id=user_id).groups.get(id=group_id).delete()
 
         return Response(
             data={"detail": "Group deleted"},
