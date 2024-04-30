@@ -33,6 +33,9 @@ urlpatterns = [
     #path("group/<int:id>/duties", views.group.duties, name="group/duties"),
 
     # goal handlers
+    path("group/<int:id>/goal/<int:goal_id>", views.goal.GoalView.as_view(), name="goal"),
+    path("group/<int:id>/goal",               views.goal.GoalView.as_view(), name="goal"),
+
     #path("goal/<int:id>", views.goal.GoalView.as_view(), name="goal"),
 
     #path("goal/<int:id>/users",   views.goal.users,   name="goal/users"  ),
