@@ -20,20 +20,23 @@ class GroupView(APIView):
         Handler for reading the group info
         """
 
-        if "id" not in kwargs:
+        user_id = self.request.session["id"]
+        group_id = self.kwargs.get("id", None)
+
+        if not group_id:
             return Response(
                 data={"detail": "No id given"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not Group.objects.filter(id=kwargs["id"]).exists():
+        if not Group.objects.filter(id=group_id).exists():
             return Response(
                 data={"detail": "Group does not exist"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not User.objects.get(id=request.session["id"]).groups.filter(id=kwargs["id"]).exists() \
-            and not Group.objects.filter(leader_id=request.session["id"]).exists():
+        if not User.objects.get(id=user_id).groups.filter(id=group_id).exists() \
+            and not Group.objects.filter(id=group_id, leader_id=user_id).exists():
             return Response(
                 data={"detail": "You have no permission to have this info"},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -88,7 +91,7 @@ class GroupView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not Group.objects.filter(id=group_id,leader_id=request.session["id"]).exists():
+        if not Group.objects.filter(id=group_id, leader_id=request.session["id"]).exists():
             return Response(
                 data={"detail": "You have no permission to change group info"},
                 status=status.HTTP_401_UNAUTHORIZED
