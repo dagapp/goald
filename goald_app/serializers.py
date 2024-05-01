@@ -72,7 +72,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        field = ("type", "text", "timestamp")
+        fields = ("type", "text", "timestamp")
 
 
 class ReportSerializer(serializers.ModelSerializer):
