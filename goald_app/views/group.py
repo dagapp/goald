@@ -24,9 +24,12 @@ class GroupView(APIView):
         group_id = self.kwargs.get("id", None)
 
         if not group_id:
+            user_groups = User.objects.get(id=user_id).groups
+            leader_group = Group.objects.filter(leader_id=user_id)
+            queryset = user_groups.union(leader_group)
             return Response(
-                data={"detail": "No id given"},
-                status=status.HTTP_400_BAD_REQUEST
+                data=GroupSerializer(queryset, many=True).data,
+            status=status.HTTP_200_OK
             )
 
         if not Group.objects.filter(id=group_id).exists():
