@@ -7,7 +7,7 @@ import json
 from rest_framework.response import Response
 from rest_framework import status
 
-from goald_app.manager import Manager
+from backend.manager import Manager
 from ..exceptions import DoesNotExist
 
 def image(request, group_id):
