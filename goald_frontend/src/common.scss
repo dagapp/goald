@@ -1,0 +1,23 @@
+body {
+  font-family: var(--ui-font_display-default-font_family);
+  font-size: var(--ui-font_display-default-font_size);
+  font-weight: var(--ui-font_display-default-font_weight);
+  line-height: var(--ui-font_display-default-line_height);
+  background-color: var(--ui-color-background);
+}
+
+input,
+button {
+  font-family: var(--ui-font_display-button-font_family);
+  font-size: var(--ui-font_display-button-font_size);
+  font-weight: var(--ui-font_display-button-font_weight);
+  color: var(--ui-color-subtext);
+}
+
+label {
+  font-family: var(--ui-font_display-label-font_family);
+  font-size: var(--ui-font_display-label-font_size);
+  font-weight: var(--ui-font_display-label-font_weight);
+  line-height: var(--ui-font_display-label-line_height);
+  color: var(--ui-color-subtext);
+}

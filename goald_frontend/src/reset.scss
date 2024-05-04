@@ -17,7 +17,7 @@ a:focus, a:active {
     outline: none;
 }
 
-button, input[type="submit"] { 
+button, input[type="submit"], input[type="button"] { 
     display: inline-block;
     box-shadow: none;
     background-color: transparent; 
