@@ -1,0 +1,26 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 20px;
+  gap: 10px;
+
+  transition: var(--ui-transition-speed-3);
+  border-radius: var(--ui-size-border_radius-small);
+
+  color: var(--ui-color-text);
+
+  svg {
+    width: var(--ui-size-icon);
+    height: var(--ui-size-icon);
+
+    path {
+      stroke: var(--ui-color-button-icon);
+    }
+  }
+
+  &:hover {
+    background-color: var(--ui-color-button-action);
+  }
+}

@@ -24,7 +24,13 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                test: /\.svg$/,
+                use: [
+                    '@svgr/webpack'
+                ],
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif)$/i,
                 type: 'asset/inline'
             }
         ]
@@ -33,9 +39,14 @@ module.exports = {
         extensions: ['.js', '.jsx', '.scss'],
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            '@assets': path.resolve(__dirname, 'src/assets'),
+            '@shared': path.resolve(__dirname, 'src/shared'),
             '@components': path.resolve(__dirname, 'src/components'),
         },
+    },
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
     },
     devServer: {
         historyApiFallback: true,
