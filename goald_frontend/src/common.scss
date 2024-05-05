@@ -1,23 +1,24 @@
 body {
-  font-family: var(--ui-font_display-default-font_family);
-  font-size: var(--ui-font_display-default-font_size);
-  font-weight: var(--ui-font_display-default-font_weight);
-  line-height: var(--ui-font_display-default-line_height);
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-small);
+  font-weight: var(--ui-font_display-font_weight-regular);
+  line-height: var(--ui-font_display-line_height-normal);
   background-color: var(--ui-color-background);
+  color: var(--ui-color-text)
 }
 
 input,
 button {
-  font-family: var(--ui-font_display-button-font_family);
-  font-size: var(--ui-font_display-button-font_size);
-  font-weight: var(--ui-font_display-button-font_weight);
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-normal);
+  font-weight: var(--ui-font_display-font_weight-regular);
   color: var(--ui-color-subtext);
 }
 
 label {
-  font-family: var(--ui-font_display-label-font_family);
-  font-size: var(--ui-font_display-label-font_size);
-  font-weight: var(--ui-font_display-label-font_weight);
-  line-height: var(--ui-font_display-label-line_height);
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-normal);
+  font-weight: var(--ui-font_display-font_weight-regular);
+  line-height: var(--ui-font_display-line_height-small);
   color: var(--ui-color-subtext);
 }
