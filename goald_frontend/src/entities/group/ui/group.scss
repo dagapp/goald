@@ -1,0 +1,41 @@
+.group {
+  display: flex;
+  align-items: center;
+
+  max-width: 200px;
+  gap: 10px;
+
+  &__avatar {
+    min-width: 40px;
+    min-height: 40px;
+
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  &__overview {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &_name {
+      font-weight: var(--ui-font_display-font_weight-medium);
+      line-height: var(--ui-font_display-line_height-normal);
+    }
+
+    &_tag {
+      user-select: none;
+      padding: 0 10px;
+      
+      border: var(--ui-size-border-1) solid var(--ui-color-brand-primary);
+      border-radius: var(--ui-size-border_radius-small);
+
+      font-size: var(--ui-font_display-font_size-tiny);
+      color: var(--ui-color-brand-primary);
+    }
+  }
+}
