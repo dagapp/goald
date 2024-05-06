@@ -1,0 +1,70 @@
+.duty {
+  display: flex;
+  flex-direction: column;
+
+  width: 300px;
+  gap: 5px;
+
+  &__progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &_current {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      &_wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+    }
+
+    &_target {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    [class*="_value"] {
+      font-size: var(--ui-font_display-font_size-normal);
+      font-weight: var(--ui-font_display-font_weight-medium);
+    }
+
+    [class*="_description"] {
+      font-size: var(--ui-font_display-font_size-tiny);
+      color: var(--ui-color-subtext);
+      line-height: var(--ui-font_display-line_height-small);
+    }
+  }
+
+  &__daysleft {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 0.2em;
+
+    svg {
+      width: var(--ui-size-icon-small);
+      height: var(--ui-size-icon-small);
+
+      path {
+        stroke: var(--ui-color-icon);
+      }
+    }
+
+    &_icon {
+      margin-right: 0.2em;
+    }
+
+    &_value {
+      font-weight: var(--ui-font_display-font_weight-medium);
+    }
+
+    &_description {
+      color: var(--ui-color-subtext);
+    }
+  }
+}

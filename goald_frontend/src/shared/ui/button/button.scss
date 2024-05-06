@@ -12,8 +12,8 @@
   color: var(--ui-color-text);
 
   svg {
-    width: var(--ui-size-icon);
-    height: var(--ui-size-icon);
+    width: var(--ui-size-icon-normal);
+    height: var(--ui-size-icon-normal);
 
     path {
       stroke: var(--ui-color-button-icon);
@@ -21,6 +21,6 @@
   }
 
   &:hover {
-    background-color: var(--ui-color-button-action);
+    background-color: var(--ui-color-action);
   }
 }
