@@ -24,6 +24,9 @@ class User(models.Model):
     name = models.CharField(null=True, max_length=50)
     second_name = models.CharField(null=True, max_length=50)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Group(models.Model):
     """
@@ -53,6 +56,9 @@ class Group(models.Model):
         "self", null=True, on_delete=models.CASCADE, related_name="groups_supergroup"
     )
 
+    def __str__(self) -> str:
+        return self.tag
+
 
 class Goal(models.Model):
     """
@@ -65,6 +71,8 @@ class Goal(models.Model):
     deadline = models.DateTimeField(null=True)
     alert_period = models.DurationField(null=True)
 
+    reports = models.ManyToManyField("Report", related_name="reports")
+
     group = models.ForeignKey(
         "Group", null=False, on_delete=models.CASCADE, related_name="goals_group"
     )
@@ -72,6 +80,9 @@ class Goal(models.Model):
     supergoal = models.ForeignKey(
         "self", null=True, on_delete=models.CASCADE, related_name="goals_supergoal"
     )
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Duty(models.Model):
