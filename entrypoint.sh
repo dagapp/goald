@@ -1,10 +1,14 @@
 #!/bin/bash
 
-if ! [ -f /goald/db.sqlite3 ]; then
-    cd /goald || (echo "/goald dir was not found!"; exit)
-    echo "DB not found! Creating a new one!"
-    python3 manage.py makemigrations
-    python3 manage.py migrate
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Waiting for postgres..."
+
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
+
+    echo "PostgreSQL started"
 fi
 
 # nginx stuff
