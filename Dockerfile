@@ -11,6 +11,7 @@ RUN apt update && apt install --no-install-recommends -y \
     python3-django          \
     python3-pillow          \
     python3-bcrypt          \
+    python3-psycopg2        \
     nginx                   \
     vim                     \
 && rm -rf /var/lib/apt/lists/*
