@@ -1,40 +1,34 @@
 import { useState } from "react";
-
 import clsx from "clsx";
+
 import "./input.scss";
 
 export function Input(props) {
   const {
-    type,
-    placeholder,
+    value,
     onChange,
     onBlur,
     onFocus,
     onKeyDown,
+    placeholder,
     className,
   } = props;
 
   const [inputData, setinputData] = useState("");
-  const onChangeinputData = (e) => {
-    setinputData(e.target.value);
+  const onChangeinputData = (event) => {
+    setinputData(event.target.value);
   };
 
   return (
-    <div className={clsx("input", className)}>
-      <input
-        id="input"
-        className={"input__field"}
-        type={type}
-        value={inputData}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        onChange={onChange ?? onChangeinputData}
-        onKeyDown={onKeyDown}
-        required
-      />
-      <label for="input" className="input__label">
-        {placeholder}
-      </label>
-    </div>
+    <input
+      className={clsx("input", className)}
+      type="text"
+      value={value ?? inputData}
+      placeholder={placeholder}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      onChange={onChange ?? onChangeinputData}
+      onKeyDown={onKeyDown}
+    />
   );
 }

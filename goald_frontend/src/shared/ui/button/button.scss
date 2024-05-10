@@ -1,9 +1,8 @@
 .button {
   display: flex;
   align-items: center;
-  justify-content: center;
-
   padding: 10px 20px;
+
   gap: 10px;
 
   transition: var(--ui-transition-speed-3);
@@ -11,13 +10,9 @@
 
   color: var(--ui-color-text);
 
-  svg {
-    width: var(--ui-size-icon-normal);
-    height: var(--ui-size-icon-normal);
-
-    path {
-      stroke: var(--ui-color-button-icon);
-    }
+  svg path {
+    fill: var(--ui-color-icon-primary);
+    // stroke: var(--ui-color-icon-primary);
   }
 
   &:hover {

@@ -4,10 +4,21 @@ body {
   font-weight: var(--ui-font_display-font_weight-regular);
   line-height: var(--ui-font_display-line_height-normal);
   background-color: var(--ui-color-background);
-  color: var(--ui-color-text)
+  color: var(--ui-color-text);
 }
 
-input,
+input {
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-normal);
+  font-weight: var(--ui-font_display-font_weight-regular);
+  color: var(--ui-color-text);
+
+  ::placeholder {
+    color: var(--ui-color-subtext);
+    opacity: 1; /* Firefox */
+  }
+}
+
 button {
   font-family: var(--ui-font_display-font_family-main);
   font-size: var(--ui-font_display-font_size-normal);
@@ -21,4 +32,28 @@ label {
   font-weight: var(--ui-font_display-font_weight-regular);
   line-height: var(--ui-font_display-line_height-small);
   color: var(--ui-color-subtext);
+}
+
+img {
+  pointer-events: none;
+}
+
+svg {
+  height: var(--ui-size-icon-normal);
+  min-width: var(--ui-size-icon-normal);
+}
+
+h1 {
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-large);
+  font-weight: var(--ui-font_display-font_weight-bold);
+  line-height: var(--ui-font_display-line_height-small);
+}
+
+a {
+  font-family: var(--ui-font_display-font_family-main);
+  font-size: var(--ui-font_display-font_size-small);
+  font-weight: var(--ui-font_display-font_weight-regular);
+  line-height: var(--ui-font_display-line_height-small);
+  color: var(--ui-color-text);
 }
