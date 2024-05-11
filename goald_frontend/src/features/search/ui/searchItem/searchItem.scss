@@ -1,10 +1,4 @@
-.group {
-  display: flex;
-  align-items: center;
-
-  max-width: 200px;
-  gap: 10px;
-
+.search-item {
   &__avatar {
     min-width: 40px;
     min-height: 40px;
@@ -30,7 +24,7 @@
     &_tag {
       user-select: none;
       padding: 0 10px;
-      
+
       border: var(--ui-size-border-1) solid var(--ui-color-brand-primary);
       border-radius: var(--ui-size-border_radius-small);
 
