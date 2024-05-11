@@ -2,13 +2,7 @@ import clsx from "clsx";
 import "./dropdown.scss";
 
 export function Dropdown(props) {
-  const {
-    labelElement,
-    isOpen,
-    contentElements,
-    openLeft = false,
-    className,
-  } = props;
+  const { labelElement, isOpen, content, className } = props;
 
   let isOpenDropdown = isOpen ? "dropdown_open" : "dropdown_close";
 
@@ -17,20 +11,9 @@ export function Dropdown(props) {
   }
 
   return (
-    <div
-      className={clsx(
-        "dropdown",
-        isOpenDropdown,
-        openLeft && "dropdown_extending_left",
-        className
-      )}
-    >
+    <div className={clsx("dropdown", isOpenDropdown, className)}>
       <div className="dropdown__label">{labelElement}</div>
-      <ul class="dropdown__content">
-        {contentElements.map((contentElement, index) => {
-          return <li key={index}>{contentElement}</li>;
-        })}
-      </ul>
+      <div className="dropdown__content">{content}</div>
     </div>
   );
 }

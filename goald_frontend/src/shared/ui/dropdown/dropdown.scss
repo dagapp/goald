@@ -26,10 +26,6 @@
     border-radius: var(--ui-size-border_radius-tiny);
   }
 
-  &_extending_left {
-    flex-direction: row-reverse;
-  }
-
   &_opening-state_hover {
     .dropdown__label:hover ~ .dropdown__content {
       display: block;
