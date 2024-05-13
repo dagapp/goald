@@ -1,10 +1,18 @@
 .search-item {
-  &__avatar {
-    min-width: 40px;
-    min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    max-width: 40px;
-    max-height: 40px;
+  gap: var(--ui-size-gap-small);
+
+  &__avatar {
+    width: var(--ui-size-icon-big);
+    height: var(--ui-size-icon-big);
+
+    padding: 8px;
+
+    border-radius: var(--ui-size-border_radius-small);
+    background-color: var(--ui-color-icon-primary);
   }
 
   &__overview {
