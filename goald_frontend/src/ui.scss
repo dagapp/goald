@@ -25,6 +25,7 @@
   --ui-size-icon-tiny: 12px;
   --ui-size-icon-small: 18px;
   --ui-size-icon-normal: 24px;
+  --ui-size-icon-big: 30px;
   --ui-size-icon-large: 40px;
 
   --ui-color-icon-primary: #ece7f4;
@@ -42,9 +43,12 @@
   --ui-size-border_radius-tiny: 5px;
   --ui-size-border_radius-small: 10px;
   --ui-size-border_radius-medium: 20px;
+  --ui-size-border_radius-large: 50px;
 
   // Gap
   --ui-size-gap-tiny: 5px;
+  --ui-size-gap-small: 10px;
+  --ui-size-gap-medium: 20px;
 
   // Transitions
   --ui-transition-speed-1: all 0.5s linear;

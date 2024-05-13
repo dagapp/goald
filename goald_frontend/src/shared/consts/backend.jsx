@@ -1,1 +1,1 @@
-export const API_URL = "https://petstore.swagger.io/v2";
+export const API_URL = "";

@@ -57,3 +57,8 @@ a {
   line-height: var(--ui-font_display-line_height-small);
   color: var(--ui-color-text);
 }
+
+hr {
+  width: 100%;
+  border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
+}

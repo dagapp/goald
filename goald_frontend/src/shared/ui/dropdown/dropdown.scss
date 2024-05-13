@@ -8,7 +8,7 @@
 
     transform: translateY(100%);
 
-    width: auto;
+    width: 100%;
     z-index: 100;
 
     padding-top: 5px;
@@ -32,13 +32,15 @@
     }
   }
 
-  &_open ~ &__content {
+  &_open {
     .dropdown__content {
       display: block;
     }
   }
 
-  &_close ~ &__content {
-    display: none;
+  &_close {
+    .dropdown__content {
+      display: none;
+    }
   }
 }
