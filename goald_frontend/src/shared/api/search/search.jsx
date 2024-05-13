@@ -1,13 +1,18 @@
-import { API_URL } from "@shared/consts";
+import {axiosClient} from "@shared/api/axiosClient"
+
+// // Headers for CORS. Should be removed
+// axios.defaults.headers.get["Access-Control-Allow-Origin"] = "*";
+// axios.defaults.headers.get["Access-Control-Allow-Methods"] = "GET";
+// axios.defaults.headers.get["Access-Control-Allow-Headers"] = "Content-Type, Authentication";
+// axios.defaults.headers.get["Access-Control-Allow-Credentials"] = true;
 
 export async function getResultSearch(searchString) {
-  // Possible Vuln
-  const response = await fetch(API_URL + searchString, { method: "GET" })
-    .then((response) => response.json())
-    .then((data) => data)
-    .catch((error) => {
-      console.error(error);
-    });
-
-  return response;
+  try {
+    const response = await axiosClient
+      .get(`/groups?id=${searchString}`)
+      .then((response) => response.data);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 }
