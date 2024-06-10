@@ -1,4 +1,4 @@
-.search-item {
+.group {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,10 +6,8 @@
   gap: var(--ui-size-gap-small);
 
   &__avatar {
-    width: var(--ui-size-icon-big);
-    height: var(--ui-size-icon-big);
-
-    padding: 8px;
+    width: var(--ui-size-icon-large);
+    height: var(--ui-size-icon-large);
 
     border-radius: var(--ui-size-border_radius-small);
     background-color: var(--ui-color-icon-primary);
@@ -17,6 +15,7 @@
 
   &__overview {
     display: flex;
+    justify-content: space-between;
     align-items: flex-start;
     flex-direction: column;
 
@@ -30,8 +29,12 @@
     }
 
     &_tag {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       user-select: none;
-      padding: 0 10px;
+      padding: 2px 8px;
 
       border: var(--ui-size-border-1) solid var(--ui-color-brand-primary);
       border-radius: var(--ui-size-border_radius-small);

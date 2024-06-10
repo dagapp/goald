@@ -6,5 +6,4 @@ export {
   selectSearchLoading,
 } from "./model/selectors";
 
-export { SearchItem } from "./ui/searchItem/searchItem";
-export { Search } from "./ui/search/search";
+export { Search } from "./ui/search";

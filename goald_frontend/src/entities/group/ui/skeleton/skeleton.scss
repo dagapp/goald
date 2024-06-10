@@ -1,0 +1,23 @@
+.group-skeleton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 40px;
+
+  &__avatar {
+    margin-right: 8px;
+  }
+
+  &__overview {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    width: 180px;
+
+    &_field {
+      flex: 1;
+    }
+  }
+}

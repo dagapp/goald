@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import {
-  SearchItem,
   fetchSearch,
   selectSearchGroups,
   selectSearchError,
   selectSearchLoading,
 } from "@features/search";
+
+import { Group } from "@entities/group";
+import { GroupSkeleton } from "@entities/group";
 
 import { useDebounce } from "@shared/lib/debounce";
 import { Dropdown } from "@shared/ui/dropdown";
@@ -37,7 +39,13 @@ export const Search = (props) => {
 
   const renderContent = () => {
     if (loading || loadingDebounce) {
-      return <div className="search__loading">Loading...</div>;
+      return (
+        <div className="search__loading">
+          <GroupSkeleton />
+          <GroupSkeleton />
+          <GroupSkeleton />
+        </div>
+      );
     }
 
     if (error) {
@@ -49,16 +57,13 @@ export const Search = (props) => {
       return (
         <div className="search__results">
           {groups?.map((item, index) => (
-            <>
-              {index != 0 && <hr />}
-              <SearchItem
-                key={item.title} // Should Be replaced with Group ID
-                avatar={item.avatar}
-                title={item.title}
-                tag={item.tag}
-                url={item.url} // Should Be replaced with Group URL
-              />
-            </>
+            <Group
+              key={item.name} // Should Be replaced with Group ID
+              avatar={item.avatar}
+              name={item.name}
+              tag={item.tag}
+              url={item.url} // Should Be replaced with Group URL
+            />
           ))}
         </div>
       );

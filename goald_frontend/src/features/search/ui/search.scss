@@ -6,12 +6,18 @@
     border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
   }
 
-  &__loading {
-    text-align: right;
-  }
-
   &__error {
     color: var(--ui-color-error);
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 10px;
+    gap: var(--ui-size-gap-small);
   }
 
   &__results {
@@ -20,11 +26,7 @@
     flex-direction: column;
     align-items: flex-start;
 
-    padding: 10px;
+    padding-top: 10px;
     gap: var(--ui-size-gap-small);
-
-    background-color: var(--ui-color-secondary);
-    border-radius: var(--ui-size-border_radius-small);
-    border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
   }
 }
