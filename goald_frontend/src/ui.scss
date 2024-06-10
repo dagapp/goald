@@ -44,6 +44,7 @@
   --ui-size-border_radius-small: 10px;
   --ui-size-border_radius-medium: 20px;
   --ui-size-border_radius-large: 50px;
+  --ui-size-border_radius-round: 50%;
 
   // Gap
   --ui-size-gap-tiny: 5px;
@@ -65,6 +66,18 @@
   // Progress bar
   --ui-color-progress_bar-line: #7638e0;
   --ui-size-progress_bar-min: 5px;
+
+  // Spinner
+  --ui-color-spinner-basic: var(--ui-color-icon-secondary);
+  --ui-color-spinner-accent: var(--ui-color-brand-primary);
+
+  --ui-size-spinner-small: 30px;
+  --ui-size-spinner-medium: 60px;
+  --ui-size-spinner-large: 120px;
+
+  --ui-size-border-small: 2px;
+  --ui-size-border-medium: 5px;
+  --ui-size-border-large: 10px;
 
   // Fonts
   --ui-font_display-font_family-main: "Golos Text", sans-serif;
