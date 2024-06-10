@@ -1,0 +1,77 @@
+{
+  "group": [
+    {
+      "id": 1,
+      "name": "A-Company",
+      "tag": "@A-Company",
+      "image": ""
+    },
+    {
+      "id": 2,
+      "name": "B-Company",
+      "tag": "@B-Company",
+      "image": ""
+    },
+    {
+      "id": 3,
+      "name": "C-Company",
+      "tag": "@C-Company",
+      "image": ""
+    }
+  ],
+
+  "goal": [
+    {
+      "name": "Pizza",
+      "is_active": false,
+      "deadline": null,
+      "alert_period": null,
+      "groupId": 2
+    },
+    {
+      "name": "Cola",
+      "is_active": false,
+      "deadline": null,
+      "alert_period": null,
+      "groupId": 2
+    },
+    {
+      "name": "Car",
+      "is_active": false,
+      "deadline": null,
+      "alert_period": null,
+      "groupId": 3
+    }
+  ],
+
+  "events": [
+    {
+      "type": 20,
+      "text": "Critical Event",
+      "timestamp": null,
+      "groupId": 1
+    },
+    {
+      "type": 40,
+      "text": "Very Critical Event",
+      "timestamp": null,
+      "groupId": 1
+    },
+    {
+      "type": 20,
+      "text": "Critical Event",
+      "timestamp": null,
+      "groupId": 2
+    },
+    {
+      "type": 40,
+      "text": "Very Critical Event",
+      "timestamp": null,
+      "groupId": 3
+    }
+  ],
+
+  "profile": {
+    "name": "typicode"
+  }
+}
