@@ -11,7 +11,7 @@ module.exports = {
         },
       },
       {
-        test: /\.scss$/i,
+        test: /\.(scss|css)$/i,
         use: [
           "style-loader",
           "css-loader",
@@ -38,6 +38,8 @@ module.exports = {
       "@entities": path.resolve(__dirname, "src/entities"),
       "@features": path.resolve(__dirname, "src/features"),
       "@widgets": path.resolve(__dirname, "src/widgets"),
+      "@pages": path.resolve(__dirname, "src/pages"),
+      "@app": path.resolve(__dirname, "src/app"),
     },
   },
   performance: {
