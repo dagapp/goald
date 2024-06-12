@@ -2,10 +2,20 @@
 File for defining serializer classes
 """
 
+from django.contrib.auth.models import User
 from rest_framework import serializers
 #from django.db.models import fields
 from .models import Group, Goal, Duty, Event, Report
 
+
+class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for User model objects
+    """
+
+    class Meta:
+        model = User
+        fields = ("id", "username")
 
 class GroupSerializer(serializers.ModelSerializer):
     """
