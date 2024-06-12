@@ -1,1 +1,1 @@
-export { getUserGroups } from "./group";
+export { getGroupById, getGoalsByGroupId, getEventsByGroupId } from "./group";

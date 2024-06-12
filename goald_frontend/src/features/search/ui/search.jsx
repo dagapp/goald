@@ -9,8 +9,8 @@ import {
   selectSearchLoading,
 } from "@features/search";
 
-import { Group } from "@entities/group";
-import { GroupSkeleton } from "@entities/group";
+import { GroupItem } from "@entities/group/groupItem";
+import { GroupItemSkeleton } from "@entities/group/groupItem";
 
 import { useDebounce } from "@shared/lib/debounce";
 import { Dropdown } from "@shared/ui/dropdown";
@@ -46,9 +46,9 @@ export const Search = (props) => {
     if (loading || loadingDebounce) {
       return (
         <div className="search__loading">
-          <GroupSkeleton />
-          <GroupSkeleton />
-          <GroupSkeleton />
+          <GroupItemSkeleton />
+          <GroupItemSkeleton />
+          <GroupItemSkeleton />
         </div>
       );
     }
@@ -62,7 +62,7 @@ export const Search = (props) => {
       return (
         <div className="search__results">
           {groups?.map((item, index) => (
-            <Group
+            <GroupItem
               key={item.name} // Should Be replaced with Group ID
               avatar={item.avatar}
               name={item.name}
