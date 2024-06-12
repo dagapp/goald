@@ -2,6 +2,8 @@
 File for defining handlers for event in Django notation
 """
 
+from django.db.models import Q
+
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import serializers, status
@@ -23,16 +25,15 @@ class EventView(ListAPIView):
         Handler for getting events of group
         """
         queryset = []
-        user_id = self.request.session["id"]
-        group_id = self.kwargs.get("id", None)
+        user = self.request.user
 
-        if not group_id:
-            return queryset
+        groups = Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
 
-        if not User.objects.get(id=user_id).groups.filter(id=group_id).exists() \
-            and not Group.objects.filter(leader_id=user_id, id=group_id).exists():
-            return queryset
+        filter_queryset = Q()
+        for group in groups:
+            filter_queryset = filter_queryset | Q(group=group)
 
-        queryset = Event.objects.filter(group=group_id)
+        queryset = Event.objects.filter(filter_queryset)
+
 
         return queryset

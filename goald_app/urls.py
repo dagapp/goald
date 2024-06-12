@@ -20,6 +20,7 @@ urlpatterns = [
         path("register/", views.auth.register, name="register"),
         path("login/",    views.auth.login,    name="login"   ),
         path("logout/",   views.auth.logout,   name="logout"  ),
+        path("events/",   views.event.EventView.as_view(), name="events")
     ])),
     path("api/v1/", include(router.urls))
 ]
