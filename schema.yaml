@@ -7,15 +7,46 @@ paths:
     get:
       operationId: listGroups
       description: ModelViewSet for a group model
-      parameters: []
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Group'
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
           description: ''
       tags:
       - group
@@ -138,6 +169,26 @@ paths:
           description: ''
       tags:
       - group
+  /group/{id}/events/:
+    get:
+      operationId: eventsGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - group
   /group/{id}/goals/:
     get:
       operationId: goalsGroup
@@ -182,15 +233,46 @@ paths:
     get:
       operationId: listGoals
       description: ModelViewSet for a goal model
-      parameters: []
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Goal'
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Goal'
           description: ''
       tags:
       - goal
@@ -313,19 +395,90 @@ paths:
           description: ''
       tags:
       - goal
-  /duty/:
+  /goal/{id}/events/:
     get:
-      operationId: listDuties
-      description: ModelViewSet for a Duty model
-      parameters: []
+      operationId: eventsGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Duty'
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - goal
+  /goal/{id}/reports/:
+    get:
+      operationId: reportsGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - goal
+  /duty/:
+    get:
+      operationId: listDuties
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Duty'
           description: ''
       tags:
       - duty
@@ -349,6 +502,219 @@ paths:
           description: ''
       tags:
       - duty
+  /report/:
+    get:
+      operationId: listReports
+      description: ModelViewSet for a report model
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Report'
+          description: ''
+      tags:
+      - report
+    post:
+      operationId: createReport
+      description: ModelViewSet for a report model
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Report'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Report'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+      tags:
+      - report
+  /report/{id}/:
+    get:
+      operationId: retrieveReport
+      description: ModelViewSet for a report model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+      tags:
+      - report
+    put:
+      operationId: updateReport
+      description: ModelViewSet for a report model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Report'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Report'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+      tags:
+      - report
+    patch:
+      operationId: partialUpdateReport
+      description: ModelViewSet for a report model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Report'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Report'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+      tags:
+      - report
+    delete:
+      operationId: destroyReport
+      description: ModelViewSet for a report model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - report
+  /events/:
+    get:
+      operationId: listEvents
+      description: A view for handling events
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+          description: ''
+      tags:
+      - events
   /register/:
     post:
       operationId: createregister
@@ -547,3 +913,35 @@ components:
           nullable: true
       required:
       - goal
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        proof:
+          type: string
+          format: binary
+        text:
+          type: string
+          nullable: true
+          maxLength: 1024
+        goal:
+          type: integer
+      required:
+      - proof
+      - goal
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: integer
+        text:
+          type: string
+          maxLength: 500
+        timestamp:
+          type: string
+          format: date-time
