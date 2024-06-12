@@ -12,6 +12,7 @@ from rest_framework import viewsets, status
 from ..models import Group
 from ..serializers import UserSerializer, GoalSerializer, GroupSerializer
 from ..permissions import GroupPermission
+from ..paginations import GroupViewSetPagination
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -22,6 +23,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     #permission_classes = [GroupPermission]
     #queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    pagination_class = GroupViewSetPagination
 
     def get_queryset(self):
         """

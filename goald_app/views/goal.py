@@ -10,7 +10,7 @@ from rest_framework import viewsets, status
 
 from ..models import Group, Goal, Report
 from ..serializers import GoalSerializer, ReportSerializer
-
+from ..paginations import GoalViewSetPagination
 
 class GoalViewSet(viewsets.ModelViewSet):
     """
@@ -18,6 +18,7 @@ class GoalViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = GoalSerializer
+    pagination_class = GoalViewSetPagination
 
     def get_queryset(self):
         """

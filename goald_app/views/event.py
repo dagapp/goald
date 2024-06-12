@@ -8,6 +8,7 @@ from rest_framework import serializers, status
 
 from ..models import Group, Event
 from ..serializers import EventSerializer
+from ..paginations import EventViewPagination
 
 
 class EventView(ListAPIView):
@@ -15,6 +16,7 @@ class EventView(ListAPIView):
        A view for handling events
     """
     serializer_class = EventSerializer
+    pagination_class = EventViewPagination
 
     def get_queryset(self):
         """

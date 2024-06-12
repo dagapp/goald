@@ -7,6 +7,7 @@ from rest_framework import viewsets
 
 from ..models import Duty
 from ..serializers import DutySerializer
+from ..paginations import DutyViewSetPagination
 
 
 class DutyViewSet(viewsets.ModelViewSet):
@@ -15,7 +16,8 @@ class DutyViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = DutySerializer
-    
+    pagination_class = DutyViewSetPagination
+
     def get_queryset(self):
         """
         Function to get a list of all users duties
