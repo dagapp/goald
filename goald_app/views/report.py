@@ -5,12 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers, status
 
-from ..models import User, Report
+from ..models import Report
 from ..serializers import ReportSerializer
 
+'''
 class ReportView(APIView):
     """
-        Description of ReportView
+    Description of ReportView
     """
     def get(self, request):
         """
@@ -111,3 +112,5 @@ class ReportView(APIView):
             data={"detail": "Report deleted"},
             status=status.HTTP_200_OK
         )
+
+'''

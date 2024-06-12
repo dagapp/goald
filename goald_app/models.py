@@ -6,26 +6,12 @@ import datetime
 import string
 
 from django.db import models
+from django.conf import settings
 from django.core.validators import FileExtensionValidator
 
 
 DEFAULT_NAME_CHARS = string.ascii_letters + string.digits
 DEFAULT_NAME_SIZE = 10
-
-
-class User(models.Model):
-    """
-    Class to represent a User model
-    """
-
-    login = models.CharField(null=False, max_length=50)
-    password = models.BinaryField(null=False)
-
-    name = models.CharField(null=True, max_length=50)
-    second_name = models.CharField(null=True, max_length=50)
-
-    def __str__(self) -> str:
-        return self.name
 
 
 class Group(models.Model):
@@ -46,10 +32,10 @@ class Group(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
     )
 
-    users = models.ManyToManyField("User", related_name="groups")
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="users_groups")
 
     leader = models.ForeignKey(
-        "User", null=False, on_delete=models.CASCADE, related_name="groups_leader"
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="groups_leader"
     )
 
     supergroup = models.ForeignKey(
@@ -97,7 +83,7 @@ class Duty(models.Model):
     alert_period = models.DurationField(null=True)
 
     user = models.ForeignKey(
-        "User", null=False, on_delete=models.CASCADE, related_name="duties_user"
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="duties_user"
     )
     goal = models.ForeignKey(
         "Goal", null=False, on_delete=models.CASCADE, related_name="duties_goal"
