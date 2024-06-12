@@ -6,6 +6,17 @@ import Groups from "@shared/assets/icons/groups.svg";
 
 import "./sidebar.scss";
 
+function SidebarExtension(props) {
+  const { title, innerComponent } = props;
+
+  return (
+    <div className="sidebar-extension">
+      <div className="sidebar-extension__title">{title}</div>
+      {innerComponent}
+    </div>
+  );
+}
+
 export function Sidebar() {
   return (
     <div className="sidebar-wrapper">
@@ -19,11 +30,14 @@ export function Sidebar() {
             className={"sidebar__menu__button"}
             onClick={() => {}}
           />
+          <Button
+            Icon={Groups}
+            className={"sidebar__menu__button"}
+            onClick={() => {}}
+          />
         </nav>
       </div>
-      <div className="sidebar-extension">
-        <Search />
-      </div>
+      <SidebarExtension title={"Group"} innerComponent={<Search />} />
     </div>
   );
 }

@@ -1,8 +1,11 @@
 .group {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-
+  
+  padding: 10px;
+  width: calc(100% - 20px);
+  
   gap: var(--ui-size-gap-small);
 
   &__avatar {
@@ -42,5 +45,9 @@
       font-size: var(--ui-font_display-font_size-tiny);
       color: var(--ui-color-brand-primary);
     }
+  }
+
+  &:hover {
+    background-color: var(--ui-color-secondary);
   }
 }

@@ -1,8 +1,6 @@
 .sidebar-wrapper {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: "sidebar extension";
+  grid-template-columns: 1fr auto;
 
   height: 100vh;
   top: 0;
@@ -11,25 +9,23 @@
 
 .sidebar {
   display: flex;
-  grid-area: sidebar;
   flex-direction: column;
 
   width: 40px;
-  // height: 100%;
-
-  padding: 20px;
+  padding: 30px 10px;
 
   border-right: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
   background-color: var(--ui-color-primary);
 
   &__logo {
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 
     svg {
-      height: var(--ui-size-icon-large);
-      min-width: var(--ui-size-icon-large);
+      height: var(--ui-size-icon-big);
+      min-width: var(--ui-size-icon-big);
     }
   }
 
@@ -40,6 +36,10 @@
     gap: var(--ui-size-gap-tiny);
 
     &__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       padding: 8px;
     }
   }
@@ -47,11 +47,18 @@
 
 .sidebar-extension {
   display: flex;
-  grid-area: extension;
   flex-direction: column;
 
   max-width: 250px;
-  padding: 20px;
+  padding: 30px 20px;
   // height: 100%;
   background-color: var(--ui-color-primary);
+
+  &__title {
+    font-size: var(--ui-font_display-font_size-medium);
+    font-weight: var(--ui-font_display-font_weight-medium);
+    line-height: var(--ui-font_display-line_height-small);
+
+    margin-bottom: 20px;
+  }
 }

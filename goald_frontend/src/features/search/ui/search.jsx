@@ -38,6 +38,11 @@ export const Search = (props) => {
   };
 
   const renderContent = () => {
+    // if (!valueSearch) {
+    //   return (<></>);
+    // } 
+    // Should be uncommented on the final stage
+    
     if (loading || loadingDebounce) {
       return (
         <div className="search__loading">
@@ -52,8 +57,8 @@ export const Search = (props) => {
       return <span className="search__error">{error.messageError}</span>;
     }
 
-    // Change? groups <-> groups != null
-    if (groups != null && groups.length > 0) {
+    // On the final stage
+    if (groups != null && groups.length > 0 ) {
       return (
         <div className="search__results">
           {groups?.map((item, index) => (
