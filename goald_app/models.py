@@ -63,6 +63,26 @@ class Goal(models.Model):
         "self", null=True, on_delete=models.CASCADE, related_name="goals_supergoal"
     )
 
+    @property
+    def final_value(self) -> int:
+        result = 0
+
+        duties = Duty.objects.filter(goal=self).all()
+        for duty in duties:
+            result += duty.final_value
+
+        return result
+
+    @property
+    def current_value(self) -> int:
+        result = 0
+
+        duties = Duty.objects.filter(goal=self).all()
+        for duty in duties:
+            result += duty.current_value
+
+        return result
+
     def __str__(self) -> str:
         return self.name
 

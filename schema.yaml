@@ -158,6 +158,26 @@ paths:
           description: ''
       tags:
       - api
+  /api/v1/group/{id}/users/:
+    get:
+      operationId: usersGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
   /api/v1/goal/:
     get:
       operationId: listGoals
@@ -525,6 +545,8 @@ components:
           maxLength: 50
         group:
           type: integer
+        is_active:
+          type: boolean
         deadline:
           type: string
           format: date-time
@@ -532,6 +554,12 @@ components:
         alert_period:
           type: string
           nullable: true
+        final_value:
+          type: string
+          readOnly: true
+        current_value:
+          type: string
+          readOnly: true
       required:
       - name
       - group

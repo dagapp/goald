@@ -3,6 +3,7 @@ File for defining serializer classes
 """
 
 from django.contrib.auth.models import User
+from numpy import source
 from rest_framework import serializers
 #from django.db.models import fields
 from .models import Group, Goal, Duty, Event, Report
@@ -34,11 +35,24 @@ class GoalSerializer(serializers.ModelSerializer):
     Serializer class for Goal model object
     """
 
-    is_active = serializers.HiddenField(default=True)
+    #TODO: make that is_active is inavailable on create
+    #is_active = serializers.HiddenField(default=True)
+
+    final_value = serializers.ReadOnlyField()
+    current_value = serializers.ReadOnlyField()
 
     class Meta:
         model = Goal
-        fields = ("id", "name", "group", "is_active", "deadline", "alert_period")
+        fields = (
+            "id",
+            "name",
+            "group",
+            "is_active",
+            "deadline",
+            "alert_period",
+            "final_value",
+            "current_value"
+        )
 
     #TODO: control create based on permissions
     def create(self, validated_data):
