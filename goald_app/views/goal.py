@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 from rest_framework import viewsets, status
 
 from ..models import Group, Goal, Report
-from ..serializers import GoalSerializer, ReportSerializer
+from ..serializers import GoalSerializer, ReportSerializer, EventSerializer
 from ..paginations import GoalViewSetPagination
 
 class GoalViewSet(viewsets.ModelViewSet):
@@ -37,4 +37,12 @@ class GoalViewSet(viewsets.ModelViewSet):
             ReportSerializer(reports, many=True).data,
             status=status.HTTP_200_OK
         )
-    
+
+    @action(methods=["get"], detail=True)
+    def events(self, request, pk):
+        events = Goal.objects.get(pk=pk).events_goal.all()
+        return Response(
+            EventSerializer(events, many=True).data,
+            status=status.HTTP_200_OK
+        )
+
