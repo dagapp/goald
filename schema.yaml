@@ -3,7 +3,7 @@ info:
   title: ''
   version: ''
 paths:
-  /api/v1/group/:
+  /group/:
     get:
       operationId: listGroups
       description: ModelViewSet for a group model
@@ -18,7 +18,7 @@ paths:
                   $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
+      - group
     post:
       operationId: createGroup
       description: ModelViewSet for a group model
@@ -42,8 +42,8 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
-  /api/v1/group/{id}/:
+      - group
+  /group/{id}/:
     get:
       operationId: retrieveGroup
       description: ModelViewSet for a group model
@@ -62,7 +62,7 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
+      - group
     put:
       operationId: updateGroup
       description: ModelViewSet for a group model
@@ -92,7 +92,7 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
+      - group
     patch:
       operationId: partialUpdateGroup
       description: ModelViewSet for a group model
@@ -122,7 +122,7 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
+      - group
     delete:
       operationId: destroyGroup
       description: ModelViewSet for a group model
@@ -137,8 +137,8 @@ paths:
         '204':
           description: ''
       tags:
-      - api
-  /api/v1/group/{id}/goals/:
+      - group
+  /group/{id}/goals/:
     get:
       operationId: goalsGroup
       description: ModelViewSet for a group model
@@ -157,8 +157,8 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
-  /api/v1/group/{id}/users/:
+      - group
+  /group/{id}/users/:
     get:
       operationId: usersGroup
       description: ModelViewSet for a group model
@@ -177,8 +177,8 @@ paths:
                 $ref: '#/components/schemas/Group'
           description: ''
       tags:
-      - api
-  /api/v1/goal/:
+      - group
+  /goal/:
     get:
       operationId: listGoals
       description: ModelViewSet for a goal model
@@ -193,7 +193,7 @@ paths:
                   $ref: '#/components/schemas/Goal'
           description: ''
       tags:
-      - api
+      - goal
     post:
       operationId: createGoal
       description: ModelViewSet for a goal model
@@ -217,8 +217,8 @@ paths:
                 $ref: '#/components/schemas/Goal'
           description: ''
       tags:
-      - api
-  /api/v1/goal/{id}/:
+      - goal
+  /goal/{id}/:
     get:
       operationId: retrieveGoal
       description: ModelViewSet for a goal model
@@ -237,7 +237,7 @@ paths:
                 $ref: '#/components/schemas/Goal'
           description: ''
       tags:
-      - api
+      - goal
     put:
       operationId: updateGoal
       description: ModelViewSet for a goal model
@@ -267,7 +267,7 @@ paths:
                 $ref: '#/components/schemas/Goal'
           description: ''
       tags:
-      - api
+      - goal
     patch:
       operationId: partialUpdateGoal
       description: ModelViewSet for a goal model
@@ -297,7 +297,7 @@ paths:
                 $ref: '#/components/schemas/Goal'
           description: ''
       tags:
-      - api
+      - goal
     delete:
       operationId: destroyGoal
       description: ModelViewSet for a goal model
@@ -312,8 +312,8 @@ paths:
         '204':
           description: ''
       tags:
-      - api
-  /api/v1/duty/:
+      - goal
+  /duty/:
     get:
       operationId: listDuties
       description: ModelViewSet for a Duty model
@@ -328,32 +328,8 @@ paths:
                   $ref: '#/components/schemas/Duty'
           description: ''
       tags:
-      - api
-    post:
-      operationId: createDuty
-      description: ModelViewSet for a Duty model
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Duty'
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duty'
-          description: ''
-      tags:
-      - api
-  /api/v1/duty/{id}/:
+      - duty
+  /duty/{id}/:
     get:
       operationId: retrieveDuty
       description: ModelViewSet for a Duty model
@@ -372,83 +348,8 @@ paths:
                 $ref: '#/components/schemas/Duty'
           description: ''
       tags:
-      - api
-    put:
-      operationId: updateDuty
-      description: ModelViewSet for a Duty model
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Duty'
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duty'
-          description: ''
-      tags:
-      - api
-    patch:
-      operationId: partialUpdateDuty
-      description: ModelViewSet for a Duty model
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Duty'
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duty'
-          description: ''
-      tags:
-      - api
-    delete:
-      operationId: destroyDuty
-      description: ModelViewSet for a Duty model
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '204':
-          description: ''
-      tags:
-      - api
-  /api/v1/register/:
+      - duty
+  /register/:
     post:
       operationId: createregister
       description: ''
@@ -468,8 +369,8 @@ paths:
               schema: {}
           description: ''
       tags:
-      - api
-  /api/v1/login/:
+      - register
+  /login/:
     post:
       operationId: createlogin
       description: ''
@@ -489,8 +390,8 @@ paths:
               schema: {}
           description: ''
       tags:
-      - api
-  /api/v1/logout/:
+      - login
+  /logout/:
     post:
       operationId: createlogout
       description: ''
@@ -510,7 +411,69 @@ paths:
               schema: {}
           description: ''
       tags:
-      - api
+      - logout
+  /duty/{id}/confirm/:
+    post:
+      operationId: confirmDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Duty'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - duty
+  /duty/{id}/delegate/:
+    post:
+      operationId: delegateDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Duty'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - duty
 components:
   schemas:
     Group:
@@ -555,14 +518,14 @@ components:
           type: string
           nullable: true
         final_value:
-          type: string
-          readOnly: true
+          type: integer
         current_value:
           type: string
           readOnly: true
       required:
       - name
       - group
+      - final_value
     Duty:
       type: object
       properties:
@@ -572,6 +535,8 @@ components:
         goal:
           type: integer
         final_value:
+          type: integer
+        current_value:
           type: integer
         deadline:
           type: string

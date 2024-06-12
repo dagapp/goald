@@ -3,14 +3,16 @@ File for defining handlers for group in Django notation
 """
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import viewsets, status
 
-from ..models import Duty
+from ..models import Duty, Goal
 from ..serializers import DutySerializer
 from ..paginations import DutyViewSetPagination
 
 
-class DutyViewSet(viewsets.ModelViewSet):
+class DutyViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ModelViewSet for a Duty model
     """
@@ -25,3 +27,57 @@ class DutyViewSet(viewsets.ModelViewSet):
 
         user = self.request.user
         return Duty.objects.filter(user=user)
+
+    #TODO: implement group leader check with permission_classes
+    @action(methods=["post"], detail=True) #permission_classes=[AllowAny]
+    def confirm(self, request, pk):
+        if not request.user == Duty.objects.get(pk=pk).goal.group.leader:
+            return Response(
+                {"detail": "You are not a leader for a corresponding group"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        duty = Duty.object.get(pk=pk)
+        current_value = getattr(duty, "current_value")
+        duty.update(current_value=current_value + request.data["value"])
+
+        return Response(
+            {"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
+
+    #TODO: implement group leader check with permission_classes
+    @action(methods=["post"], detail=True) #permission_classes=[AllowAny]
+    def delegate(self, request, pk):
+        duty_from = Duty.objects.get(pk=pk)
+        if duty_from is None:
+            return Response(
+                {"detail": "Incorrect duty id"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        goal = duty_from.goal
+
+        duty_to = goal.duties.get(id=request.data["duty_to"])
+        if duty_to is None:
+            return Response(
+                {"detail": "Incorrect duty_to id"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not request.user == goal.group.leader:
+            return Response(
+                {"detail": "You are not a leader for a corresponding group"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        final_value_from = getattr(duty_from, "final_value")
+        final_value_to   = getattr(duty_to,   "final_value")
+
+        duty_from.update(final_value=final_value_from - request.data["value"])
+        duty_to.update(final_value=final_value_to + request.data["value"])
+
+        return Response(
+            {"detail": "OK"},
+            status=status.HTTP_200_OK
+        )

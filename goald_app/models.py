@@ -31,11 +31,11 @@ class Group(models.Model):
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="users_groups")
 
     leader = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="groups_leader"
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="led_group"
     )
 
     supergroup = models.ForeignKey(
-        "self", null=True, on_delete=models.CASCADE, related_name="groups_supergroup"
+        "self", null=True, on_delete=models.CASCADE, related_name="groups"
     )
 
     def __str__(self) -> str:
@@ -54,11 +54,11 @@ class Goal(models.Model):
     alert_period = models.DurationField(null=True)
 
     group = models.ForeignKey(
-        "Group", null=False, on_delete=models.CASCADE, related_name="goals_group"
+        "Group", null=False, on_delete=models.CASCADE, related_name="goals"
     )
 
     supergoal = models.ForeignKey(
-        "self", null=True, on_delete=models.CASCADE, related_name="goals_supergoal"
+        "self", null=True, on_delete=models.CASCADE, related_name="goals"
     )
 
     @property
@@ -97,10 +97,10 @@ class Duty(models.Model):
     alert_period = models.DurationField(null=True)
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="duties_user"
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="duties"
     )
     goal = models.ForeignKey(
-        "Goal", null=False, on_delete=models.CASCADE, related_name="duties_goal"
+        "Goal", null=False, on_delete=models.CASCADE, related_name="duties"
     )
 
 
@@ -114,10 +114,10 @@ class Event(models.Model):
     timestamp = models.DateTimeField(null=False, default=datetime.datetime.now)
 
     group = models.ForeignKey(
-        "Group", null=True, on_delete=models.CASCADE, related_name="events_group"
+        "Group", null=True, on_delete=models.CASCADE, related_name="events"
     )
     goal = models.ForeignKey(
-        "Goal", null=True, on_delete=models.CASCADE, related_name="events_goal"
+        "Goal", null=True, on_delete=models.CASCADE, related_name="events"
     )
 
 

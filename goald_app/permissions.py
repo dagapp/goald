@@ -14,10 +14,25 @@ class GroupPermission(permissions.BasePermission):
     Permission class for group
     """
 
-    def has_objects_permission(self, request, view, obj):
+    def has_permission(self, request, view):
         """
-        Function for defining group object permissions
+        Function for checking group general permission
         """
 
+        print(f"has_permission: {view.action}")
+        return True
+
+    def has_objects_permission(self, request, view, obj):
+        """
+        Function for checking group object permissions
+        """
+
+        print(f"has_objects_permission: {view.action}")
         user = request.user
-        return (user in obj.users) or (user == obj.leader)
+
+        if view.action == "retrieve":
+            return user == obj.leader or user in obj.users
+        elif view.action in ["update", "partial_update", "destroy"]:
+            return user == obj.leader
+        else:
+            return False

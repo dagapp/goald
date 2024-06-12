@@ -38,7 +38,7 @@ class GoalSerializer(serializers.ModelSerializer):
     #TODO: make that is_active is inavailable on create
     #is_active = serializers.HiddenField(default=True)
 
-    final_value = serializers.ReadOnlyField()
+    final_value = serializers.IntegerField()
     current_value = serializers.ReadOnlyField()
 
     class Meta:
@@ -57,12 +57,23 @@ class GoalSerializer(serializers.ModelSerializer):
     #TODO: control create based on permissions
     def create(self, validated_data):
         user = self.context['request'].user
-        group = Group.objects.get(tag=validated_data.get("group"))
 
+        group = Group.objects.get(tag=validated_data.get("group"))
         if user != group.leader:
             return None
         
+        final_value = validated_data.pop("final_value")
         goal = Goal.objects.create(**validated_data)
+
+        Duty.objects.create(
+            final_value=final_value,
+            current_value=0,
+            deadline=validated_data.get("deadline"),
+            alert_period=validated_data.get("alert_period"),
+            user=group.leader,
+            goal=goal
+        )
+
         return goal
 
     #TODO: control update based on permissions
@@ -73,12 +84,9 @@ class DutySerializer(serializers.ModelSerializer):
     Serializer class for Duty model object
     """
 
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    current_value = serializers.HiddenField(default=0)
-
     class Meta:
         model = Duty
-        fields = ("id", "user", "goal", "final_value", "current_value", "deadline", "alert_period")
+        fields = ("id", "goal", "final_value", "current_value", "deadline", "alert_period")
 
 
 class EventSerializer(serializers.ModelSerializer):

@@ -16,11 +16,9 @@ router.register("duty",   views.duty.DutyViewSet,     basename="duty"  )
 router.register("report", views.report.ReportViewSet, basename="report")
 
 urlpatterns = [
-    path("api/v1/", include([
-        path("register/", views.auth.register, name="register"),
-        path("login/",    views.auth.login,    name="login"   ),
-        path("logout/",   views.auth.logout,   name="logout"  ),
-        path("events/",   views.event.EventView.as_view(), name="events")
-    ])),
-    path("api/v1/", include(router.urls))
+    path("register/", views.auth.register, name="register"),
+    path("login/",    views.auth.login,    name="login"   ),
+    path("logout/",   views.auth.logout,   name="logout"  ),
+    path("", include(router.urls)),
+    path("events/",   views.event.EventView.as_view(), name="events")
 ]

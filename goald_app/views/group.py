@@ -20,9 +20,9 @@ class GroupViewSet(viewsets.ModelViewSet):
     ModelViewSet for a group model
     """
 
-    #permission_classes = [GroupPermission]
     #queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    #permission_classes = [GroupPermission]
     pagination_class = GroupViewSetPagination
 
     def get_queryset(self):
@@ -33,7 +33,7 @@ class GroupViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
 
-    @action(methods=["get"], detail=True)
+    @action(methods=["get"], detail=True, permission_classes=[""])
     def users(self, request, pk):
         group = Group.objects.get(pk=pk)
         return Response(
