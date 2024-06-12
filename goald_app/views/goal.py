@@ -26,13 +26,12 @@ class GoalViewSet(viewsets.ModelViewSet):
         """
 
         user = self.request.user
-        return Goal.objects.filter(
-            group__in=Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
-        )
+        groups = user.users_groups.all() | user.led_group.all()
+        return Goal.objects.filter(group__in=groups)
 
     @action(methods=["get"], detail=True)
     def reports(self, request, pk):
-        reports = Report.objects.filter(Q(goal=pk))
+        reports = Report.objects.filter(goal=pk)
         return Response(
             ReportSerializer(reports, many=True).data,
             status=status.HTTP_200_OK
@@ -40,7 +39,7 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def events(self, request, pk):
-        events = Goal.objects.get(pk=pk).events_goal.all()
+        events = Goal.objects.get(pk=pk).events.all()
         return Response(
             EventSerializer(events, many=True).data,
             status=status.HTTP_200_OK

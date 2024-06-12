@@ -31,7 +31,8 @@ class GroupViewSet(viewsets.ModelViewSet):
         """
 
         user = self.request.user
-        return Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
+        groups = user.users_groups.all() | user.led_group.all()
+        return groups
 
     @action(methods=["get"], detail=True, permission_classes=[""])
     def users(self, request, pk):
@@ -46,7 +47,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def goals(self, request, pk):
-        goals = Group.objects.get(pk=pk).goals_group.all()
+        goals = Group.objects.get(pk=pk).goals.all()
         return Response(
             GoalSerializer(goals, many=True).data,
             status=status.HTTP_200_OK
@@ -54,7 +55,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def events(self, request, pk):
-        events = Group.objects.get(pk=pk).events_group.all()
+        events = Group.objects.get(pk=pk).events.all()
         return Response(
             EventSerializer(events, many=True).data,
             status=status.HTTP_200_OK

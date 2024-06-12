@@ -24,16 +24,7 @@ class EventView(ListAPIView):
         """
         Handler for getting events of group
         """
-        queryset = []
         user = self.request.user
+        groups = user.users_groups.all() | user.led_group.all()
+        return Event.objects.filter(group__in=groups)
 
-        groups = Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
-
-        filter_queryset = Q()
-        for group in groups:
-            filter_queryset = filter_queryset | Q(group=group)
-
-        queryset = Event.objects.filter(filter_queryset)
-
-
-        return queryset
