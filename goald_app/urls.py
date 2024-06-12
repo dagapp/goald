@@ -10,10 +10,10 @@ from goald_app import views
 
 
 router = routers.DefaultRouter()
-router.register("group", views.group.GroupViewSet, basename="group")
-router.register("goal",  views.goal.GoalViewSet,   basename="goal" )
-router.register("duty",  views.duty.DutyViewSet,   basename="duty" )
-
+router.register("group",  views.group.GroupViewSet,   basename="group" )
+router.register("goal",   views.goal.GoalViewSet,     basename="goal"  )
+router.register("duty",   views.duty.DutyViewSet,     basename="duty"  )
+router.register("report", views.report.ReportViewSet, basename="report")
 
 urlpatterns = [
     path("api/v1/", include([

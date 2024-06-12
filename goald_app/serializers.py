@@ -98,4 +98,5 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        field = ("id", "proof", "text")
+        fields = ("id", "proof", "text", "goal")
+

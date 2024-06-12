@@ -53,8 +53,6 @@ class Goal(models.Model):
     deadline = models.DateTimeField(null=True)
     alert_period = models.DurationField(null=True)
 
-    reports = models.ManyToManyField("Report", related_name="reports")
-
     group = models.ForeignKey(
         "Group", null=False, on_delete=models.CASCADE, related_name="goals_group"
     )
