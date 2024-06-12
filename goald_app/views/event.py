@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import serializers, status
 
-from ..models import User, Group, Event
+from ..models import Group, Event
 from ..serializers import EventSerializer
 
 

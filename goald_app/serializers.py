@@ -16,7 +16,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ("tag", "is_public", "name", "image", "leader")
+        fields = ("id", "tag", "is_public", "name", "image", "leader")
 
 
 class GoalSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        fields = ("name", "group", "is_active", "deadline", "alert_period")
+        fields = ("id", "name", "group", "is_active", "deadline", "alert_period")
 
     #TODO: control create based on permissions
     def create(self, validated_data):
@@ -54,7 +54,7 @@ class DutySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Duty
-        fields = ("user", "goal", "final_value", "current_value", "deadline", "alert_period")
+        fields = ("id", "user", "goal", "final_value", "current_value", "deadline", "alert_period")
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("type", "text", "timestamp")
+        fields = ("id", "type", "text", "timestamp")
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -74,4 +74,4 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        field = ("proof", "text")
+        field = ("id", "proof", "text")

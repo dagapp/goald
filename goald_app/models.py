@@ -10,10 +10,6 @@ from django.conf import settings
 from django.core.validators import FileExtensionValidator
 
 
-DEFAULT_NAME_CHARS = string.ascii_letters + string.digits
-DEFAULT_NAME_SIZE = 10
-
-
 class Group(models.Model):
     """
     Class to represent a Group model

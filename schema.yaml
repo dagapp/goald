@@ -1,0 +1,556 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /api/v1/group/:
+    get:
+      operationId: listGroups
+      description: ModelViewSet for a group model
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createGroup
+      description: ModelViewSet for a group model
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+  /api/v1/group/{id}/:
+    get:
+      operationId: retrieveGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/group/{id}/goals/:
+    get:
+      operationId: goalsGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - api
+  /api/v1/goal/:
+    get:
+      operationId: listGoals
+      description: ModelViewSet for a goal model
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createGoal
+      description: ModelViewSet for a goal model
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - api
+  /api/v1/goal/{id}/:
+    get:
+      operationId: retrieveGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/duty/:
+    get:
+      operationId: listDuties
+      description: ModelViewSet for a Duty model
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createDuty
+      description: ModelViewSet for a Duty model
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Duty'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - api
+  /api/v1/duty/{id}/:
+    get:
+      operationId: retrieveDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Duty'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Duty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Duty'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duty'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyDuty
+      description: ModelViewSet for a Duty model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/register/:
+    post:
+      operationId: createregister
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v1/login/:
+    post:
+      operationId: createlogin
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v1/logout/:
+    post:
+      operationId: createlogout
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tag:
+          type: string
+          maxLength: 50
+        is_public:
+          type: boolean
+        name:
+          type: string
+          nullable: true
+          maxLength: 50
+        image:
+          type: string
+          format: binary
+          nullable: true
+      required:
+      - tag
+    Goal:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        group:
+          type: integer
+        deadline:
+          type: string
+          format: date-time
+          nullable: true
+        alert_period:
+          type: string
+          nullable: true
+      required:
+      - name
+      - group
+    Duty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        goal:
+          type: integer
+        final_value:
+          type: integer
+        deadline:
+          type: string
+          format: date-time
+          nullable: true
+        alert_period:
+          type: string
+          nullable: true
+      required:
+      - goal
