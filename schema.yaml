@@ -755,6 +755,172 @@ paths:
           description: ''
       tags:
       - events
+  /image/:
+    get:
+      operationId: listImages
+      description: ModelViewSet for a image model
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Image'
+          description: ''
+      tags:
+      - image
+    post:
+      operationId: createImage
+      description: ModelViewSet for a image model
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+      tags:
+      - image
+  /image/{id}/:
+    get:
+      operationId: retrieveImage
+      description: ModelViewSet for a image model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this image.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+      tags:
+      - image
+    put:
+      operationId: updateImage
+      description: ModelViewSet for a image model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this image.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+      tags:
+      - image
+    patch:
+      operationId: partialUpdateImage
+      description: ModelViewSet for a image model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this image.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+      tags:
+      - image
+    delete:
+      operationId: destroyImage
+      description: ModelViewSet for a image model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this image.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - image
   /auth/login/:
     post:
       operationId: loginAuth
@@ -1002,12 +1168,13 @@ components:
           type: string
           nullable: true
           maxLength: 50
-        image:
+        group_image:
           type: string
           format: binary
-          nullable: true
+          writeOnly: true
       required:
       - tag
+      - group_image
     Goal:
       type: object
       properties:
@@ -1067,6 +1234,7 @@ components:
         proof:
           type: string
           format: binary
+          writeOnly: true
         text:
           type: string
           nullable: true
@@ -1094,6 +1262,21 @@ components:
           type: integer
           nullable: true
         goal:
+          type: integer
+          nullable: true
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: binary
+        group:
+          type: integer
+          nullable: true
+        report:
           type: integer
           nullable: true
     Auth:

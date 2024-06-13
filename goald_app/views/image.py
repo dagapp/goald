@@ -15,6 +15,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     """
     ModelViewSet for a image model
     """
+
     serializer_class = ImageSerializer
     pagination_class = ImageViewSetPagination
     permission_classes = [ImagePermission]

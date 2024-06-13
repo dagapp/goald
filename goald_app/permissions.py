@@ -57,33 +57,23 @@ class GroupPermission(permissions.IsAuthenticated):
             return False
 
 
-class ImagePermission(permissions.BasePermission):
+class ImagePermission(permissions.IsAuthenticated):
     """
     Permission class for image
     """
-    def has_permission(self, request, view):
-        """
-        Function for checking image general permission
-        """
-
-        print(f"has_permission: {view.action}")
-        return True
     
     def has_object_permission(self, request, view, obj):
         """
         Function for checking image object permissions
         """
 
-        print(f"has_objects_permission: {view.action}")
         user = request.user
 
-        if obj.group is not None:
-            print("Group is not NULL")
-            group = obj.group
-            return user == group.leader or group.users.filter(id=user.id).exists()
-        elif obj.report is not None:
-            print("Report is not NULL")
+        group = obj.group
+        if obj.report is not None:
             group = obj.report.goal.group
-            return user == group.leader or group.users.filter(id=user.id).exists()
-        else:
+
+        if group is None:
             return False
+
+        return user == group.leader or group.users.filter(id=user.id).exists()
