@@ -13,7 +13,6 @@ from ..permissions import ImagePermission
 
 class ImageViewSet(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
                    mixins.DestroyModelMixin,
                    viewsets.GenericViewSet):
     """
