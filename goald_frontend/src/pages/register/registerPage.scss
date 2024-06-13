@@ -1,0 +1,125 @@
+.register {
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+
+    @media (min-width: 1100px) {
+      flex-direction: column;
+    }
+  }
+
+  &__card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: var(--ui-size-border-1) solid var(--ui-color-border-primary);
+    border-radius: var(--ui-size-border_radius-large);
+
+    background-color: var(--ui-color-primary);
+    padding: 5vh 10vh;
+
+    gap: 40px;
+
+    @media (max-width: 1100px) {
+      justify-content: center;
+      height: 75vh;
+      padding: 5vh 8vh;
+    }
+  }
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+  gap: 20px;
+
+  &__title {
+    display: flex;
+    justify-content: left;
+    font-size: var(--ui-font_display-font_size-big);
+  }
+
+  &__name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .placeholder {
+      width: 195px;
+    }
+  }
+
+  &__agreement {
+    margin-top: -10px;
+    padding-bottom: 10px;
+    color: var(--ui-color-subtext);
+
+    &_link {
+      color: var(--ui-color-accent-primary);
+    }
+  }
+
+  &__with-account {
+    margin-top: -10px;
+
+    &_description {
+      color: var(--ui-color-subtext);
+    }
+
+    &_login {
+      color: var(--ui-color-accent-primary);
+
+      &:hover {
+        color: var(--ui-color-brand-primary);
+      }
+    }
+  }
+
+  &__image {
+    padding: 0 20px;
+    img {
+      aspect-ratio: auto;
+      width: 380px;
+    }
+
+    @media (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+
+    color: var(--ui-color-subtext);
+    margin-top: 40px;
+
+    border: var(--ui-size-border-3) solid transparent;
+    border-radius: var(--ui-size-border_radius-small);
+
+    background-image: linear-gradient(
+        var(--ui-color-primary),
+        var(--ui-color-primary)
+      ),
+      radial-gradient(
+        circle at left top,
+        var(--ui-color-accent-primary),
+        var(--ui-color-accent-secondary)
+      );
+
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    padding: 15px 40px;
+    transition: var(--ui-transition-speed-3);
+
+    &:hover {
+      box-shadow: 0px 0px 15px var(--ui-color-brand-primary);
+    }
+  }
+}
