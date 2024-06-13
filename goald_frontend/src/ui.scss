@@ -15,7 +15,10 @@
   --ui-color-primary: #101010;
   --ui-color-secondary: #151515;
   --ui-color-action: #1e1e1e;
-  --ui-color-error: #f44336;
+  
+  // Errors
+  --ui-color-error-primary: #f44336;
+  --ui-color-error-secondary: #ff5c5c;
 
   // Text colors
   --ui-color-text: #ece7f4;
@@ -44,7 +47,8 @@
   --ui-size-border_radius-tiny: 5px;
   --ui-size-border_radius-small: 10px;
   --ui-size-border_radius-medium: 20px;
-  --ui-size-border_radius-large: 50px;
+  --ui-size-border_radius-large: 40px;
+  
   --ui-size-border_radius-round: 50%;
 
   // Gap
@@ -63,6 +67,7 @@
 
   --ui-size-checkbox-hidden: 16px;
   --ui-size-checkbox-pseudo: 14px;
+  --ui-size-checkbox-checkmark: 14px;
 
   // Progress bar
   --ui-color-progress_bar-line: #7638e0;
@@ -99,6 +104,16 @@
   --ui-font_display-line_height-tiny: 0.8;
   --ui-font_display-line_height-small: 1;
   --ui-font_display-line_height-normal: 1.5;
+
+  // PopUp
+  --ui-size-pop-up-height: 600px;
+  --ui-size-pop-up-width: 400px;
+
+  --ui-color-pop-up-background: #0000008d;
+
+  --ui-z-index-pop-up: 100;
+  --ui-z-index-pop-up-background: 99;
+  --ui-z-index-pop-up-wrapper: 100;
 }
 
 // Custom Buttons

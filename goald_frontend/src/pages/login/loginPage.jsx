@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import { InputForm } from "@shared/ui/inputForm";
 import { Checkbox } from "@shared/ui/checkbox";
@@ -8,14 +9,54 @@ import pinoeerPng from "@shared/assets/images/pioneer.png";
 import "./loginPage.scss";
 
 export function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
+  const onSubmit = (values) => {
+    console.log(values);
+  };
+
   return (
     <div className="login__container">
       <div className="login__card">
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="login-form__title">Войдите в свой аккаунт Goald</h2>
 
-          <InputForm placeholder={"Электронная почта"} />
-          <InputForm placeholder={"Пароль"} type={"password"} />
+          <InputForm
+            id={"username"}
+            placeholder="Имя пользователя"
+            error={Boolean(errors.username?.message)}
+            errorMessage={errors.username?.message}
+            properties={{
+              ...register("username", {
+                required: true,
+              }),
+            }}
+          />
+
+          <InputForm
+            id={"password"}
+            placeholder="Пароль"
+            type={"password"}
+            error={Boolean(errors.password?.message)}
+            errorMessage={errors.password?.message}
+            properties={{
+              ...register("password", {
+                required: true,
+              }),
+            }}
+          />
 
           <div className="login-form__support">
             <Checkbox>Запомнить меня</Checkbox>
@@ -25,7 +66,9 @@ export function LoginPage() {
             </a>
           </div>
 
-          <Button className="login-form__button">Войти</Button>
+          <Button className="login-form__button" type={"submit"}>
+            Войти
+          </Button>
 
           <div className="login-form__no-account">
             <span className="login-form__no-account_description">
