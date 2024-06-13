@@ -40,6 +40,38 @@
     justify-content: center;
     align-items: center;
 
+    transition: var(--ui-transition-speed-1);
+
     z-index: var(--ui-z-index-pop-up-wrapper);
+  }
+
+  &__closed {
+    display: none;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+    &_close-button {
+      svg {
+        min-width: var(--ui-size-icon-tiny);
+        min-height: var(--ui-size-icon-tiny);
+
+        max-width: var(--ui-size-icon-tiny);
+        max-height: var(--ui-size-icon-tiny);
+
+        path {
+          fill: var(--ui-color-border-tertiary);
+        }
+      }
+
+      &:hover {
+        svg path {
+          fill: var(--ui-color-border-primary);
+        }
+      }
+    }
   }
 }
