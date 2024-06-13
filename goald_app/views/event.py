@@ -10,14 +10,17 @@ from rest_framework import viewsets, serializers, status
 
 from ..models import Group, Event
 from ..serializers import EventSerializer
+from ..permissions import EventPermission
 from ..paginations import EventViewPagination
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
-       A view for handling events
+    ModelViewSet for an event model
     """
+
     serializer_class = EventSerializer
+    permission_classes = [EventPermission]
     pagination_class = EventViewPagination
 
     def get_queryset(self):

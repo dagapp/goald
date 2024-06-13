@@ -10,6 +10,7 @@ from rest_framework import viewsets, status
 
 from ..models import Duty, Goal, Event, EventType, EVENT_MESSAGES
 from ..serializers import DutySerializer
+from ..permissions import DutyPermission
 from ..paginations import DutyViewSetPagination
 
 
@@ -19,6 +20,7 @@ class DutyViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = DutySerializer
+    permission_classes = [DutyPermission]
     pagination_class = DutyViewSetPagination
 
     def get_queryset(self):

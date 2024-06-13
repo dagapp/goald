@@ -7,13 +7,16 @@ from rest_framework import viewsets
 
 from ..models import Report, Goal, Group
 from ..serializers import ReportSerializer
+from ..permissions import ReportPermission
 from ..paginations import ReportViewSetPagination
 
 class ReportViewSet(viewsets.ModelViewSet):
     """
     ModelViewSet for a report model
     """
+
     serializer_class = ReportSerializer
+    permission_classes = [ReportPermission]
     pagination_class = ReportViewSetPagination
 
     def get_queryset(self):

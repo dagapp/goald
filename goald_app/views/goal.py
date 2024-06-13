@@ -13,7 +13,7 @@ from rest_framework import viewsets, status
 
 from ..models import Group, Goal, Duty, Report, Event, EventType, EVENT_MESSAGES
 from ..serializers import GoalSerializer, ReportSerializer, EventSerializer
-from ..permissions import GoalGroupLeaderPermission
+from ..permissions import GoalGroupLeaderPermission, GoalPermission
 from ..paginations import GoalViewSetPagination
 
 class GoalViewSet(viewsets.ModelViewSet):
@@ -22,6 +22,7 @@ class GoalViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = GoalSerializer
+    permission_classes = [GoalPermission]
     pagination_class = GoalViewSetPagination
 
     def get_queryset(self):
@@ -32,8 +33,7 @@ class GoalViewSet(viewsets.ModelViewSet):
         user = self.request.user
         groups = user.users_groups.all() | user.led_group.all()
         return Goal.objects.filter(group__in=groups)
-    
-    #TODO: implement group leader check with permission_classes
+
     @action(methods=["post"], detail=True, permission_classes=[GoalGroupLeaderPermission])
     def confirm(self, request, pk):
         goal = Goal.objects.get(pk=pk)
@@ -75,7 +75,6 @@ class GoalViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    #TODO: implement group leader check with permission_classes
     @action(methods=["post"], detail=True, permission_classes=[GoalGroupLeaderPermission])
     def delegate(self, request, pk):
         goal = Goal.objects.get(pk=pk)

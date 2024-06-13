@@ -25,16 +25,7 @@ class GroupLeaderPermission(permissions.IsAuthenticated):
     
     def has_object_permission(self, request, view, obj):
         return request.user == obj.leader
-    
 
-class GoalGroupLeaderPermission(permissions.IsAuthenticated):
-    """
-    Permission class for group leaders
-    """
-    
-    def has_object_permission(self, request, view, obj):
-        return request.user == obj.group.leader
-    
 
 class GroupPermission(permissions.IsAuthenticated):
     """
@@ -46,15 +37,85 @@ class GroupPermission(permissions.IsAuthenticated):
         Function for checking group object permissions
         """
 
-        print(f"has_objects_permission: {view.action}")
         user = request.user
 
         if view.action == "retrieve":
-            return user == obj.leader or user in obj.users
+            return user == obj.leader or user in obj.users.all()
         elif view.action in ["update", "partial_update", "destroy"]:
             return user == obj.leader
-        else:
-            return False
+
+        return False
+
+
+class GoalGroupLeaderPermission(permissions.IsAuthenticated):
+    """
+    Permission class for goal's group leaders
+    """
+
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj.group.leader
+
+
+class GoalPermission(permissions.IsAuthenticated):
+    """
+    Permission class for goal
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        group = obj.group
+
+        if view.action == "retrieve":
+            return user == group.leader or user in group.users.all()
+        elif view.action in ["update", "partial_update", "destroy"]:
+            return user == group.leader
+
+        return False
+
+
+class DutyPermission(permissions.IsAuthenticated):
+    """
+    Permission class for duty
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        return user == obj.user
+
+
+class ReportPermission(permissions.IsAuthenticated):
+    """
+    Permission class for report
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        group = obj.goal.group
+
+        if view.action == "retrieve":
+            return user == group.leader or user in group.users.all()
+        elif view.action in ["update", "partial_update", "destroy"]:
+            return user == group.leader
+
+        return False
+
+
+class EventPermission(permissions.IsAuthenticated):
+    """
+    Permission class for event
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+
+        group = obj.group
+        if obj.goal is not None:
+            group = obj.goal.group
+
+        if group is None:
+            return True
+
+        return user == group.leader or user in group.users.all()
 
 
 class ImagePermission(permissions.IsAuthenticated):

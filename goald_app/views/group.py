@@ -21,9 +21,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     ModelViewSet for a group model
     """
 
-    #queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    #permission_classes = [GroupPermission]
+    permission_classes = [GroupPermission]
     pagination_class = GroupViewSetPagination
 
     def get_queryset(self):

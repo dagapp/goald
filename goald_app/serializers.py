@@ -116,8 +116,6 @@ class GoalSerializer(serializers.ModelSerializer):
 
         return goal
 
-    #TODO: control update based on permissions
-
 
 class DutySerializer(serializers.ModelSerializer):
     """

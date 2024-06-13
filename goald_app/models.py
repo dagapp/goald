@@ -101,7 +101,7 @@ class Duty(models.Model):
 class EventType(Enum):
     GroupCreated = auto()
     GroupOverdued = auto()
-    GoalCreate = auto()
+    GoalCreated = auto()
     GoalReached = auto()
     GoalClosed = auto()
     UserPaid = auto()
@@ -114,7 +114,7 @@ class EventType(Enum):
 EVENT_MESSAGES = {
     EventType.GroupCreated: "group has been created",
     EventType.GroupOverdued: "group has overdued his pay",
-    EventType.GoalCreate: "goal has been created",
+    EventType.GoalCreated: "goal has been created",
     EventType.GoalReached: "goal has been reached",
     EventType.GoalClosed: "goal has been closed",
     EventType.UserPaid: "user has paid his share",

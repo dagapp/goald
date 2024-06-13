@@ -16,10 +16,10 @@ class ImageViewSet(mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    viewsets.GenericViewSet):
     """
-    ModelViewSet for a image model
+    ViewSet for an image model
     """
 
-    serializer_class = ImageSerializer
-    pagination_class = ImageViewSetPagination
-    permission_classes = [ImagePermission]
     queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = [ImagePermission]
+    pagination_class = ImageViewSetPagination
