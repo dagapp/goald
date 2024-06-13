@@ -861,6 +861,68 @@ paths:
           description: ''
       tags:
       - group
+  /goal/{id}/confirm/:
+    post:
+      operationId: confirmGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - goal
+  /goal/{id}/delegate/:
+    post:
+      operationId: delegateGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - goal
   /goal/{id}/distribute/:
     post:
       operationId: distributeGoal
@@ -892,68 +954,6 @@ paths:
           description: ''
       tags:
       - goal
-  /duty/{id}/confirm/:
-    post:
-      operationId: confirmDuty
-      description: ModelViewSet for a Duty model
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Duty'
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duty'
-          description: ''
-      tags:
-      - duty
-  /duty/{id}/delegate/:
-    post:
-      operationId: delegateDuty
-      description: ModelViewSet for a Duty model
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Duty'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Duty'
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duty'
-          description: ''
-      tags:
-      - duty
 components:
   schemas:
     Group:
