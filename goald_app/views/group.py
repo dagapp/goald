@@ -56,7 +56,7 @@ class GroupViewSet(viewsets.ModelViewSet):
             )
 
         return Response(
-            {"detail": reverse("group-join", args=[""]) + group.token},
+            {"detail": reverse("group-join_token", args=[group.token])},
             status=status.HTTP_200_OK
         )
 
@@ -82,7 +82,7 @@ class GroupViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    @action(methods=["post"], detail=False, url_path=r"join/(?P<token>(\w|\-)+)", url_name="join")
+    @action(methods=["post"], detail=False, url_path=r"join/(?P<token>(\w|\-)+)", url_name="join_token")
     def join_token(self, request, token):
         group = Group.objects.get(token=token)
         if group is None:
