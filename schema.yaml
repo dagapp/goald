@@ -830,12 +830,43 @@ paths:
           description: ''
       tags:
       - auth
-  /group/add/{token}/:
+  /group/join/{token}/:
     post:
-      operationId: addGroup
+      operationId: joinTokenGroup
       description: ModelViewSet for a group model
       parameters:
       - name: token
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - group
+  /group/{id}/join/:
+    post:
+      operationId: joinGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
         in: path
         required: true
         description: ''

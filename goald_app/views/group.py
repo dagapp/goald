@@ -56,12 +56,34 @@ class GroupViewSet(viewsets.ModelViewSet):
             )
 
         return Response(
-            {"detail": reverse("group-add", args=["token"]) + group.token},
+            {"detail": reverse("group-join", args=[""]) + group.token},
             status=status.HTTP_200_OK
         )
 
-    @action(methods=["post"], detail=False, url_path=r"add/(?P<token>(\w|\-)+)", url_name="add")
-    def add(self, request, token):
+    @action(methods=["post"], detail=True)
+    def join(self, request, pk):
+        group = Group.objects.get(pk=pk)
+        if group is None:
+            return Response(
+                {"detail": "Group doesn't exist"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not group.is_public:
+            return Response(
+                {"detail": "Group is not public"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        group.users.add(request.user)
+
+        return Response(
+            {"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
+
+    @action(methods=["post"], detail=False, url_path=r"join/(?P<token>(\w|\-)+)", url_name="join")
+    def join_token(self, request, token):
         group = Group.objects.get(token=token)
         if group is None:
             return Response(
