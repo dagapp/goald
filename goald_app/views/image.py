@@ -2,7 +2,7 @@
 File for defining handlers for Image in Django notation
 """
 
-from rest_framework import viewsets, status
+from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 
 from ..models import Image
@@ -11,7 +11,11 @@ from ..paginations import ImageViewSetPagination
 from ..permissions import ImagePermission
 
 
-class ImageViewSet(viewsets.ModelViewSet):
+class ImageViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   viewsets.GenericViewSet):
     """
     ModelViewSet for a image model
     """
@@ -20,15 +24,3 @@ class ImageViewSet(viewsets.ModelViewSet):
     pagination_class = ImageViewSetPagination
     permission_classes = [ImagePermission]
     queryset = Image.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_403_FORBIDDEN) 
-
-    def retrieve(self, request, *args, **kwargs):
-        try:
-            image = self.get_object()
-        except Image.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer = ImageSerializer(image)
-        return Response(serializer.data)

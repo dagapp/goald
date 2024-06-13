@@ -76,4 +76,4 @@ class ImagePermission(permissions.IsAuthenticated):
         if group is None:
             return False
 
-        return user == group.leader or group.users.filter(id=user.id).exists()
+        return user == group.leader or user in group.users.all()
