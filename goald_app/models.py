@@ -4,7 +4,6 @@ File for defining modles in Django notation
 
 import datetime
 from enum import Enum, auto
-import string
 
 from django.db import models
 from django.conf import settings
@@ -22,13 +21,6 @@ class Group(models.Model):
 
     name = models.CharField(null=True, max_length=50)
     token = models.CharField(null=False, max_length=GROUP_TOKEN_LENGTH)
-    image = models.ImageField(
-        null=True,
-        upload_to="group",
-        default="group/default.jpg",
-        blank=True,
-        validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
-    )
 
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="users_groups")
 
@@ -152,10 +144,28 @@ class Report(models.Model):
     Class to represent a Report model
     """
 
-    proof = models.ImageField(null=False)
-
     text = models.CharField(null=True, max_length=1024)
 
     goal = models.ForeignKey(
         "Goal", null=False, on_delete=models.CASCADE, related_name="reports_goal"
+    )
+
+
+class Image(models.Model):
+    """
+    Class to represent a Image model
+    """
+
+    image = models.ImageField(
+        null=False,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
+    )
+
+    group = models.ForeignKey(
+        "Group", null=True, on_delete=models.CASCADE, related_name="group"
+    )
+
+    report = models.ForeignKey(
+        "Report", null=True, on_delete=models.CASCADE, related_name="report"
     )

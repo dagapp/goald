@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from numpy import source
 from rest_framework import serializers
 #from django.db.models import fields
-from .models import Group, Goal, Duty, Event, Report, EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH
+from .models import Group, Goal, Duty, Event, Report, Image, EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH
 
 
 class AuthSerializer(serializers.ModelSerializer):
@@ -38,14 +38,18 @@ class GroupSerializer(serializers.ModelSerializer):
     """
 
     leader = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
+    group_image = serializers.ImageField(write_only=True, required=True)
+    
     class Meta:
         model = Group
-        fields = ("id", "tag", "is_public", "name", "image", "leader")
+        fields = ("id", "tag", "is_public", "name", "group_image", "leader")
 
     def create(self, validated_data):
         token = secrets.token_urlsafe(GROUP_TOKEN_LENGTH)
+        image_file = validated_data.pop('group_image')
         group = Group.objects.create(**validated_data, token=token)
+        
+        Image.objects.create(image=image_file, group=group)
 
         Event.objects.create(
             type=int(EventType.GroupCreated),
@@ -140,6 +144,8 @@ class ReportSerializer(serializers.ModelSerializer):
     Serializer class for Report model object
     """
 
+    proof = serializers.ImageField(write_only=True, required=True)
+
     class Meta:
         model = Report
         fields = ("id", "proof", "text", "goal")
@@ -148,7 +154,10 @@ class ReportSerializer(serializers.ModelSerializer):
         goal = Goal.objects.get(name=validated_data.get("goal"))
         group = goal.group
 
-        report = Report.objects.create(**validated_data)
+        report = Report.objects.create(goal=goal, text=validated_data.get("text"))
+
+        image_file = validated_data.pop('proof')
+        Image.objects.create(image=image_file, report=report)
 
         Event.objects.create(
             type=int(EventType.ReportPosted),
@@ -160,3 +169,12 @@ class ReportSerializer(serializers.ModelSerializer):
 
         return report
 
+
+class ImageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for Image model objects
+    """
+
+    class Meta:
+        model = Image
+        fields = ("id", "image", "group", "report")

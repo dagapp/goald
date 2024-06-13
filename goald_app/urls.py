@@ -16,6 +16,7 @@ router.register("goal",   views.goal.GoalViewSet,     basename="goal"  )
 router.register("duty",   views.duty.DutyViewSet,     basename="duty"  )
 router.register("report", views.report.ReportViewSet, basename="report")
 router.register("events", views.event.EventViewSet,   basename="events")
+router.register("image",  views.image.ImageViewSet,   basename="image" )
 
 urlpatterns = [
     path("", include(router.urls))

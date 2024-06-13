@@ -1,45 +1,33 @@
 """
-File for defining handlers for group.image in Django notation
+File for defining handlers for Image in Django notation
 """
 
-import json
-
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
 
-from goald_app.manager import Manager
-from ..exceptions import DoesNotExist
+from ..models import Image
+from ..serializers import ImageSerializer
+from ..paginations import ImageViewSetPagination
+from ..permissions import ImagePermission
 
-def image(request, group_id):
+
+class ImageViewSet(viewsets.ModelViewSet):
     """
-    Handler to update a group image
+    ModelViewSet for a image model
     """
-    if not request.method == "POST":
-        return Response(
-            data={"detail": "Wrong method, use POST"},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED
-        )
+    serializer_class = ImageSerializer
+    pagination_class = ImageViewSetPagination
+    permission_classes = [ImagePermission]
+    queryset = Image.objects.all()
 
-    data = json.loads(request.POST["data"])
+    def list(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_403_FORBIDDEN) 
 
-    image_path = "group/default.jpg"
-    if "image" in data:
-        image_file = request.FILES["image"]
-        image_path = Manager.store_image(image=image_file)
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            image = self.get_object()
+        except Image.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    try:
-        Manager.update_group_image(
-            user_id=request.session["id"],
-            group_id=group_id,
-            image=image_path
-        )
-    except DoesNotExist:
-        return Response({
-            "detail": "Bad",
-            "message": "Group does not exist"
-        })
-
-    return Response({
-        "detail": "Success",
-        "message": "Group image created successfully"
-    })
+        serializer = ImageSerializer(image)
+        return Response(serializer.data)
