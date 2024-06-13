@@ -18,44 +18,30 @@ class NotAuthenticated(permissions.BasePermission):
         return not request.user.is_authenticated
 
 
-class GroupLeaderPermission(permissions.BasePermission):
+class GroupLeaderPermission(permissions.IsAuthenticated):
     """
     Permission class for group leaders
     """
-
-    def has_permission(self, request, view):
-        return True
     
     def has_object_permission(self, request, view, obj):
         return request.user == obj.leader
     
 
-class GoalGroupLeaderPermission(permissions.BasePermission):
+class GoalGroupLeaderPermission(permissions.IsAuthenticated):
     """
     Permission class for group leaders
     """
-
-    def has_permission(self, request, view):
-        return True
     
     def has_object_permission(self, request, view, obj):
         return request.user == obj.group.leader
     
 
-class GroupPermission(permissions.BasePermission):
+class GroupPermission(permissions.IsAuthenticated):
     """
     Permission class for group
     """
 
-    def has_permission(self, request, view):
-        """
-        Function for checking group general permission
-        """
-
-        print(f"has_permission: {view.action}")
-        return True
-
-    def has_objects_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj):
         """
         Function for checking group object permissions
         """
