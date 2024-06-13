@@ -209,6 +209,26 @@ paths:
           description: ''
       tags:
       - group
+  /group/{id}/invite/:
+    get:
+      operationId: inviteGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - group
   /group/{id}/users/:
     get:
       operationId: usersGroup
@@ -715,69 +735,163 @@ paths:
           description: ''
       tags:
       - events
-  /register/:
+  /events/{id}/:
+    get:
+      operationId: retrieveEvent
+      description: A view for handling events
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+      tags:
+      - events
+  /auth/login/:
     post:
-      operationId: createregister
-      description: ''
+      operationId: loginAuth
+      description: GenericViewSet for a auth
       parameters: []
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           application/x-www-form-urlencoded:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           multipart/form-data:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
       responses:
         '201':
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Auth'
           description: ''
       tags:
-      - register
-  /login/:
+      - auth
+  /auth/logout/:
     post:
-      operationId: createlogin
-      description: ''
+      operationId: logoutAuth
+      description: GenericViewSet for a auth
       parameters: []
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           application/x-www-form-urlencoded:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           multipart/form-data:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
       responses:
         '201':
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Auth'
           description: ''
       tags:
-      - login
-  /logout/:
+      - auth
+  /auth/register/:
     post:
-      operationId: createlogout
-      description: ''
+      operationId: registerAuth
+      description: GenericViewSet for a auth
       parameters: []
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           application/x-www-form-urlencoded:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
           multipart/form-data:
-            schema: {}
+            schema:
+              $ref: '#/components/schemas/Auth'
       responses:
         '201':
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Auth'
           description: ''
       tags:
-      - logout
+      - auth
+  /group/add/{token}/:
+    post:
+      operationId: addGroup
+      description: ModelViewSet for a group model
+      parameters:
+      - name: token
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - group
+  /goal/{id}/distribute/:
+    post:
+      operationId: distributeGoal
+      description: ModelViewSet for a goal model
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+      tags:
+      - goal
   /duty/{id}/confirm/:
     post:
       operationId: confirmDuty
@@ -945,3 +1059,24 @@ components:
         timestamp:
           type: string
           format: date-time
+        group:
+          type: integer
+          nullable: true
+        goal:
+          type: integer
+          nullable: true
+    Auth:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - username
+      - password

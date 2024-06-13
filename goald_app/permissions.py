@@ -9,6 +9,15 @@ from rest_framework import permissions
 from .models import Group
 
 
+class NotAuthenticated(permissions.BasePermission):
+    """
+    Permission class for checking not authenticated users
+    """
+
+    def has_permission(self, request, view):
+        return not request.user.is_authenticated
+
+
 class GroupPermission(permissions.BasePermission):
     """
     Permission class for group

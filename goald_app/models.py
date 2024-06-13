@@ -3,12 +3,14 @@ File for defining modles in Django notation
 """
 
 import datetime
+from enum import Enum, auto
 import string
 
 from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 
+GROUP_TOKEN_LENGTH = 32
 
 class Group(models.Model):
     """
@@ -19,7 +21,7 @@ class Group(models.Model):
     is_public = models.BooleanField(null=False, default=True)
 
     name = models.CharField(null=True, max_length=50)
-    password = models.BinaryField(null=True)
+    token = models.CharField(null=False, max_length=GROUP_TOKEN_LENGTH)
     image = models.ImageField(
         null=True,
         upload_to="group",
@@ -103,6 +105,30 @@ class Duty(models.Model):
         "Goal", null=False, on_delete=models.CASCADE, related_name="duties"
     )
 
+
+class EventType(Enum):
+    GroupCreated = auto()
+    GroupOverdued = auto()
+    GoalCreate = auto()
+    GoalReached = auto()
+    GoalClosed = auto()
+    UserPaid = auto()
+    UserOverdued = auto()
+    ReportPosted = auto()
+
+    def __int__(self):
+        return self.value
+
+EVENT_MESSAGES = {
+    EventType.GroupCreated: "group has been created",
+    EventType.GroupOverdued: "group has overdued his pay",
+    EventType.GoalCreate: "goal has been created",
+    EventType.GoalReached: "goal has been reached",
+    EventType.GoalClosed: "goal has been closed",
+    EventType.UserPaid: "user has paid his share",
+    EventType.UserOverdued: "user has overdued his pay",
+    EventType.ReportPosted: "report has been posted"
+}
 
 class Event(models.Model):
     """

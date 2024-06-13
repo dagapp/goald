@@ -2,12 +2,13 @@
 File for defining handlers for group in Django notation
 """
 
+import datetime
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 
-from ..models import Duty, Goal
+from ..models import Duty, Goal, Event, EventType, EVENT_MESSAGES
 from ..serializers import DutySerializer
 from ..paginations import DutyViewSetPagination
 
@@ -31,7 +32,10 @@ class DutyViewSet(viewsets.ReadOnlyModelViewSet):
     #TODO: implement group leader check with permission_classes
     @action(methods=["post"], detail=True) #permission_classes=[AllowAny]
     def confirm(self, request, pk):
-        if not request.user == Duty.objects.get(pk=pk).goal.group.leader:
+        goal = Duty.objects.get(pk=pk).goal
+        group = goal.group
+
+        if not request.user == group.leader:
             return Response(
                 {"detail": "You are not a leader for a corresponding group"},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -40,6 +44,24 @@ class DutyViewSet(viewsets.ReadOnlyModelViewSet):
         duty = Duty.object.get(pk=pk)
         current_value = getattr(duty, "current_value")
         duty.update(current_value=current_value + request.data["value"])
+
+        if getattr(duty, "final_value") <= getattr(duty, "current_value"):
+            Event.objects.create(
+                type=int(EventType.UserPaid),
+                text=EVENT_MESSAGES[EventType.UserPaid],
+                timestamp=datetime.datetime.now(),
+                group=group,
+                goal=goal
+            )
+
+        if getattr(goal, "final_value") <= getattr(goal, "current_value"):
+            Event.objects.create(
+                type=int(EventType.GoalReached),
+                text=EVENT_MESSAGES[EventType.GoalReached],
+                timestamp=datetime.datetime.now(),
+                group=group,
+                goal=goal
+            )
 
         return Response(
             {"detail": "OK"},

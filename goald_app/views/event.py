@@ -6,14 +6,14 @@ from django.db.models import Q
 
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework import serializers, status
+from rest_framework import viewsets, serializers, status
 
 from ..models import Group, Event
 from ..serializers import EventSerializer
 from ..paginations import EventViewPagination
 
 
-class EventView(ListAPIView):
+class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
        A view for handling events
     """

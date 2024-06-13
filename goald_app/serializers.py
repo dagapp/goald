@@ -2,11 +2,24 @@
 File for defining serializer classes
 """
 
+import secrets
+import datetime
+
 from django.contrib.auth.models import User
 from numpy import source
 from rest_framework import serializers
 #from django.db.models import fields
-from .models import Group, Goal, Duty, Event, Report
+from .models import Group, Goal, Duty, Event, Report, EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH
+
+
+class AuthSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for auth
+    """
+
+    class Meta:
+        model = User
+        fields = ("username", "password")
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,6 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ("id", "username")
 
+
 class GroupSerializer(serializers.ModelSerializer):
     """
     Serializer class for Group model object
@@ -28,6 +42,20 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("id", "tag", "is_public", "name", "image", "leader")
+
+    def create(self, validated_data):
+        token = secrets.token_urlsafe(GROUP_TOKEN_LENGTH)
+        group = Group.objects.create(**validated_data, token=token)
+
+        Event.objects.create(
+            type=int(EventType.GroupCreated),
+            text=EVENT_MESSAGES[EventType.GroupCreated],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=None
+        )
+
+        return group
 
 
 class GoalSerializer(serializers.ModelSerializer):
@@ -74,6 +102,14 @@ class GoalSerializer(serializers.ModelSerializer):
             goal=goal
         )
 
+        Event.objects.create(
+            type=int(EventType.GoalCreated),
+            text=EVENT_MESSAGES[EventType.GoalCreated],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=goal
+        )
+
         return goal
 
     #TODO: control update based on permissions
@@ -96,7 +132,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "type", "text", "timestamp")
+        fields = ("id", "type", "text", "timestamp", "group", "goal")
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -107,4 +143,20 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ("id", "proof", "text", "goal")
+
+    def create(self, validated_data):
+        goal = Goal.objects.get(name=validated_data.get("goal"))
+        group = goal.group
+
+        report = Report.objects.create(**validated_data)
+
+        Event.objects.create(
+            type=int(EventType.ReportPosted),
+            text=EVENT_MESSAGES[EventType.ReportPosted],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=goal
+        )
+
+        return report
 
