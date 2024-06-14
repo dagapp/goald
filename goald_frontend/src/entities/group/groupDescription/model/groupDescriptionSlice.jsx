@@ -13,7 +13,7 @@ const groupDescriptionSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchGroupDescription.fulfilled, (state, action) => {
-        state.groupDescription = action.payload[0].name
+        state.groupDescription = action.payload[0];
         state.loading = false;
         state.error = null;
       })

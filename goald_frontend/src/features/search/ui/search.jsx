@@ -61,13 +61,13 @@ export const Search = (props) => {
     if (groups != null && groups.length > 0 ) {
       return (
         <div className="search__results">
-          {groups?.map((item, index) => (
+          {groups?.map((group) => (
             <GroupItem
-              key={item.name} // Should Be replaced with Group ID
-              avatar={item.avatar}
-              name={item.name}
-              tag={item.tag}
-              url={item.url} // Should Be replaced with Group URL
+              key={group.id}
+              id={group.id}
+              avatar={group.avatar}
+              name={group.name}
+              tag={group.tag}
             />
           ))}
         </div>

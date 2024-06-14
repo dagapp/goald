@@ -22,7 +22,7 @@ export function InputForm(props) {
         required
       />
 
-      <label for={`input-form-${id}`} className="input-form__label">
+      <label htmlFor={`input-form-${id}`} className="input-form__label">
         {placeholder}
       </label>
 

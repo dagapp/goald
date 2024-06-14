@@ -32,7 +32,7 @@ export function Checkbox(props) {
       </div>
 
       {children && (
-        <label for="checkbox" className="checkbox__label">
+        <label htmlFor="checkbox" className="checkbox__label">
           {children}
         </label>
       )}

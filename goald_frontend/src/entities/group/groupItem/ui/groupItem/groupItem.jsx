@@ -4,10 +4,10 @@ import defaultGroupImage from "@shared/assets/images/defaultGroupImage.png";
 import "./groupItem.scss";
 
 export function GroupItem(props) {
-  const { avatar = defaultGroupImage, name, tag, url } = props;
+  const { id, avatar = defaultGroupImage, name, tag } = props;
 
   return (
-    <Link to={url} className="group-item">
+    <Link to={`/group/${id}`} className="group-item">
       <img src={avatar} className="group-item__avatar" alt="Group Avatar" />
       <div className="group-item__overview">
         <div className="group-item__overview_name">{name}</div>

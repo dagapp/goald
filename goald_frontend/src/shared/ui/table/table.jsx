@@ -8,16 +8,16 @@ export function Table(props) {
       <table className="table">
         <thead className="table__header">
           <tr>
-            {headers?.map((header) => (
-              <th>{header}</th>
+            {headers?.map((header, index) => (
+              <th key={index}>{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row) => (
-            <tr className="table__row">
-              {row?.map((column) => (
-                <td>{column}</td>
+          {rows?.map((row, rowIndex) => (
+            <tr ley={rowIndex} className="table__row">
+              {row?.map((column, colIndex) => (
+                <td key={colIndex}>{column}</td>
               ))}
             </tr>
           ))}
