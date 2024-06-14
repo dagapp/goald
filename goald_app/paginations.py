@@ -1,3 +1,7 @@
+"""
+    Pagination for all model
+"""
+
 from rest_framework.pagination import PageNumberPagination
 
 class DutyViewSetPagination(PageNumberPagination):

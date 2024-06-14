@@ -25,7 +25,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         """
 
         user = auth.models.User.objects.create_user(
-            username=request.data["username"], 
+            username=request.data["username"],
             password=request.data["password"]
         )
         if user is None:
