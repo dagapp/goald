@@ -195,7 +195,7 @@ class PrivateMessage(models.Model):
     )
 
     recipient = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name="incoming"
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="incoming"
     )
 
 
@@ -211,5 +211,5 @@ class GroupMessage(models.Model):
     )
 
     group = models.ForeignKey(
-        "Group", null=True, on_delete=models.CASCADE, related_name="messages"
+        "Group", null=False, on_delete=models.CASCADE, related_name="messages"
     )
