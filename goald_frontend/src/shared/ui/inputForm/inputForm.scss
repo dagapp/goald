@@ -38,12 +38,27 @@
     pointer-events: none;
   }
 
+  &__error {
+    padding-top: 10px;
+    color: var(--ui-color-error-secondary);
+  }
+
+  &__error-view {
+    .input-form__field {
+      border-color: var(--ui-color-error-secondary);
+    }
+  
+    .input-form__label {
+      color: var(--ui-color-error-secondary);
+    }
+  }
+
   // Animations
   input:focus ~ &__label,
   input:valid ~ &__label {
     top: 0;
     font-size: var(--ui-font_display-font_size-tiny);
-    background-color: var(--ui-color-background);
+    background-color: var(--ui-color-primary);
   }
 
   &__field:focus {

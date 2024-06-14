@@ -5,6 +5,7 @@ export function Button(props) {
   const {
     children,
     Icon,
+    type = "button",
     disabled = false,
     className,
     onClick,
@@ -12,7 +13,7 @@ export function Button(props) {
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       className={clsx(
         "button",

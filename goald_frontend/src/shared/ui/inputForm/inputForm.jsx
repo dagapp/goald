@@ -1,40 +1,32 @@
-import { useState } from "react";
-
 import clsx from "clsx";
 import "./inputForm.scss";
 
 export function InputForm(props) {
   const {
-    type,
+    id = "id",
+    type = "text",
     placeholder,
-    onChange,
-    onBlur,
-    onFocus,
-    onKeyDown,
     className,
+    error,
+    errorMessage,
+    properties,
   } = props;
 
-  const [inputData, setinputData] = useState("");
-  const onChangeinputData = (event) => {
-    setinputData(event.target.value);
-  };
-
   return (
-    <div className={clsx("input-form", className)}>
+    <div className={clsx("input-form", error && "input-form__error-view", className)}>
       <input
-        id="input-form"
+        id={`input-form-${id}`}
         className={"input-form__field"}
         type={type}
-        value={inputData}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        onChange={onChange ?? onChangeinputData}
-        onKeyDown={onKeyDown}
+        {...properties}
         required
       />
-      <label for="input-form" className="input-form__label">
+
+      <label for={`input-form-${id}`} className="input-form__label">
         {placeholder}
       </label>
+
+      {errorMessage && <div className="input-form__error">{errorMessage}</div>}
     </div>
   );
 }

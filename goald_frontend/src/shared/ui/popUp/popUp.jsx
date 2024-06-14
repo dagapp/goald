@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import clsx from "clsx";
 import "./popUp.scss";
 
 export function PopUp(props) {
   const { className, active, children } = props;
-  const [isOpen, setOpen] = useState(active);
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(active);
+  }, [active]);
 
   const closePopUp = () => setOpen(false);
   let isClosed = isOpen ? "pop-up__open" : "pop-up__closed";

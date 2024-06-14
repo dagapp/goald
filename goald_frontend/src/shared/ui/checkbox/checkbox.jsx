@@ -2,21 +2,18 @@ import clsx from "clsx";
 import "./checkbox.scss";
 
 export function Checkbox(props) {
-  const {
-    children,
-    disabled = false,
-    className,
-  } = props;
+  const { children, className, properties, disabled = false } = props;
 
   return (
-    <div className="checkbox">
-      <input type="checkbox" id="checkbox" className="checkbox__input" />
+    <div className={clsx("checkbox", className)}>
+      <input
+        type="checkbox"
+        id="checkbox"
+        className="checkbox__input"
+        {...properties}
+      />
       <div
-        className={clsx(
-          "checkbox__pseudobox",
-          disabled && "checkbox_disabled",
-          className
-        )}
+        className={clsx("checkbox__pseudobox", disabled && "checkbox_disabled")}
       >
         <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

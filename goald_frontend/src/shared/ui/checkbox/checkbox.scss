@@ -20,6 +20,11 @@
   // Making pseudo-checkbox
   &__pseudobox {
     position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     top: 50%;
     transform: translate(0, -50%);
 
@@ -38,8 +43,11 @@
       display: block;
       opacity: 0;
 
-      width: var(--ui-size-checkbox-checkmark);
-      height: var(--ui-size-checkbox-checkmark);
+      min-width: var(--ui-size-checkbox-checkmark);
+      min-height: var(--ui-size-checkbox-checkmark);
+
+      max-width: var(--ui-size-checkbox-checkmark);
+      max-height: var(--ui-size-checkbox-checkmark);
 
       path {
         stroke: var(--ui-color-checkbox-checkmark);
