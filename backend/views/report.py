@@ -25,9 +25,8 @@ class ReportViewSet(viewsets.ModelViewSet):
         """
 
         user = self.request.user
-        group = Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
+        groups = user.users_groups.all() | user.led_group.all()
 
         return Report.objects.filter(
-            goal__in=Goal.objects.filter(group__in=group)
+            goal__in=Goal.objects.filter(group__in=groups)
         )
-    
