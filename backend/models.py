@@ -181,3 +181,35 @@ class Image(models.Model):
     report = models.ForeignKey(
         "Report", null=True, on_delete=models.CASCADE, related_name="report"
     )
+
+
+class PrivateMessage(models.Model):
+    """
+    Class to represent a PrivateMessage model
+    """
+
+    text = models.CharField(null=False, max_length=1024)
+
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="sent"
+    )
+
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name="incoming"
+    )
+
+
+class GroupMessage(models.Model):
+    """
+    Class to represent a GroupMessage model
+    """
+
+    text = models.CharField(null=False, max_length=1024)
+
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="sent"
+    )
+
+    group = models.ForeignKey(
+        "Group", null=True, on_delete=models.CASCADE, related_name="messages"
+    )

@@ -8,8 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 
-from ..models import Group
-from ..serializers import UserSerializer, GoalSerializer, GroupSerializer, EventSerializer
+from ..models import Group, GroupMessage
+from ..serializers import UserSerializer, GoalSerializer, GroupSerializer, EventSerializer, GroupMessageSerializer
 from ..permissions import GroupPermission
 from ..paginations import GroupViewSetPagination
 
@@ -133,5 +133,34 @@ class GroupViewSet(viewsets.ModelViewSet):
         events = Group.objects.get(pk=pk).events.all()
         return Response(
             EventSerializer(events, many=True).data,
+            status=status.HTTP_200_OK
+        )
+
+    @action(methods=["get", "post"], detail=True)
+    def chat(self, request, pk):
+        sender = request.user
+        group = Group.objects.get(pk=pk)
+
+        if request.method == "GET":
+            return Response(
+                GroupMessageSerializer(
+                    GroupMessage.objects.filter(group=group, many=True)
+                ).data,
+                status=status.HTTP_200_OK
+            )
+
+        message = GroupMessageSerializer(data=request.data)
+        if not message.is_valid():
+            return Response(
+                {"detail": "Incorrect message"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        message.sender = sender
+        message.group = group
+        message.save()
+
+        return Response(
+            {"detail": "OK"},
             status=status.HTTP_200_OK
         )

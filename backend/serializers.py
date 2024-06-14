@@ -7,8 +7,10 @@ import datetime
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from zmq import Message
 from .models import Group, Goal, Duty, Event, Report, Image, \
-                    EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH
+                    EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH, \
+                    PrivateMessage, GroupMessage
 
 
 class AuthSerializer(serializers.ModelSerializer):
@@ -203,3 +205,31 @@ class ImageSerializer(serializers.ModelSerializer):
 
         model = Image
         fields = ("id", "image", "group", "report")
+
+
+class PrivateMessageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for PrivateMessage model objects
+    """
+
+    class Meta:
+        """
+        Meta class for private message
+        """
+
+        model = PrivateMessage
+        fields = ("text")
+
+
+class GroupMessageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for GroupMessage model objects
+    """
+
+    class Meta:
+        """
+        Meta class for group message
+        """
+
+        model = GroupMessage
+        fields = ("text")
