@@ -7,7 +7,6 @@ import datetime
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from zmq import Message
 from .models import Group, Goal, Duty, Event, Report, Image, \
                     EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH, \
                     PrivateMessage, GroupMessage
