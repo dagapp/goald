@@ -4,15 +4,9 @@ import clsx from "clsx";
 import "./popUp.scss";
 
 export function PopUp(props) {
-  const { className, active, children } = props;
-  const [isOpen, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(active);
-  }, [active]);
-
-  const closePopUp = () => setOpen(false);
-  let isClosed = isOpen ? "pop-up__open" : "pop-up__closed";
+  const { className, isOpenPopUp, closePopUp, children } = props;
+  
+  let isClosed = isOpenPopUp ? "pop-up__open" : "pop-up__closed";
 
   return (
     <div className={clsx("pop-up__wrapper", isClosed)}>
