@@ -42,20 +42,13 @@ class GoalViewSet(viewsets.ModelViewSet):
         goal = Goal.objects.get(pk=pk)
         group = goal.group
 
-        if not request.user == group.leader:
-            return Response(
-                {"detail": "You are not a leader for a corresponding group"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
         user = User.objects.get(id=request.data["user"])
         duty = Duty.objects.get(goal=goal, user=user)
 
-        current_value = getattr(duty, "current_value")
-        duty.current_value = current_value + request.data["value"]
+        duty.current_value += request.data["value"]
         duty.save()
 
-        if getattr(duty, "final_value") <= getattr(duty, "current_value"):
+        if duty.final_value <= duty.current_value:
             Event.objects.create(
                 type=int(EventType.USER_PAID),
                 text=EVENT_MESSAGES[EventType.USER_PAID],
@@ -64,7 +57,7 @@ class GoalViewSet(viewsets.ModelViewSet):
                 goal=goal
             )
 
-        if getattr(goal, "final_value") <= getattr(goal, "current_value"):
+        if goal.final_value <= goal.current_value:
             Event.objects.create(
                 type=int(EventType.GOAL_REACHED),
                 text=EVENT_MESSAGES[EventType.GOAL_REACHED],
@@ -85,11 +78,6 @@ class GoalViewSet(viewsets.ModelViewSet):
         """
 
         goal = Goal.objects.get(pk=pk)
-        if not request.user == goal.group.leader:
-            return Response(
-                {"detail": "You are not a leader for a corresponding group"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
 
         user_from = User.objects.get(id=request.data["user_from"])
         if user_from is None:
@@ -119,13 +107,10 @@ class GoalViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        final_value_from = getattr(duty_from, "final_value")
-        final_value_to   = getattr(duty_to,   "final_value")
-
         value = request.data["value"]
 
-        duty_from.final_value = final_value_from - value
-        duty_to.final_value   = final_value_to   + value
+        duty_from.final_value -= value
+        duty_to.final_value   += value
 
         duty_from.save()
         duty_to.save()
@@ -140,14 +125,10 @@ class GoalViewSet(viewsets.ModelViewSet):
         """
         Distribute proc
         """
+
         goal = Goal.objects.get(pk=pk)
 
         group = goal.group
-        if request.user != group.leader:
-            return Response(
-                {"detail": "You are not a leader for a corresponding group"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
 
         leader = group.leader
         users = group.users
@@ -169,8 +150,8 @@ class GoalViewSet(viewsets.ModelViewSet):
                 Duty.objects.create(
                     final_value=participant_final_value,
                     current_value=0,
-                    deadline=getattr(leader_duty, "deadline"),
-                    alert_period=getattr(leader_duty, "alert_period"),
+                    deadline=leader_duty.deadline,
+                    alert_period=leader_duty.alert_period,
                     user=user,
                     goal=goal
                 )
@@ -187,6 +168,7 @@ class GoalViewSet(viewsets.ModelViewSet):
         """
         Reports proc
         """
+
         reports = Report.objects.filter(goal=pk)
         return Response(
             ReportSerializer(reports, many=True).data,

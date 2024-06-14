@@ -136,7 +136,7 @@ class GroupViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    @action(methods=["get", "post"], detail=True)
+    @action(methods=["get", "post"], detail=True, permission_classes=[GroupPermission])
     def chat(self, request, pk):
         sender = request.user
         group = Group.objects.get(pk=pk)
