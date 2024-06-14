@@ -11,17 +11,20 @@ then
     echo "PostgreSQL started"
 fi
 
-# nginx stuff
-nginx
+
+python3 manage.py makemigrations
+python3 manage.py migrate
 
 UWSGI_LOGPATH=/var/log/uwsgi.log
-# uwsgi stuff
+UWSGI_INI=/etc/uwsgi/apps-enabled/goald.ini
+
 if [ $# -ne 0 ]
 then
-    uwsgi --ini "$PWD/goald_site/goald.ini" --daemonize "$UWSGI_LOGPATH"
+
+    uwsgi --ini "$UWSGI_INI" --daemonize "$UWSGI_LOGPATH"
     exec "$@"
 else
-    uwsgi --ini "$PWD/goald_site/goald.ini"
+    uwsgi --ini "$UWSGI_INI"
 fi
 
 

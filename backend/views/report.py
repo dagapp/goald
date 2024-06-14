@@ -1,11 +1,10 @@
 """
 File for defining handlers for report in Django notation
 """
-from django.db.models import Q
 
 from rest_framework import viewsets
 
-from ..models import Report, Goal, Group
+from ..models import Report, Goal
 from ..serializers import ReportSerializer
 from ..permissions import ReportPermission
 from ..paginations import ReportViewSetPagination
@@ -25,9 +24,8 @@ class ReportViewSet(viewsets.ModelViewSet):
         """
 
         user = self.request.user
-        group = Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
+        groups = user.users_groups.all() | user.led_group.all()
 
         return Report.objects.filter(
-            goal__in=Goal.objects.filter(group__in=group)
+            goal__in=Goal.objects.filter(group__in=groups)
         )
-    

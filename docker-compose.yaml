@@ -2,19 +2,34 @@ version: '3'
 services:
   app:
     container_name: app-goald
-    build: .
-    volumes:
-      - ${DB_SOURCE:-/dev/null}:${DB_TARGET:-/dev/null}:rw
-    ports:
-      - "8081:8000"
-    env_file: .env
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    expose:
+      - "8082"
     depends_on:
       - db
+
   frontend:
     container_name: frontend-goald
-    build: goald_frontend
+    build:
+      context: frontend
+      dockerfile: frontend.Dockerfile
+    depends_on:
+      - app
+    expose:
+      - "8081"
+
+  balancer:
+    container_name: balancer-goald
+    build:
+      context: .
+      dockerfile: balancer.Dockerfile
+    depends_on:
+      - app
+      - frontend
     ports:
-      - "8080:8000"
+      - "8080:8080"
   db:
     image: postgres:16.0
     volumes:
