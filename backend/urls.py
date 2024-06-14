@@ -11,6 +11,7 @@ from backend import views
 
 router = routers.DefaultRouter()
 router.register(r"auth",   views.auth.AuthViewSet,     basename="auth"  )
+router.register(r"user",   views.user.UserViewSet,     basename="user"  )
 router.register(r"group",  views.group.GroupViewSet,   basename="group" )
 router.register(r"goal",   views.goal.GoalViewSet,     basename="goal"  )
 router.register(r"duty",   views.duty.DutyViewSet,     basename="duty"  )

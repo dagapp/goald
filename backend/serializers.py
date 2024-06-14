@@ -211,13 +211,15 @@ class PrivateMessageSerializer(serializers.ModelSerializer):
     Serializer class for PrivateMessage model objects
     """
 
+    timestamp = serializers.HiddenField(default=datetime.datetime.now())
+
     class Meta:
         """
         Meta class for private message
         """
 
         model = PrivateMessage
-        fields = ("text")
+        fields = ("text", "timestamp")
 
 
 class GroupMessageSerializer(serializers.ModelSerializer):
@@ -225,10 +227,12 @@ class GroupMessageSerializer(serializers.ModelSerializer):
     Serializer class for GroupMessage model objects
     """
 
+    timestamp = serializers.HiddenField(default=datetime.datetime.now())
+
     class Meta:
         """
         Meta class for group message
         """
 
         model = GroupMessage
-        fields = ("text")
+        fields = ("text", "timestamp")

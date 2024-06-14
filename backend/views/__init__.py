@@ -3,6 +3,7 @@ __init__.py for views package
 """
 
 import backend.views.auth
+import backend.views.user
 import backend.views.duty
 import backend.views.event
 import backend.views.goal

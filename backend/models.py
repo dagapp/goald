@@ -198,6 +198,8 @@ class PrivateMessage(models.Model):
         settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="incoming"
     )
 
+    timestamp = models.DateTimeField(null=False)
+
 
 class GroupMessage(models.Model):
     """
@@ -213,3 +215,5 @@ class GroupMessage(models.Model):
     group = models.ForeignKey(
         "Group", null=False, on_delete=models.CASCADE, related_name="messages"
     )
+
+    timestamp = models.DateTimeField(null=False)
