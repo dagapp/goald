@@ -1,9 +1,9 @@
 import clsx from "clsx";
 
 import { ProgressBar } from "@shared/ui/progressBar";
-import "./goal.scss";
+import "./goalItem.scss";
 
-export function Goal(props) {
+export function GoalItem(props) {
   //after `amount` insert `percentage`
   const { current, amount, daysLeft, className } = props;
 
@@ -11,30 +11,30 @@ export function Goal(props) {
   const percentage = Math.round((parseInt(current) / parseInt(amount)) * 100);
 
   return (
-    <div className={clsx("goal", className)}>
-      <div className="goal__progress">
-        <div className="goal__progress_current">
-          <div className="goal__progress_current_description">Current</div>
-          <div className="goal__progress_current_wrapper">
-            <div className="goal__progress_current_wrapper_value">
+    <div className={clsx("goal-item", className)}>
+      <div className="goal-item__progress">
+        <div className="goal-item__progress_current">
+          <div className="goal-item__progress_current_description">Current</div>
+          <div className="goal-item__progress_current_wrapper">
+            <div className="goal-item__progress_current_wrapper_value">
               ₽{current}
             </div>
-            <div className="goal__progress_current_wrapper_description">
+            <div className="goal-item__progress_current_wrapper_description">
               {percentage}%
             </div>
           </div>
         </div>
-        <div className="goal__progress_target">
-          <div className="goal__progress_target_description">Amount</div>
-          <div className="goal__progress_target_value">₽{amount}</div>
+        <div className="goal-item__progress_target">
+          <div className="goal-item__progress_target_description">Amount</div>
+          <div className="goal-item__progress_target_value">₽{amount}</div>
         </div>
       </div>
 
       <ProgressBar percentage={percentage} />
 
-      <div className="goal__daysleft">
+      <div className="goal-item__daysleft">
         <svg
-          className="goal__daysleft_icon"
+          className="goal-item__daysleft_icon"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -48,8 +48,8 @@ export function Goal(props) {
           />
         </svg>
 
-        <div className="goal__daysleft_value">{daysLeft}</div>
-        <div className="goal__daysleft_description">Days Left</div>
+        <div className="goal-item__daysleft_value">{daysLeft}</div>
+        <div className="goal-item__daysleft_description">Days Left</div>
       </div>
     </div>
   );

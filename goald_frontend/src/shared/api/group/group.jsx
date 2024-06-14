@@ -1,4 +1,4 @@
-import {axiosClient} from "@shared/api/axiosClient"
+import { axiosClient } from "@shared/api/axiosClient";
 
 // export async function getUserGroups(id) {
 //   try {
@@ -11,7 +11,7 @@ import {axiosClient} from "@shared/api/axiosClient"
 //   }
 // }
 
-export async function getGroupById(id) {
+export async function getGroupDescriptionById(id) {
   try {
     const response = await axiosClient
       .get(`/group?id=${id}`)
@@ -37,6 +37,17 @@ export async function getEventsByGroupId(id) {
   try {
     const response = await axiosClient
       .get(`/events?groupId=${id}`)
+      .then((response) => response.data);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createGoal(name) {
+  try {
+    const response = await axiosClient
+      .post(`/goal`, { name: name })
       .then((response) => response.data);
     return response;
   } catch (error) {

@@ -6,4 +6,4 @@ export {
   selectGoalsLoading,
 } from "./model/selectors";
 
-// export { GoalsList } from "./ui/_goalsList";
+export { GoalsList } from "./ui/goalsList";

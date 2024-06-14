@@ -1,1 +1,8 @@
-export { getGroupById, getGoalsByGroupId, getEventsByGroupId } from "./group";
+export {
+  getGroupDescriptionById,
+  getGoalsByGroupId,
+  getEventsByGroupId,
+
+  createGoal,
+
+} from "./group";
