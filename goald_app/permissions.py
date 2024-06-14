@@ -2,11 +2,7 @@
 File for defining permission classes
 """
 
-from django.db.models import Q
-
 from rest_framework import permissions
-
-from .models import Group
 
 
 class NotAuthenticated(permissions.BasePermission):
@@ -22,7 +18,7 @@ class GroupLeaderPermission(permissions.IsAuthenticated):
     """
     Permission class for group leaders
     """
-    
+
     def has_object_permission(self, request, view, obj):
         return request.user == obj.leader
 
@@ -41,7 +37,8 @@ class GroupPermission(permissions.IsAuthenticated):
 
         if view.action == "retrieve":
             return user == obj.leader or user in obj.users.all()
-        elif view.action in ["update", "partial_update", "destroy"]:
+
+        if view.action in ["update", "partial_update", "destroy"]:
             return user == obj.leader
 
         return False
@@ -67,7 +64,8 @@ class GoalPermission(permissions.IsAuthenticated):
 
         if view.action == "retrieve":
             return user == group.leader or user in group.users.all()
-        elif view.action in ["update", "partial_update", "destroy"]:
+
+        if view.action in ["update", "partial_update", "destroy"]:
             return user == group.leader
 
         return False
@@ -94,7 +92,8 @@ class ReportPermission(permissions.IsAuthenticated):
 
         if view.action == "retrieve":
             return user == group.leader or user in group.users.all()
-        elif view.action in ["update", "partial_update", "destroy"]:
+
+        if view.action in ["update", "partial_update", "destroy"]:
             return user == group.leader
 
         return False
@@ -122,7 +121,7 @@ class ImagePermission(permissions.IsAuthenticated):
     """
     Permission class for image
     """
-    
+
     def has_object_permission(self, request, view, obj):
         """
         Function for checking image object permissions

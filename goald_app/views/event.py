@@ -2,13 +2,9 @@
 File for defining handlers for event in Django notation
 """
 
-from django.db.models import Q
+from rest_framework import viewsets
 
-from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
-from rest_framework import viewsets, serializers, status
-
-from ..models import Group, Event
+from ..models import  Event
 from ..serializers import EventSerializer
 from ..permissions import EventPermission
 from ..paginations import EventViewPagination
@@ -30,4 +26,3 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         groups = user.users_groups.all() | user.led_group.all()
         return Event.objects.filter(group__in=groups)
-

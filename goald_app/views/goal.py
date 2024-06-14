@@ -4,14 +4,13 @@ File for defining handlers for goal in Django notation
 
 import datetime
 
-from django.db.models import Q
 from django.contrib.auth.models import User
 
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import viewsets, status
 
-from ..models import Group, Goal, Duty, Report, Event, EventType, EVENT_MESSAGES
+from ..models import  Goal, Duty, Report, Event, EventType, EVENT_MESSAGES
 from ..serializers import GoalSerializer, ReportSerializer, EventSerializer
 from ..permissions import GoalGroupLeaderPermission, GoalPermission
 from ..paginations import GoalViewSetPagination
@@ -36,15 +35,19 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True, permission_classes=[GoalGroupLeaderPermission])
     def confirm(self, request, pk):
+        """
+        Сonfirm proc
+        """
+
         goal = Goal.objects.get(pk=pk)
         group = goal.group
-        
+
         if not request.user == group.leader:
             return Response(
                 {"detail": "You are not a leader for a corresponding group"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
+
         user = User.objects.get(id=request.data["user"])
         duty = Duty.objects.get(goal=goal, user=user)
 
@@ -54,8 +57,8 @@ class GoalViewSet(viewsets.ModelViewSet):
 
         if getattr(duty, "final_value") <= getattr(duty, "current_value"):
             Event.objects.create(
-                type=int(EventType.UserPaid),
-                text=EVENT_MESSAGES[EventType.UserPaid],
+                type=int(EventType.USER_PAID),
+                text=EVENT_MESSAGES[EventType.USER_PAID],
                 timestamp=datetime.datetime.now(),
                 group=group,
                 goal=goal
@@ -63,8 +66,8 @@ class GoalViewSet(viewsets.ModelViewSet):
 
         if getattr(goal, "final_value") <= getattr(goal, "current_value"):
             Event.objects.create(
-                type=int(EventType.GoalReached),
-                text=EVENT_MESSAGES[EventType.GoalReached],
+                type=int(EventType.GOAL_REACHED),
+                text=EVENT_MESSAGES[EventType.GOAL_REACHED],
                 timestamp=datetime.datetime.now(),
                 group=group,
                 goal=goal
@@ -77,27 +80,31 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True, permission_classes=[GoalGroupLeaderPermission])
     def delegate(self, request, pk):
+        """
+        Delegate proc
+        """
+
         goal = Goal.objects.get(pk=pk)
         if not request.user == goal.group.leader:
             return Response(
                 {"detail": "You are not a leader for a corresponding group"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
+
         user_from = User.objects.get(id=request.data["user_from"])
         if user_from is None:
             return Response(
                 {"detail": "Incorrect user_from id"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         duty_from = Duty.objects.get(goal=goal, user=user_from)
         if duty_from is None:
             return Response(
                 {"detail": "Incorrect user_from id"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         user_to = User.objects.get(id=request.data["user_to"])
         if user_to is None:
             return Response(
@@ -130,6 +137,9 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True, permission_classes=[GoalGroupLeaderPermission])
     def distribute(self, request, pk):
+        """
+        Distribute proc
+        """
         goal = Goal.objects.get(pk=pk)
 
         group = goal.group
@@ -174,6 +184,9 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def reports(self, request, pk):
+        """
+        Reports proc
+        """
         reports = Report.objects.filter(goal=pk)
         return Response(
             ReportSerializer(reports, many=True).data,
@@ -182,9 +195,12 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def events(self, request, pk):
+        """
+        Events proc
+        """
+
         events = Goal.objects.get(pk=pk).events.all()
         return Response(
             EventSerializer(events, many=True).data,
             status=status.HTTP_200_OK
         )
-

@@ -57,6 +57,10 @@ class Goal(models.Model):
 
     @property
     def final_value(self) -> int:
+        """
+        Function to get a final_value of all goals duties
+        """
+
         result = 0
 
         duties = Duty.objects.filter(goal=self).all()
@@ -67,6 +71,10 @@ class Goal(models.Model):
 
     @property
     def current_value(self) -> int:
+        """
+        Function to get a current of all goals duties
+        """
+
         result = 0
 
         duties = Duty.objects.filter(goal=self).all()
@@ -99,27 +107,31 @@ class Duty(models.Model):
 
 
 class EventType(Enum):
-    GroupCreated = auto()
-    GroupOverdued = auto()
-    GoalCreated = auto()
-    GoalReached = auto()
-    GoalClosed = auto()
-    UserPaid = auto()
-    UserOverdued = auto()
-    ReportPosted = auto()
+    """
+        Enum of event types
+    """
+
+    GROUP_CREATED = auto()
+    GROUP_OVERDUED = auto()
+    GOAL_CREATED = auto()
+    GOAL_REACHED = auto()
+    GOAL_CLOSED= auto()
+    USER_PAID = auto()
+    USER_OVERDUED = auto()
+    REPORT_POSTED = auto()
 
     def __int__(self):
         return self.value
 
 EVENT_MESSAGES = {
-    EventType.GroupCreated: "group has been created",
-    EventType.GroupOverdued: "group has overdued his pay",
-    EventType.GoalCreated: "goal has been created",
-    EventType.GoalReached: "goal has been reached",
-    EventType.GoalClosed: "goal has been closed",
-    EventType.UserPaid: "user has paid his share",
-    EventType.UserOverdued: "user has overdued his pay",
-    EventType.ReportPosted: "report has been posted"
+    EventType.GROUP_CREATED: "group has been created",
+    EventType.GROUP_OVERDUED: "group has overdued his pay",
+    EventType.GOAL_CREATED: "goal has been created",
+    EventType.GOAL_REACHED: "goal has been reached",
+    EventType.GOAL_CLOSED: "goal has been closed",
+    EventType.USER_PAID: "user has paid his share",
+    EventType.USER_OVERDUED: "user has overdued his pay",
+    EventType.REPORT_POSTED: "report has been posted"
 }
 
 class Event(models.Model):

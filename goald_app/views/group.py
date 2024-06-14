@@ -3,9 +3,7 @@ File for defining handlers for group in Django notation
 """
 
 from django.urls import reverse
-from django.db.models import Q
 
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, status
@@ -36,6 +34,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def users(self, request, pk):
+        """
+        Users proc
+        """
+
         group = Group.objects.get(pk=pk)
         return Response(
             {
@@ -47,6 +49,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def invite(self, request, pk):
+        """
+        Invite proc
+        """
+
         group = Group.objects.get(pk=pk)
         if request.user != group.leader:
             return Response(
@@ -61,6 +67,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def join(self, request, pk):
+        """
+        Join proc
+        """
+
         group = Group.objects.get(pk=pk)
         if group is None:
             return Response(
@@ -81,8 +91,13 @@ class GroupViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    @action(methods=["post"], detail=False, url_path=r"join/(?P<token>(\w|\-)+)", url_name="join_token")
+    @action(methods=["post"], detail=False, \
+            url_path=r"join/(?P<token>(\w|\-)+)", url_name="join_token")
     def join_token(self, request, token):
+        """
+        Join token proc
+        """
+
         group = Group.objects.get(token=token)
         if group is None:
             return Response(
@@ -99,6 +114,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def goals(self, request, pk):
+        """
+        Goals proc
+        """
+
         goals = Group.objects.get(pk=pk).goals.all()
         return Response(
             GoalSerializer(goals, many=True).data,
@@ -107,6 +126,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=True)
     def events(self, request, pk):
+        """
+        Events proc
+        """
+
         events = Group.objects.get(pk=pk).events.all()
         return Response(
             EventSerializer(events, many=True).data,

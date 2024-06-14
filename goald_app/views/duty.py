@@ -2,13 +2,9 @@
 File for defining handlers for group in Django notation
 """
 
-import datetime
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 
-from ..models import Duty, Goal, Event, EventType, EVENT_MESSAGES
+from ..models import Duty
 from ..serializers import DutySerializer
 from ..permissions import DutyPermission
 from ..paginations import DutyViewSetPagination

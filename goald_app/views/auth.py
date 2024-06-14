@@ -20,20 +20,31 @@ class AuthViewSet(viewsets.GenericViewSet):
 
     @action(methods=["post"], detail=False, permission_classes=[NotAuthenticated])
     def register(self, request):
-        user = auth.models.User.objects.create_user(username=request.data["username"], password=request.data["password"])
+        """
+        Register proc
+        """
+
+        user = auth.models.User.objects.create_user(
+            username=request.data["username"], 
+            password=request.data["password"]
+        )
         if user is None:
             return Response(
                 data={"detail": "Could not create user"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        else:
-            return Response(
-                data={"detail": "OK"},
-                status=status.HTTP_200_OK
-            )
+
+        return Response(
+            data={"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
 
     @action(methods=["post"], detail=False, permission_classes=[NotAuthenticated])
     def login(self, request):
+        """
+        Login proc
+        """
+
         username = request.data["username"]
         password = request.data["password"]
 
@@ -44,17 +55,22 @@ class AuthViewSet(viewsets.GenericViewSet):
                 data={"detail": "Invalid credentials"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        else:
-            auth.login(request, user)
-            return Response(
-                data={"detail": "OK"},
-                status=status.HTTP_200_OK
-            )
 
-    @action(methods=["post"], detail=False)
-    def logout(self, request):
-        auth.logout(request._request) #Extracts django.http.HttpRequest from rest_framework.request.Request
+        auth.login(request, user)
         return Response(
             data={"detail": "OK"},
             status=status.HTTP_200_OK
         )
+
+    @action(methods=["post"], detail=False)
+    def logout(self, request):
+        """
+        Logout proc
+        """
+
+        auth.logout(request._request)
+        return Response(
+            data={"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
+    
