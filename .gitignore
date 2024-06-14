@@ -13,3 +13,6 @@ media/
 
 # NodeJS
 node_modules
+
+# For Mac OS X
+**/.DS_Store
