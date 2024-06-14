@@ -1,11 +1,10 @@
 """
 File for defining handlers for report in Django notation
 """
-from django.db.models import Q
 
 from rest_framework import viewsets
 
-from ..models import Report, Goal, Group
+from ..models import Report, Goal
 from ..serializers import ReportSerializer
 from ..permissions import ReportPermission
 from ..paginations import ReportViewSetPagination
