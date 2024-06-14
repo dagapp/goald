@@ -2,128 +2,136 @@
 File for defining handlers for group in Django notation
 """
 
-from rest_framework.views import APIView
+from django.urls import reverse
+
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import serializers, status
+from rest_framework import viewsets, status
 
-from ..models import User, Group
-from ..serializers import GroupSerializer
+from ..models import Group
+from ..serializers import UserSerializer, GoalSerializer, GroupSerializer, EventSerializer
+from ..permissions import GroupPermission
+from ..paginations import GroupViewSetPagination
 
 
-class GroupView(APIView):
+class GroupViewSet(viewsets.ModelViewSet):
     """
-       Description of GroupView
+    ModelViewSet for a group model
     """
 
-    def get(self, request, **kwargs):
+    serializer_class = GroupSerializer
+    permission_classes = [GroupPermission]
+    pagination_class = GroupViewSetPagination
+
+    def get_queryset(self):
         """
-        Handler for reading the group info
+        Function to get a list of all users groups
         """
 
-        if "id" not in kwargs:
-            return Response(
-                data={"detail": "No id given"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        user = self.request.user
+        groups = user.users_groups.all() | user.led_group.all()
+        return groups
 
-        if not Group.objects.filter(id=kwargs["id"]).exists():
-            return Response(
-                data={"detail": "Group does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+    @action(methods=["get"], detail=True)
+    def users(self, request, pk):
+        """
+        Users proc
+        """
 
-        if not User.objects.get(id=request.session["id"]).groups.filter(id=kwargs["id"]).exists() \
-            and not Group.objects.filter(leader_id=request.session["id"]).exists():
-            return Response(
-                data={"detail": "You have no permission to have this info"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        group = Group.objects.get(id=kwargs["id"])
+        group = Group.objects.get(pk=pk)
         return Response(
-            data=GroupSerializer(instance=group).data,
+            {
+                "leader": UserSerializer(group.leader).data,
+                "participants": UserSerializer(group.users.all(), many=True).data
+            },
             status=status.HTTP_200_OK
         )
 
-
-    def post(self, request):
+    @action(methods=["get"], detail=True)
+    def invite(self, request, pk):
         """
-        Handler for creating a group
-        """
-
-        group = GroupSerializer(data=request.data)
-
-        if Group.objects.filter(tag=request.data["tag"]).exists():
-            raise serializers.ValidationError("Group with this tag already exists")
-
-        if not group.is_valid():
-            return Response(
-                data={"detail": "Group data is not valid"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        group.save()
-        return Response(
-            data={"detail", f"Group id: {group.data['id']}"},
-            status=status.HTTP_201_CREATED
-        )
-
-
-    def patch(self, request, **kwargs):
-        """
-        Handler for updating the group info
+        Invite proc
         """
 
-        if "id" not in kwargs:
+        group = Group.objects.get(pk=pk)
+        if request.user != group.leader:
             return Response(
-                data={"detail": "No id given"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if not Group.objects.filter(id=request.GET["id"]).exists():
-            return Response(
-                data={"detail": "group with given id does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        if not Group.objects.filter(id=request.GET["id"],leader_id=request.session["id"]).exists():
-            return Response(
-                data={"detail": "You have no permission to change group info"},
+                {"detail": "You are not a leader"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        group = GroupSerializer(data=request.data)
-        Group.objects.get(id=request.GET["id"], leader_id=request.session["id"]).update(group)
-
         return Response(
-            data={"detail": "Group info updated"},
+            {"detail": reverse("group-join_token", args=[group.token])},
             status=status.HTTP_200_OK
         )
 
-
-    def delete(self, request, **kwargs):
+    @action(methods=["post"], detail=True)
+    def join(self, request, pk):
         """
-        Handler for deleting the group
+        Join proc
         """
 
-        if "id" not in kwargs:
+        group = Group.objects.get(pk=pk)
+        if group is None:
             return Response(
-                data={"detail": "No id given"},
+                {"detail": "Group doesn't exist"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user_id = request.session["id"]
-        group_id = request.GET["id"]
-
-        if not User.objects.filter(id=user_id).groups.filter(id=group_id).exists():
+        if not group.is_public:
             return Response(
-                data={"detail": "No group with given id found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"detail": "Group is not public"},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-        User.objects.filter(id=user_id).groups.get(id=group_id).delete()
+        group.users.add(request.user)
 
         return Response(
-            data={"detail": "Group deleted"},
+            {"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
+
+    @action(methods=["post"], detail=False, \
+            url_path=r"join/(?P<token>(\w|\-)+)", url_name="join_token")
+    def join_token(self, request, token):
+        """
+        Join token proc
+        """
+
+        group = Group.objects.get(token=token)
+        if group is None:
+            return Response(
+                {"detail": "Group doesn't exist"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        group.users.add(request.user)
+
+        return Response(
+            {"detail": "OK"},
+            status=status.HTTP_200_OK
+        )
+
+    @action(methods=["get"], detail=True)
+    def goals(self, request, pk):
+        """
+        Goals proc
+        """
+
+        goals = Group.objects.get(pk=pk).goals.all()
+        return Response(
+            GoalSerializer(goals, many=True).data,
+            status=status.HTTP_200_OK
+        )
+
+    @action(methods=["get"], detail=True)
+    def events(self, request, pk):
+        """
+        Events proc
+        """
+
+        events = Group.objects.get(pk=pk).events.all()
+        return Response(
+            EventSerializer(events, many=True).data,
             status=status.HTTP_200_OK
         )

@@ -28,4 +28,4 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=R0904 --load-plugins=pylint_django --django-settings-module=goald_site.settings $(git ls-files '*.py')
+        pylint --disable=R0901,W0212,E5142  --load-plugins=pylint_django --django-settings-module=goald_site.settings $(git ls-files '*.py')

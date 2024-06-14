@@ -1,23 +1,42 @@
 """
-Serializers modules
+File for defining serializer classes
 """
 
+import secrets
+import datetime
+
+from django.contrib.auth.models import User
 from rest_framework import serializers
-#from django.db.models import fields
-from .models import User, Group, Goal, Duty, Event, Report
+from .models import Group, Goal, Duty, Event, Report, Image, \
+                    EventType, EVENT_MESSAGES, GROUP_TOKEN_LENGTH
+
+
+class AuthSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for auth
+    """
+
+    class Meta:
+        """
+        Meta class for auth
+        """
+
+        model = User
+        fields = ("username", "password")
 
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Serializer class for User model object
+    Serializer class for User model objects
     """
 
-    # name = serializers.CharField(max_length=50)
-    # second_name = serializers.CharField(max_length=50)
-
     class Meta:
+        """
+        Meta class for user
+        """
+
         model = User
-        fields = ("name", "second_name")
+        fields = ("id", "username")
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -25,17 +44,33 @@ class GroupSerializer(serializers.ModelSerializer):
     Serializer class for Group model object
     """
 
-    # tag = serializers.CharField(max_length=50)
-    # is_public = serializers.BooleanField()
-
-    # name = serializers.CharField(max_length=50)
-    # image = serializers.CharField()
-
-    # users = serializers.ListField()
+    leader = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    group_image = serializers.ImageField(write_only=True, required=True)
 
     class Meta:
+        """
+        Meta class for group
+        """
+
         model = Group
-        fields = ("tag", "is_public", "name", "image")
+        fields = ("id", "tag", "is_public", "name", "group_image", "leader")
+
+    def create(self, validated_data):
+        token = secrets.token_urlsafe(GROUP_TOKEN_LENGTH)
+        image_file = validated_data.pop('group_image')
+        group = Group.objects.create(**validated_data, token=token)
+
+        Image.objects.create(image=image_file, group=group)
+
+        Event.objects.create(
+            type=int(EventType.GROUP_CREATED),
+            text=EVENT_MESSAGES[EventType.GROUP_CREATED],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=None
+        )
+
+        return group
 
 
 class GoalSerializer(serializers.ModelSerializer):
@@ -43,15 +78,54 @@ class GoalSerializer(serializers.ModelSerializer):
     Serializer class for Goal model object
     """
 
-    # name = serializers.CharField(max_length=50)
-    # is_active = serializers.BooleanField()
-
-    # deadline = serializers.DateTimeField()
-    # alert_period = serializers.DurationField()
+    final_value = serializers.IntegerField()
+    current_value = serializers.ReadOnlyField()
 
     class Meta:
+        """
+        Meta class for goal
+        """
+
         model = Goal
-        fields = ("name", "is_active", "deadline", "alert_period")
+        fields = (
+            "id",
+            "name",
+            "group",
+            "is_active",
+            "deadline",
+            "alert_period",
+            "final_value",
+            "current_value"
+        )
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+
+        group = Group.objects.get(tag=validated_data.get("group"))
+        if user != group.leader:
+            return None
+
+        final_value = validated_data.pop("final_value")
+        goal = Goal.objects.create(**validated_data)
+
+        Duty.objects.create(
+            final_value=final_value,
+            current_value=0,
+            deadline=validated_data.get("deadline"),
+            alert_period=validated_data.get("alert_period"),
+            user=group.leader,
+            goal=goal
+        )
+
+        Event.objects.create(
+            type=int(EventType.GOAL_CREATED),
+            text=EVENT_MESSAGES[EventType.GOAL_CREATED],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=goal
+        )
+
+        return goal
 
 
 class DutySerializer(serializers.ModelSerializer):
@@ -59,15 +133,13 @@ class DutySerializer(serializers.ModelSerializer):
     Serializer class for Duty model object
     """
 
-    # final_value = serializers.IntegerField()
-    # current_value = serializers.IntegerField()
-
-    # deadline = serializers.DateTimeField()
-    # alert_period = serializers.DurationField()
-
     class Meta:
+        """
+        Meta class for duty
+        """
+
         model = Duty
-        fields = ("final_value", "current_value", "deadline", "alert_period")
+        fields = ("id", "goal", "final_value", "current_value", "deadline", "alert_period")
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -75,13 +147,13 @@ class EventSerializer(serializers.ModelSerializer):
     Serializer class for Event model object
     """
 
-    # type = serializers.IntegerField()
-    # text = serializers.CharField()
-    # timestamp = serializers.DateTimeField()
-
     class Meta:
+        """
+        Meta class for event
+        """
+
         model = Event
-        field = ("type", "text", "timestamp")
+        fields = ("id", "type", "text", "timestamp", "group", "goal")
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -89,9 +161,45 @@ class ReportSerializer(serializers.ModelSerializer):
     Serializer class for Report model object
     """
 
-    # proof = serializers.CharField()
-    # text = serializers.CharField(max_length=1024)
+    proof = serializers.ImageField(write_only=True, required=True)
 
     class Meta:
+        """
+        Meta class for report
+        """
+
         model = Report
-        field = ("proof", "text")
+        fields = ("id", "proof", "text", "goal")
+
+    def create(self, validated_data):
+        goal = Goal.objects.get(name=validated_data.get("goal"))
+        group = goal.group
+
+        report = Report.objects.create(goal=goal, text=validated_data.get("text"))
+
+        image_file = validated_data.pop('proof')
+        Image.objects.create(image=image_file, report=report)
+
+        Event.objects.create(
+            type=int(EventType.REPORT_POSTED),
+            text=EVENT_MESSAGES[EventType.REPORT_POSTED],
+            timestamp=datetime.datetime.now(),
+            group=group,
+            goal=goal
+        )
+
+        return report
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for Image model objects
+    """
+
+    class Meta:
+        """
+        Meta class for image
+        """
+
+        model = Image
+        fields = ("id", "image", "group", "report")

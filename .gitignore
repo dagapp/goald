@@ -5,7 +5,7 @@ env
 # ?
 goald_app/migrations/*
 !goald_app/migrations/__init__.py
-media/group/images/*
+media/
 !media/group/images/default.jpg
 
 # VSCode
