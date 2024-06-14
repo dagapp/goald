@@ -3,14 +3,13 @@ services:
   app:
     container_name: app-goald
     build:
+      context: .
       dockerfile: app.Dockerfile
-    volumes:
-      - ${DB_SOURCE:-/dev/null}:${DB_TARGET:-/dev/null}:rw
     expose:
       - "8082"
-
     depends_on:
       - db
+
   frontend:
     container_name: frontend-goald
     build:
@@ -24,12 +23,13 @@ services:
   balancer:
     container_name: balancer-goald
     build:
+      context: .
       dockerfile: balancer.Dockerfile
     depends_on:
       - app
       - frontend
     ports:
-      - "8080:8000"
+      - "8080:8080"
   db:
     image: postgres:16.0
     volumes:

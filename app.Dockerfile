@@ -13,6 +13,7 @@ RUN apt update && apt install --no-install-recommends -y \
     python3-django                  \
     python3-djangorestframework     \
     python3-pillow                  \
+    python3-psycopg2                \
     python3-bcrypt                  \
 && rm -rf /var/lib/apt/lists/*
 

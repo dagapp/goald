@@ -12,6 +12,9 @@ then
 fi
 
 
+python3 manage.py makemigrations
+python3 manage.py migrate
+
 UWSGI_LOGPATH=/var/log/uwsgi.log
 UWSGI_INI=/etc/uwsgi/apps-enabled/goald.ini
 
