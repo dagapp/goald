@@ -1,113 +1,33 @@
 """
-File for defining handlers for group in Django notation
+File for defining handlers for report in Django notation
 """
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import serializers, status
+from django.db.models import Q
 
-from ..models import User, Report
+from rest_framework import viewsets
+
+from ..models import Report, Goal, Group
 from ..serializers import ReportSerializer
+from ..permissions import ReportPermission
+from ..paginations import ReportViewSetPagination
 
-class ReportView(APIView):
+class ReportViewSet(viewsets.ModelViewSet):
     """
-        Description of ReportView
+    ModelViewSet for a report model
     """
-    def get(self, request):
+
+    serializer_class = ReportSerializer
+    permission_classes = [ReportPermission]
+    pagination_class = ReportViewSetPagination
+
+    def get_queryset(self):
         """
-        Handler for reading the report info
+        Function to get a list of all goals reports
         """
 
-        user_id = request.session["id"]
-        report_id = request.GET["id"]
+        user = self.request.user
+        group = Group.objects.filter(Q(users__in=[user]) | Q(leader=user))
 
-        if not User.objects.get(id=user_id).groups.goals.reports.filter(id=report_id).exists():
-            return Response(
-                data={"detail": "You have no permission to have this info"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        report = Report.objects.get(id=report_id)
-        return Response(
-            data=ReportSerializer(instance=report).data,
-            status=status.HTTP_200_OK
+        return Report.objects.filter(
+            goal__in=Goal.objects.filter(group__in=group)
         )
-
-
-    def post(self, request):
-        """
-        Handler for creating a report
-        """
-
-        report = ReportSerializer(data=request.data)
-
-        if Report.objects.filter(**request.data).exists():
-            raise serializers.ValidationError("This report already exists")
-
-        if not report.is_valid():
-            return Response(
-                data={"detail": "Report data is not valid"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        report.save()
-        return Response(
-            data={"detail", f"Report id: {report.data['id']}"},
-            status=status.HTTP_201_CREATED
-        )
-
-    def patch(self, request):
-        """
-        Handler for updating the report info
-        """
-
-        report = ReportSerializer(data=request.data)
-
-        user_id = request.session["id"]
-        report_id = request.GET["id"]
-
-        if not Report.objects.filter(id=report_id).exists():
-            return Response(
-                data={"detail": "Report with given id does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        if not User.obejcts.filter(id=user_id).groups.goals.reports.filter(id=report_id).exists():
-            return Response(
-                data={"detail": "You have no permission to change report info"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        Report.objects.get(id=report_id).update(report)
-
-        return Response(
-            data={"detail": "Report info updated"},
-            status=status.HTTP_200_OK
-        )
-
-
-    def delete(self, request):
-        """
-        Handler for deleting the report
-        """
-
-        user_id = request.session["id"]
-        report_id = request.GET["id"]
-
-        if not Report.objects.filter(id=report_id).exists():
-            return Response(
-                data={"detail": "Report with given id does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        if not User.obejcts.filter(id=user_id).groups.goals.reports.filter(id=report_id).exists():
-            return Response(
-                data={"detail": "You have no permission to delete this report"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        Report.objects.get(id=report_id).delete()
-
-        return Response(
-            data={"detail": "Report deleted"},
-            status=status.HTTP_200_OK
-        )
+    

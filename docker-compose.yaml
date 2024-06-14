@@ -9,6 +9,8 @@ services:
     expose:
       - "8082"
 
+    depends_on:
+      - db
   frontend:
     container_name: frontend-goald
     build:
@@ -27,4 +29,12 @@ services:
       - app
       - frontend
     ports:
-      - "8080:8080"
+      - "8080:8000"
+  db:
+    image: postgres:16.0
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: db.env
+
+volumes:
+  postgres_data:
