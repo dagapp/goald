@@ -15,7 +15,7 @@ export function Table(props) {
         </thead>
         <tbody>
           {rows?.map((row, rowIndex) => (
-            <tr ley={rowIndex} className="table__row">
+            <tr key={rowIndex} className="table__row">
               {row?.map((column, colIndex) => (
                 <td key={colIndex}>{column}</td>
               ))}

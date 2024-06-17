@@ -1,15 +1,15 @@
 import { axiosClient } from "@shared/api/axiosClient";
 
-// export async function getUserGroups(id) {
-//   try {
-//     const response = await axiosClient
-//       .get(`/goal?groupId=${id}`)
-//       .then((response) => response.data);
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function getUserGroups() {
+  try {
+    const response = await axiosClient
+      .get('/group')
+      .then((response) => response.data);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export async function getGroupDescriptionById(id) {
   try {

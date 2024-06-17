@@ -22,7 +22,7 @@ export const GoalsList = (props) => {
 
   useEffect(() => {
     dispatch(fetchGoals({ id }));
-  }, []);
+  }, [id]);
 
   const renderContent = () => {
     if (!goals && !loading) {

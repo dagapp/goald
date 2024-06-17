@@ -18,7 +18,7 @@ export const GroupDescription = (props) => {
 
   useEffect(() => {
     dispatch(fetchGroupDescription({ id }));
-  }, []);
+  }, [id]);
 
   const renderContent = () => {
     if (loading) {

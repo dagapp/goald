@@ -1,64 +1,68 @@
-.sidebar-wrapper {
-  display: grid;
-  grid-template-columns: 1fr auto;
-
-  height: 100vh;
-  top: 0;
-  position: sticky;
-}
-
 .sidebar {
   display: flex;
   flex-direction: column;
 
-  width: 40px;
-  padding: 30px 10px;
+  height: calc(100vh - 80px);
+  top: 0;
+  position: sticky;
 
-  border-right: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
+  min-width: 200px;
+  padding: 20px;
+  margin: 20px 0px 0px 20px;
+  gap: 20px;
+
+  border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
+  border-radius: var(--ui-size-border_radius-small);
   background-color: var(--ui-color-primary);
 
-  &__logo {
+  &__header {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 15px;
 
-    svg {
-      height: var(--ui-size-icon-big);
-      min-width: var(--ui-size-icon-big);
+    &_logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        height: var(--ui-size-icon-big);
+        min-width: var(--ui-size-icon-big);
+      }
+    }
+
+    &_text {
+      display: flex;
+      align-items: center;
+
+      font-size: var(--ui-font_display-font_size-big);
+      font-weight: var(--ui-font_display-font_weight-bold);
+      line-height: var(--ui-font_display-line_height-small);
+
+      background-image: linear-gradient(
+        90deg,
+        var(--ui-color-accent-primary),
+        var(--ui-color-accent-secondary)
+      );
+
+      background-clip: text;
+
+      -webkit-text-fill-color: transparent;
+      -moz-text-fill-color: transparent;
     }
   }
 
   &__menu {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
 
-    gap: var(--ui-size-gap-tiny);
+    height: 100%;
 
-    &__button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      padding: 8px;
+    &_top {
     }
-  }
-}
 
-.sidebar-extension {
-  display: flex;
-  flex-direction: column;
-
-  max-width: 250px;
-  padding: 30px 20px;
-  // height: 100%;
-  background-color: var(--ui-color-primary);
-
-  &__title {
-    font-size: var(--ui-font_display-font_size-medium);
-    font-weight: var(--ui-font_display-font_weight-medium);
-    line-height: var(--ui-font_display-line_height-small);
-
-    margin-bottom: 20px;
+    &_bottom {
+    }
   }
 }

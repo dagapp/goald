@@ -32,7 +32,7 @@ export const EventsList = (props) => {
 
   useEffect(() => {
     dispatch(fetchEvents({ id }));
-  }, []);
+  }, [id]);
 
   const renderContent = () => {
     if (loading) {
