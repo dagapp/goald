@@ -52,6 +52,25 @@
     }
   }
 
+  &__create-group-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 20px;
+    width: 100%;
+    font-size: var(--ui-font_display-font_size-small);
+  
+    background-color: var(--ui-color-secondary);
+    border-radius: var(--ui-size-border_radius-small);
+    border: var(--ui-size-border-small) solid var(--ui-color-border-tertiary);
+
+    svg {
+      height: var(--ui-size-icon-small);
+      min-width: var(--ui-size-icon-small);
+    }
+  }
+
   &__menu {
     display: flex;
     justify-content: space-between;

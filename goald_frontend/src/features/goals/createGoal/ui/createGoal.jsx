@@ -21,7 +21,7 @@ export function CreateGoal(props) {
   } = useForm({
     defaultValues: {
       name: "",
-      group: { id },
+      group: parseInt(id),
       is_active: true,
       final_value: "",
     },
@@ -59,7 +59,7 @@ export function CreateGoal(props) {
         />
 
         <InputForm
-          placeholder={"Enter final value"}
+          placeholder={"Enter Final Value"}
           className={"create-goal-form__input"}
           error={Boolean(errors.final_value?.message)}
           errorMessage={errors.final_value?.message}

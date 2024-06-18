@@ -1,7 +1,7 @@
 .group-page {
   display: grid;
   grid-template-columns: repeat(2, auto);
-  grid-template-rows: 65px repeat(2, auto);
+  grid-template-rows: 65px auto 300px;
   
   height: 100%;
   padding: 20px;

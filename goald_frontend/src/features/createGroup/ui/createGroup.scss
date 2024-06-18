@@ -1,0 +1,48 @@
+.create-group-form {
+  width: 100%;
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-bottom: 40px;
+  }
+
+  &__error {
+    text-align: center;
+    background-color: var(--ui-color-error-primary);
+
+    margin: 0px 20px;
+    padding: 15px;
+
+    border: var(--ui-size-border-small) solid var(--ui-color-error-secondary);
+    border-radius: var(--ui-size-border_radius-small);
+  }
+
+  &__input {
+    margin: 20px;
+  }
+
+  &__checkbox {
+    margin: 0px 20px;
+  }
+
+  &__image {
+    max-width: 150px;
+  }
+
+  &__sumbit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+    margin: 60px 20px 0px;
+
+    width: calc(100% - 40px);
+
+    background-color: var(--ui-color-border-secondary);
+    border: var(--ui-size-border-small) solid var(--ui-color-border-tertiary);
+  }
+}

@@ -36,13 +36,8 @@ export const Search = (props) => {
     setValueSearch(event.target.value);
     getResultSearchDebounce(event.target.value);
   };
-
+  
   const renderContent = () => {
-    // if (!valueSearch) {
-    //   return (<></>);
-    // } 
-    // Should be uncommented on the final stage
-    
     if (loading || loadingDebounce) {
       return (
         <div className="search__loading">
@@ -58,7 +53,7 @@ export const Search = (props) => {
     }
 
     // On the final stage
-    if (groups != null && groups.length > 0 ) {
+    if (groups != null && groups.length > 0) {
       return (
         <div className="search__results">
           {groups?.map((group) => (
