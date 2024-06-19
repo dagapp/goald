@@ -1,11 +1,12 @@
-import {axiosClient} from "@shared/api/axiosClient"
+import { axiosClient } from "@shared/api/axiosClient";
 
-export async function authLogin(username, password) {
+export async function authLogin(params) {
   try {
+    const { username, password } = params;
     const response = await axiosClient
-      .post('/auth/login', {
-        "username": username,
-        "password": password,
+      .post("/auth/login", {
+        username: username,
+        password: password,
       })
       .then((response) => response.data);
     return response;
@@ -14,12 +15,13 @@ export async function authLogin(username, password) {
   }
 }
 
-export async function authRegister(username, password) {
+export async function authRegister(params) {
   try {
+    const { username, password } = params;
     const response = await axiosClient
-      .post('/auth/register', {
-        "username": username,
-        "password": password,
+      .post("/auth/register", {
+        username: username,
+        password: password,
       })
       .then((response) => response.data);
     return response;

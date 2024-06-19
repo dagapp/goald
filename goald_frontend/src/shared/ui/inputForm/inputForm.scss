@@ -1,7 +1,12 @@
 .input-form {
   display: flex;
   flex-direction: column;
-  position: relative;
+
+  &__input-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 
   &__field {
     background: transparent;
@@ -47,7 +52,7 @@
     .input-form__field {
       border-color: var(--ui-color-error-secondary);
     }
-  
+
     .input-form__label {
       color: var(--ui-color-error-secondary);
     }

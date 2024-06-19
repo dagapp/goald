@@ -1,8 +1,11 @@
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { Button } from "@shared/ui/button";
 import { Search } from "@features/search";
+
+import { logout } from "@entities/user/model/authSlice";
 
 import Logo from "@shared/assets/icons/logo.svg";
 import Groups from "@shared/assets/icons/groups.svg";
@@ -15,7 +18,8 @@ import "./sidebar.scss";
 export function Sidebar() {
   const [popUpActive, setPopUpActive] = useState(false);
   const tooglePopUp = () => setPopUpActive(!popUpActive);
-
+  
+  const dispatch = useDispatch();
   return (
     <>
       <CreateGroup popUpActive={popUpActive} tooglePopUp={tooglePopUp} />
@@ -35,7 +39,9 @@ export function Sidebar() {
               className={"sidebar__create-group-button"}
               onClick={tooglePopUp}
               Icon={Groups}
-            >Create Group</Button>
+            >
+              Create Group
+            </Button>
 
             {/* <div className="sidebar__search">
             <Search />
@@ -45,7 +51,14 @@ export function Sidebar() {
               <GroupList />
             </nav>
           </div>
-          <div className="sidebar__menu_bottom">User Here</div>
+          <div className="sidebar__menu_bottom">
+            <Button
+              className="sidebar__menu_bottom_logout-button"
+              onClick={() => dispatch(logout())}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </div>
     </>

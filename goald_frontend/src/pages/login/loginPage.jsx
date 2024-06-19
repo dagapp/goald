@@ -1,14 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 import { InputForm } from "@shared/ui/inputForm";
 import { Checkbox } from "@shared/ui/checkbox";
 import { Button } from "@shared/ui/button";
 
+import { fetchAuth } from "@entities/user";
+import { selectIsAuth } from "@entities/user/model/authSlice";
+
 import pinoeerPng from "@shared/assets/images/pioneer.png";
 import "./loginPage.scss";
 
 export function LoginPage() {
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -24,8 +31,12 @@ export function LoginPage() {
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    dispatch(fetchAuth(values));
   };
+
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="login__container">
@@ -40,7 +51,7 @@ export function LoginPage() {
             errorMessage={errors.username?.message}
             properties={{
               ...register("username", {
-                required: true,
+                required: "Enter user name",
               }),
             }}
           />
@@ -53,7 +64,7 @@ export function LoginPage() {
             errorMessage={errors.password?.message}
             properties={{
               ...register("password", {
-                required: true,
+                required: "Enter Password",
               }),
             }}
           />

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 
 import createEventImage from "@shared/assets/images/piggyBank.png";
 
+import { createGoal } from "@shared/api/group";
 import { InputForm } from "@shared/ui/inputForm";
 import { Button } from "@shared/ui/button";
 import { Checkbox } from "@shared/ui/checkbox";
@@ -30,7 +31,7 @@ export function CreateGoal(props) {
 
   const onSubmit = (values) => {
     tooglePopUp();
-    console.log(values);
+    createGoal(values);
     reset();
   };
 

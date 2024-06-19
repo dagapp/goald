@@ -3,5 +3,6 @@ export {
   getGroupDescriptionById,
   getGoalsByGroupId,
   getEventsByGroupId,
+  createGroup,
   createGoal,
 } from "./group";

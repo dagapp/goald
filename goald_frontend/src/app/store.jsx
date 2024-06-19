@@ -5,6 +5,7 @@ import { groupDescriptionReducer } from "@entities/group/groupDescription";
 import { groupListReducer } from "@features/groupList";
 import { goalsReducer } from "@features/goals/goalsList";
 import { eventsReducer } from "@features/eventsList";
+import { authReducer } from "@entities/user";
 
 const rootReducer = combineReducers({
   search: searchReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   events: eventsReducer,
   groupDescription: groupDescriptionReducer,
   groupList: groupListReducer,
+  auth: authReducer,
 });
 
 const store = configureStore({

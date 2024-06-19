@@ -19,6 +19,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-bottom: 20px;
 
     &_logo {
       display: flex;
@@ -60,7 +61,7 @@
     padding: 8px 20px;
     width: 100%;
     font-size: var(--ui-font_display-font_size-small);
-  
+
     background-color: var(--ui-color-secondary);
     border-radius: var(--ui-size-border_radius-small);
     border: var(--ui-size-border-small) solid var(--ui-color-border-tertiary);
@@ -82,6 +83,14 @@
     }
 
     &_bottom {
+      &_logout-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        border: var(--ui-size-border-1) solid var(--ui-color-error-secondary);
+      }
     }
   }
 }

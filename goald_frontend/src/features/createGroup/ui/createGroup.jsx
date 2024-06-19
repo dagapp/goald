@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import createGroupImage from "@shared/assets/images/groupFormImage.png";
-
+import { createGroup } from "@shared/api/group";
 import { InputForm } from "@shared/ui/inputForm";
 import { Button } from "@shared/ui/button";
 import { Checkbox } from "@shared/ui/checkbox";
@@ -30,7 +30,7 @@ export function CreateGroup(props) {
 
   const onSubmit = (values) => {
     tooglePopUp();
-    console.log(values);
+    createGroup(values);
     reset();
   };
 

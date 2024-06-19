@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { redirect, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { InputForm } from "@shared/ui/inputForm";
 import { Button } from "@shared/ui/button";
+import { authRegister } from "@shared/api/auth";
 
 import pinoeerPng from "@shared/assets/images/pioneer.png";
 import "./registerPage.scss";
@@ -23,7 +24,10 @@ export function RegisterPage() {
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    if (isValid) {
+      authRegister(values);
+      redirect("/login");
+    }
   };
 
   return (
@@ -38,7 +42,7 @@ export function RegisterPage() {
             errorMessage={errors.username?.message}
             properties={{
               ...register("username", {
-                required: true,
+                required: "Enter username",
               }),
             }}
           />
@@ -51,7 +55,7 @@ export function RegisterPage() {
             errorMessage={errors.password?.message}
             properties={{
               ...register("password", {
-                required: true,
+                required: "Enter password",
               }),
             }}
           />
@@ -64,7 +68,7 @@ export function RegisterPage() {
             errorMessage={errors.confirmPassword?.message}
             properties={{
               ...register("confirmPassword", {
-                required: true,
+                required: "Enter password again",
                 validate: (value) => {
                   if (watch("password") != value) {
                     return "Your passwords do no match";
