@@ -41,7 +41,6 @@ module.exports = {
       "@pages": path.resolve(__dirname, "src/pages"),
       "@app": path.resolve(__dirname, "src/app"),
     },
-<<<<<<< HEAD:goald_frontend/webpack.config.js
   },
   performance: {
     hints: false,
@@ -53,10 +52,3 @@ module.exports = {
     port: 8081,
   },
 };
-=======
-    devServer: {
-        historyApiFallback: true,
-        port: 8081,
-    },
-}
->>>>>>> main:frontend/webpack.config.js
