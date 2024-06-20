@@ -1,0 +1,21 @@
+.progress-bar {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: var(--ui-size-progress_bar-min);
+
+  border-radius: var(--ui-size-border_radius-small);
+  background-color: var(--ui-color-secondary);
+
+  &__filler {
+    display: flex;
+    border-radius: var(--ui-size-border_radius-small);
+
+    width: 100%;
+    min-width: var(--ui-size-progress_bar-min);
+    height: var(--ui-size-progress_bar-min);
+    
+    background-color: var(--ui-color-progress_bar-line);
+  }
+}

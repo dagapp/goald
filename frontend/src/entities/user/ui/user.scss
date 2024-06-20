@@ -1,0 +1,35 @@
+.user {
+  display: flex;
+  align-items: center;
+
+  width: 200px;
+  gap: 10px;
+
+  &__avatar {
+    min-width: 40px;
+    min-height: 40px;
+
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  &__overview {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &_username {
+      font-weight: var(--ui-font_display-font_weight-medium);
+      line-height: var(--ui-font_display-line_height-small);
+    }
+
+    &_description {
+      font-size: var(--ui-font_display-font_size-tiny);
+      color: var(--ui-color-subtext);
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.group-list {
+  &__error {
+    color: var(--ui-color-error);
+  }
+
+  // can be merged into on class
+  &__loading {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 5px;
+  }
+
+  &__results {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 5px;
+  }
+}

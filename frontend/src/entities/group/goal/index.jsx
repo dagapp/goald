@@ -1,0 +1,1 @@
+export { GoalItem } from "./ui/goalItem";

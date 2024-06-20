@@ -1,0 +1,74 @@
+.group-page {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: 65px auto 300px;
+  
+  height: 100%;
+  padding: 20px;
+  gap: 10px;
+  
+  grid-auto-flow: row;
+  grid-template-areas:
+    "Description Reports"
+    "Goals Reports"
+    "Events Events";
+
+  &__wrapper {
+    width: 100%;
+    height: calc(100vh - 40px);
+  }
+
+  &__description {
+    display: flex;
+    grid-area: Description;
+
+    &_button {
+      padding: 5px 20px;
+      font-size: var(--ui-font_display-font_size-small);
+
+      background-color: var(--ui-color-secondary);
+      border-radius: var(--ui-size-border_radius-tiny);
+      border: var(--ui-size-border-small) solid var(--ui-color-border-tertiary);
+    }
+  }
+
+  &__goals {
+    grid-area: Goals;
+  }
+
+  &__events {
+    grid-area: Events;
+  }
+
+  &__reports {
+    grid-area: Reports;
+  }
+
+  &__cell {
+    border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
+    border-radius: var(--ui-size-border_radius-small);
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+    
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    padding: 20px;
+    background-color: var(--ui-color-primary);
+
+    &_header {
+      display: flex;
+      justify-content: space-between;
+
+      font-size: var(--ui-font_display-font_size-big);
+
+      background-color: var(--ui-color-primary);
+      z-index: 1;
+    }
+
+    &_content {
+      margin-top: 20px;
+    }
+  }
+}
