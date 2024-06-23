@@ -6,7 +6,7 @@ on:
       - '**/**.py'
 
 jobs:
-  build:
+  pylint:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -33,3 +33,33 @@ jobs:
       run: |
         pylint --version
         pylint --disable=R0901,W0212,E5142  --load-plugins=pylint_django --django-settings-module=goald.settings $(git ls-files '*.py')
+
+  generate_schema:
+    runs-on: ubuntu-22.04
+    needs: pylint
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install pyyaml uritemplate inflection
+
+    - name: Generate schema.yaml file
+      run: |
+        python3 manage.py generateschema --file schema.yaml
+
+    - name: Archive schema.yaml
+      uses: actions/upload-artifact@v4
+      with:
+        name: schema
+        path: ./schema.yaml
+
