@@ -25,6 +25,8 @@ function GroupPageCell(props) {
 export function GroupPage() {
   let { groupId } = useParams();
 
+  console.log("Current Group Page: ", groupId);
+
   const [popUpActive, setPopUpActive] = useState(false);
   const tooglePopUp = () => setPopUpActive(!popUpActive);
 

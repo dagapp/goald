@@ -1,0 +1,43 @@
+.input-form-file {
+  display: flex;
+  flex-direction: column;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+
+    width: 100%;
+  }
+
+  &__field {
+    display: none;
+  }
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: calc(100% - 40px);
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 25px;
+
+    border: var(--ui-size-border-small) solid var(--ui-color-border-tertiary);
+    border-radius: var(--ui-size-border_radius-small);
+
+    background-color: var(--ui-color-border-secondary);
+    color: var(--ui-color-text);
+  }
+
+  &__error {
+    padding-top: 10px;
+    color: var(--ui-color-error-secondary);
+  }
+}

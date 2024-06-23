@@ -4,7 +4,7 @@ export async function authLogin(params) {
   try {
     const { username, password } = params;
     const response = await axiosClient
-      .post("/auth/login", {
+      .post("/auth/login/", {
         username: username,
         password: password,
       })
@@ -19,7 +19,7 @@ export async function authRegister(params) {
   try {
     const { username, password } = params;
     const response = await axiosClient
-      .post("/auth/register", {
+      .post("/auth/register/", {
         username: username,
         password: password,
       })
