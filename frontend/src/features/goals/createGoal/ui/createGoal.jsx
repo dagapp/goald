@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 import createEventImage from "@shared/assets/images/piggyBank.png";
 
@@ -8,6 +9,7 @@ import { Button } from "@shared/ui/button";
 import { Checkbox } from "@shared/ui/checkbox";
 
 import { PopUp } from "@shared/ui/popUp";
+import { fetchGoals } from "@features/goals/goalsList";
 
 import "./createGoal.scss";
 
@@ -19,6 +21,7 @@ export function CreateGoal(props) {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setValue,
   } = useForm({
     defaultValues: {
       name: "",
@@ -29,10 +32,14 @@ export function CreateGoal(props) {
     mode: "onChange",
   });
 
+  console.log("Current PopUp: ", id, parseInt(id));
+  const dispatch = useDispatch();
+
   const onSubmit = (values) => {
     tooglePopUp();
     createGoal(values);
     reset();
+    dispatch(fetchGoals({ id }));
   };
 
   return (
