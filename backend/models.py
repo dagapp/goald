@@ -174,9 +174,9 @@ class Image(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
     )
 
-    group = models.ForeignKey(
-        "Group", null=True, on_delete=models.CASCADE, related_name="group"
-    )
+    # group = models.ForeignKey(
+    #     "Group", null=True, on_delete=models.CASCADE, related_name="group"
+    # )
 
     report = models.ForeignKey(
         "Report", null=True, on_delete=models.CASCADE, related_name="report"

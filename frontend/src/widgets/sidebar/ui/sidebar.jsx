@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { Button } from "@shared/ui/button";
@@ -20,6 +20,12 @@ export function Sidebar() {
   const tooglePopUp = () => setPopUpActive(!popUpActive);
   
   const dispatch = useDispatch();
+
+  const onClickLogout = () => {
+    dispatch(logout());
+    <Navigate to="/login" />
+  }
+
   return (
     <>
       <CreateGroup popUpActive={popUpActive} tooglePopUp={tooglePopUp} />
@@ -54,7 +60,7 @@ export function Sidebar() {
           <div className="sidebar__menu_bottom">
             <Button
               className="sidebar__menu_bottom_logout-button"
-              onClick={() => dispatch(logout())}
+              onClick={() => onClickLogout()}
             >
               Logout
             </Button>

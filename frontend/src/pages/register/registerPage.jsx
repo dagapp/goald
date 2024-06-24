@@ -1,4 +1,4 @@
-import { redirect, Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { InputForm } from "@shared/ui/inputForm";
@@ -7,6 +7,7 @@ import { authRegister } from "@shared/api/auth";
 
 import pinoeerPng from "@shared/assets/images/pioneer.png";
 import "./registerPage.scss";
+import { useState } from "react";
 
 export function RegisterPage() {
   const {
@@ -23,15 +24,21 @@ export function RegisterPage() {
     mode: "onChange",
   });
 
-  const onSubmit = (values) => {
+  const [redirect, setRedirect] = useState(false)
+
+  async function onSubmit(values) {
     if (isValid) {
-      authRegister(values);
-      redirect("/login");
+      var response = await authRegister(values);
+      
+      if (response?.detail == "OK") {
+        setRedirect(true);
+      }
     }
-  };
+  }
 
   return (
     <div className="register__container">
+      {redirect && <Navigate to="/login" />}
       <div className="register__card">
         <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="register-form__title">Создайте аккаунт Goald</h2>

@@ -9,7 +9,7 @@ import { Layout } from "@app/layout";
 
 const AuthRoute = (props) => {
   const { isAuth } = props;
-  // return <Outlet />
+  //return <Outlet />
   return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };
 

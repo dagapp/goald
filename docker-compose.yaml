@@ -10,16 +10,6 @@ services:
     depends_on:
       - db
 
-  frontend:
-    container_name: frontend-goald
-    build:
-      context: frontend
-      dockerfile: frontend.Dockerfile
-    depends_on:
-      - app
-    expose:
-      - "8081"
-
   balancer:
     container_name: balancer-goald
     build:
@@ -27,9 +17,8 @@ services:
       dockerfile: balancer.Dockerfile
     depends_on:
       - app
-      - frontend
     ports:
-      - "8080:8080"
+      - "80:80"
   db:
     image: postgres:16.0
     volumes:

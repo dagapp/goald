@@ -3,8 +3,8 @@ import { axiosClient } from "@shared/api/axiosClient";
 export async function getUserGroups() {
   try {
     const response = await axiosClient
-      .get("/group", { withCredentials: true })
-      .then((response) => response.data);
+      .get("/group/", { withCredentials: true })
+      .then((response) => response.data.results);
     return response;
   } catch (error) {
     console.error(error);
@@ -25,7 +25,7 @@ export async function getGroupDescriptionById(id) {
 export async function getGoalsByGroupId(id) {
   try {
     const response = await axiosClient
-      .get(`/group/${id}/goals`, { withCredentials: true })
+      .get(`/group/${id}/goals/`, { withCredentials: true })
       .then((response) => response.data);
     return response;
   } catch (error) {
@@ -36,7 +36,7 @@ export async function getGoalsByGroupId(id) {
 export async function getEventsByGroupId(id) {
   try {
     const response = await axiosClient
-      .get(`/group/${id}/events`, { withCredentials: true })
+      .get(`/group/${id}/events/`, { withCredentials: true })
       .then((response) => response.data);
     return response;
   } catch (error) {
@@ -46,9 +46,13 @@ export async function getEventsByGroupId(id) {
 
 export async function createGroup(params) {
   try {
-    const { name, tag } = params;
+    const { name, tag, is_public } = params;
     const response = await axiosClient
-      .post(`/group`, { name: name, tag: tag }, { withCredentials: true })
+      .post(
+        `/group/`,
+        { name: name, tag: tag, is_public: is_public },
+        { withCredentials: true }
+      )
       .then((response) => response.data);
     return response;
   } catch (error) {
@@ -58,11 +62,16 @@ export async function createGroup(params) {
 
 export async function createGoal(params) {
   try {
-    const { name, final_value } = params;
+    const { name, group, is_active, final_value } = params;
     const response = await axiosClient
       .post(
-        `/goal`,
-        { name: name, final_value: final_value },
+        `/goal/`,
+        {
+          name: name,
+          group: group,
+          is_active: is_active,
+          final_value: final_value,
+        },
         { withCredentials: true }
       )
       .then((response) => response.data);
