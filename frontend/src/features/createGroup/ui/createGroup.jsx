@@ -36,6 +36,10 @@ export function CreateGroup(props) {
 
   const dispatch = useDispatch();
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const onChangeImage = (event) => {
     console.log(getBase64(event.target.files[0]));
     setValue("group_image", getBase64(event.target.files[0]));
@@ -45,7 +49,9 @@ export function CreateGroup(props) {
     tooglePopUp();
     createGroup(values);
     reset();
-    dispatch(fetchGroupList());
+    sleep(500).then(() => {
+      dispatch(fetchGroupList());
+    });
   };
 
   return (

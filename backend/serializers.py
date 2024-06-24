@@ -45,7 +45,7 @@ class GroupSerializer(serializers.ModelSerializer):
     """
 
     leader = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    group_image = serializers.ImageField(write_only=True, required=True)
+    # group_image = serializers.ImageField(write_only=True, required=True)
 
     class Meta:
         """
@@ -53,14 +53,14 @@ class GroupSerializer(serializers.ModelSerializer):
         """
 
         model = Group
-        fields = ("id", "tag", "is_public", "name", "group_image", "leader")
+        fields = ("id", "tag", "is_public", "name", "leader") #"group_image", "leader")
 
     def create(self, validated_data):
-        token = secrets.token_urlsafe(GROUP_TOKEN_LENGTH)
-        image_file = validated_data.pop('group_image')
+        token = secrets.token_urlsafe(GROUP_TOKEN_LENGTH)[:32]
+        #image_file = validated_data.pop('group_image')
         group = Group.objects.create(**validated_data, token=token)
 
-        Image.objects.create(image=image_file, group=group)
+        #Image.objects.create(image=image_file, group=group)
 
         Event.objects.create(
             type=int(EventType.GROUP_CREATED),

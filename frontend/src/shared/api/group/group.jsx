@@ -46,9 +46,13 @@ export async function getEventsByGroupId(id) {
 
 export async function createGroup(params) {
   try {
-    const { name, tag } = params;
+    const { name, tag, is_public } = params;
     const response = await axiosClient
-      .post(`/group/`, { name: name, tag: tag }, { withCredentials: true })
+      .post(
+        `/group/`,
+        { name: name, tag: tag, is_public: is_public },
+        { withCredentials: true }
+      )
       .then((response) => response.data);
     return response;
   } catch (error) {
