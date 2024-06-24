@@ -1,0 +1,117 @@
+// Importing fonts
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap");
+
+:root,
+[color-scheme="goald-dark"] {
+  // Main Colors
+  --ui-color-brand-primary: #5510cc;
+  --ui-color-brand-secondary: #451e88;
+
+  --ui-color-accent-primary: #7638e0;
+  --ui-color-accent-secondary: #9000c8;
+
+  --ui-color-background: #07050c;
+  --ui-color-primary: #101010;
+  --ui-color-secondary: #151515;
+  --ui-color-action: #1e1e1e;
+  
+  // Errors
+  --ui-color-error-primary: #f44336;
+  --ui-color-error-secondary: #ff5c5c;
+
+  // Text colors
+  --ui-color-text: #ece7f4;
+  --ui-color-subtext: #ece7f480;
+
+  // Icon
+  --ui-size-icon-tiny: 12px;
+  --ui-size-icon-small: 18px;
+  --ui-size-icon-normal: 24px;
+  --ui-size-icon-big: 30px;
+  --ui-size-icon-large: 40px;
+
+  --ui-color-icon-primary: #ece7f4;
+  --ui-color-icon-secondary: #5e5c62;
+
+  // Border
+  --ui-color-border-primary: #ece7f480;
+  --ui-color-border-secondary: #252525;
+  --ui-color-border-tertiary: #5e5c62;
+
+  --ui-size-border-1: 1px;
+  --ui-size-border-2: 1.5px;
+  --ui-size-border-3: 2px;
+
+  // Border Radius
+  --ui-size-border_radius-tiny: 5px;
+  --ui-size-border_radius-small: 10px;
+  --ui-size-border_radius-medium: 20px;
+  --ui-size-border_radius-large: 40px;
+  
+  --ui-size-border_radius-round: 50%;
+
+  // Gap
+  --ui-size-gap-tiny: 5px;
+  --ui-size-gap-small: 10px;
+  --ui-size-gap-medium: 20px;
+
+  // Transitions
+  --ui-transition-speed-1: all 0.5s linear;
+  --ui-transition-speed-2: all 0.3s linear;
+  --ui-transition-speed-3: all 0.15s linear;
+
+  // Checkbox
+  --ui-color-checkbox-checkmark: #ece7f4;
+  --ui-color-checkbox-background-active: #7638e0;
+
+  --ui-size-checkbox-hidden: 16px;
+  --ui-size-checkbox-pseudo: 14px;
+  --ui-size-checkbox-checkmark: 14px;
+
+  // Progress bar
+  --ui-color-progress_bar-line: #7638e0;
+  --ui-size-progress_bar-min: 5px;
+
+  // Spinner
+  --ui-color-spinner-basic: var(--ui-color-icon-secondary);
+  --ui-color-spinner-accent: var(--ui-color-brand-primary);
+
+  --ui-size-spinner-small: 30px;
+  --ui-size-spinner-medium: 60px;
+  --ui-size-spinner-large: 120px;
+
+  --ui-size-border-small: 2px;
+  --ui-size-border-medium: 5px;
+  --ui-size-border-large: 10px;
+
+  // Fonts
+  --ui-font_display-font_family-main: "Golos Text", sans-serif;
+  --ui-font_display-font_family-logo: "Montserrat", sans-serif;
+
+  --ui-font_display-font_size-tiny: 12px;
+  --ui-font_display-font_size-small: 14px;
+  --ui-font_display-font_size-normal: 16px;
+  --ui-font_display-font_size-medium: 18px;
+  --ui-font_display-font_size-big: 22px;
+  --ui-font_display-font_size-large: 40px;
+
+  --ui-font_display-font_weight-regular: 400;
+  --ui-font_display-font_weight-medium: 500;
+  --ui-font_display-font_weight-semi-bold: 600;
+  --ui-font_display-font_weight-bold: 700;
+
+  --ui-font_display-line_height-tiny: 0.8;
+  --ui-font_display-line_height-small: 1;
+  --ui-font_display-line_height-normal: 1.5;
+
+  // PopUp
+  --ui-size-pop-up-height: 600px;
+  --ui-size-pop-up-width: 400px;
+
+  --ui-color-pop-up-background: #0000008d;
+
+  --ui-z-index-pop-up: 100;
+  --ui-z-index-pop-up-background: 99;
+  --ui-z-index-pop-up-wrapper: 100;
+}

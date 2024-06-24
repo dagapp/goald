@@ -1,0 +1,44 @@
+.spinner {
+  &_size_small {
+    width: var(--ui-size-spinner-small);
+    height: var(--ui-size-spinner-small);
+    border: var(--ui-size-border-small) solid;
+  }
+
+  &_size_medium {
+    width: var(--ui-size-spinner-medium);
+    height: var(--ui-size-spinner-medium);
+    border: var(--ui-size-border-medium) solid;
+  }
+
+  &_size_large {
+    width: var(--ui-size-spinner-large);
+    height: var(--ui-size-spinner-large);
+    border: var(--ui-size-border-large) solid;
+  }
+
+  &_color_basic {
+    border-color: var(--ui-color-spinner-basic);
+    border-bottom-color: transparent;
+  }
+
+  &_color_accent {
+    border-color: var(--ui-color-spinner-accent);
+    border-bottom-color: transparent;
+  }
+
+  display: inline-block;
+  box-sizing: border-box;
+
+  border-radius: var(--ui-size-border_radius-round);
+  animation: spinner-rotation 1s linear infinite;
+
+  @keyframes spinner-rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

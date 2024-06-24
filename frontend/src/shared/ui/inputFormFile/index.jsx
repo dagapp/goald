@@ -1,0 +1,1 @@
+export { InputFormFile } from './inputFormFile'

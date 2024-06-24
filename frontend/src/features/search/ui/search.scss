@@ -1,0 +1,32 @@
+.search {
+  &__input {
+    padding: 8px 20px;
+    height: 20px;
+    border-radius: var(--ui-size-border_radius-tiny);
+    border: var(--ui-size-border-1) solid var(--ui-color-border-secondary);
+
+    font-size: var(--ui-font_display-font_size-small);
+  }
+
+  &__error {
+    color: var(--ui-color-error);
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 5px;
+  }
+
+  &__results {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 5px;
+  }
+}

@@ -1,0 +1,91 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  min-width: var(--ui-size-checkbox-hidden);
+  min-height: var(--ui-size-checkbox-hidden);
+
+  // Hiding original checkbox
+  &__input {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    width: var(--ui-size-checkbox-hidden);
+    height: var(--ui-size-checkbox-hidden);
+    opacity: 0;
+  }
+
+  // Making pseudo-checkbox
+  &__pseudobox {
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    top: 50%;
+    transform: translate(0, -50%);
+
+    height: var(--ui-size-checkbox-pseudo);
+    width: var(--ui-size-checkbox-pseudo);
+
+    border-radius: var(--ui-size-border_radius-tiny);
+    border: var(--ui-size-border-2) solid var(--ui-color-border-primary);
+
+    z-index: -1;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    svg {
+      display: block;
+      opacity: 0;
+
+      min-width: var(--ui-size-checkbox-checkmark);
+      min-height: var(--ui-size-checkbox-checkmark);
+
+      max-width: var(--ui-size-checkbox-checkmark);
+      max-height: var(--ui-size-checkbox-checkmark);
+
+      path {
+        stroke: var(--ui-color-checkbox-checkmark);
+      }
+    }
+  }
+
+  // Handling checkbox states
+  &__input:checked + &__pseudobox {
+    border-color: var(--ui-color-checkbox-background-active);
+    background-color: var(--ui-color-checkbox-background-active);
+
+    svg {
+      opacity: 1;
+    }
+  }
+
+  // &__input:focus:active + &__pseudobox {
+  //   border-color: var(--ui-color-checkbox-border-focus);
+  // }
+
+  // &__input:focus:not(:active) + &__pseudobox {
+  //   border-color: var(--ui-color-checkbox-border-focus-active);
+  // }
+
+  // &__input:hover:active + &__pseudobox {
+  //   border-color: var(--ui-color-checkbox-border-hover);
+  // }
+
+  // &__input:hover:not(:active) + &__pseudobox {
+  //   border-color: var(--ui-color-checkbox-border-hover);
+  // }
+
+  // There should be also `disabled` checkbox handling, but
+  // actually project has no cases with this option
+
+  &__label {
+    margin-left: 1.5em;
+    cursor: pointer;
+  }
+}
